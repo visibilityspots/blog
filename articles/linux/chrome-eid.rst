@@ -27,6 +27,8 @@ If you are using archlinux on a dell latitude e6530 you can use the internal car
 
 In the opensc.conf file you need to uncomment the setting '''enable_pinpad = false'''' on two places before you enable the process at boot and run it:
 
+.. code:: bash
+
         $ sudo systemctl enable pcscd
         $ sudo systemctl start pcscd
 
