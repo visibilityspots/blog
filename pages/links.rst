@@ -8,14 +8,25 @@ Personal
 ~~~~~~~~
 
 - `Inuits.eu`_ company I work for
-- The `scouting`_ group I participated in 
+- The `scouting`_ group I participated in
 - A `cool`_ blog about everyday crazy stuff I follow
-- Listing of some fancy technological `gadgets`_ 
+- Listing of some fancy technological `gadgets`_
 
-Technical
-~~~~~~~~~
+Tools
+~~~~~
 
-- A yum `repository`_ containing packages I created using a jenkins instance
+- `Packages`_ I created and used along my way in the linux/open-source world
+- `Hubot`_ chat bot
+- Command line chat client `irssi`_
+- IRC to other chat networks `bitlbee`_ gateway
+- Command line mail client `mutt`_
+- A `video chat`_ open-source alternative
+- Online real time `markdown`_ editor
+- Terminal `recorder`_
+- Fancy presentation software `reveal`_
+- `Conky`_ dashboard
+- Command line disk space overview `ncdu`_
+- Continuous integration server `jenkins`_
 
 Colleagues
 ~~~~~~~~~~
@@ -34,8 +45,22 @@ Friends
 .. _scouting: http://www.scoutsnieuwenrode.be
 .. _cool: http://www.likecool.com
 .. _gadgets: http://www.freshgadgets.nl
-.. _repository: http://www.visibilityspots.com/repos/visibilityspots/repoview/
+
+.. _Packages: https://packagecloud.io/visibilityspots/packages
+.. _Hubot: http://hubot.github.com
+.. _irssi: http://www.irssi.org
+.. _bitlbee: http://www.bitlbee.org
+.. _mutt: http://www.mutt.org
+.. _video chat: https://vmux.co
+.. _markdown: http://dillinger.io
+.. _recorder: http://showterm.io
+.. _reveal: http://lab.hakim.se/reveal-js/#
+.. _Conky: https://wiki.archlinux.org/index.php/conky
+.. _ncdu: http://dev.yorhel.nl/ncdu
+.. _jenkins: http://www.jenkins-ci.org
+
 .. _list: http://www.inuits.eu/blog
+
 .. _Bart Vermijlen: http://bart.vermijlen.be
 .. _Sander Van Loo: http://www.sandervanloo.be
 .. _Gilbert Vandenbloeck: http://www.vandenbloeck.eu
