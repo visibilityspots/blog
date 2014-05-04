@@ -25,6 +25,12 @@ Tools
 - Terminal `recorder`_
 - Fancy presentation software `reveal`_
 - `Conky`_ dashboard
+- A static blog generator `pelican`_
+- Spell and grammer `language tool`_
+- Manage google calendar from the command line `gcalcli`_
+- Organise your todo's using `taskwarrior`_
+- Import your issues from 3th party services like redmine,github,.. to `taskwarrior`_ with `bugwarrior`_
+- Sync your caldav contact lists locally to use in mutt by `pycarddav`_
 - Command line disk space overview `ncdu`_
 - Continuous integration server `jenkins`_
 
@@ -56,6 +62,12 @@ Friends
 .. _recorder: http://showterm.io
 .. _reveal: http://lab.hakim.se/reveal-js/#
 .. _Conky: https://wiki.archlinux.org/index.php/conky
+.. _pelican: http://blog.getpelican.com/
+.. _language tool: https://www.languagetool.org/
+.. _gcalcli: https://github.com/insanum/gcalcli
+.. _taskwarrior: http://taskwarrior.org/
+.. _bugwarrior: https://github.com/ralphbean/bugwarrior
+.. _pycarddav: https://github.com/geier/pycarddav
 .. _ncdu: http://dev.yorhel.nl/ncdu
 .. _jenkins: http://www.jenkins-ci.org
 
