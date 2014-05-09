@@ -81,4 +81,10 @@ You should see the temperature of the head is increasing to 220 degrees followed
 
 And you should see the progress of it in the octoprint interface.
 
+# Pictures
+
+![front]( ../../images/octoprint/front.jpg)
+![side]( ../../images/octoprint/side.jpg)
+![cam]( ../../images/octoprint/cam.jpg)
+
 Happy printing!

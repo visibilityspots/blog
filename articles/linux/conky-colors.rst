@@ -1,6 +1,6 @@
 Conky-colors
 ############
-:date: 2013-05-20 
+:date: 2013-05-20
 :author: Jan
 :tags: conky, conky-colors, fedora, desktop
 :slug: conky-colors
@@ -46,7 +46,7 @@ I changed some of those params in the `conkyrc`_ file, so the conky bar is locat
 ::
 
 	own_window_type override
-	
+
 	alignment bottom_left
 	gap_x 5
 	gap_y 5
@@ -65,10 +65,10 @@ The command to run the conky daemon:
 
 	$ conky -c ~/.conkyrc
 	$ CTRL-C to stop the job
-	
-	# Move the conky job in the background	
-	$ conky -c ~/.conkyrc & 
-	
+
+	# Move the conky job in the background
+	$ conky -c ~/.conkyrc &
+
 We now should have a standard conky-colors theme running. But it wasn't sufficient for me. I kinda tweaked the whole setup and added some additional features:
 
 .. image:: static/images/conky-colors/customizedSlim.png
@@ -189,7 +189,7 @@ Following with my own `irssi`_ status based on an html file which is generated o
 
 And as last informational message in this column a minimal overview of your infrastructure based on an `icinga`_ instance based on a `conky-icinga`_ bash script:
 ::
-    
+
     --ICINGA STATE
     IcingaState=conky_parse("${execpi 53 PATH/TO/conky-icinga.sh}")
     if IcingaState == 'OK' then
@@ -216,7 +216,7 @@ And as last informational message in this column a minimal overview of your infr
 
 As you can see in the middle section I added a counter for incoming mails based on my maildir folders:
 ::
-    
+
 	settings = {--MAILS
         txt=conky_parse("Inuits: ${new_mails PATH/TO/MAILDIR}"),
         x=(w/2)-160             , y=65          ,
@@ -234,7 +234,7 @@ Depending if the spotify service is running conky will display the 'Now playing 
         txt_fg_colour=theme , txt_fg_alpha=fga ,
         font="musicelements"
     };display_text(settings)
- 
+
     settings = {--SPOTIFY
         txt=conky_parse("${if_running spotify}${exec sudo spotify-nowplaying}${endif}"),
         x=(w/2)+67             , y=83          ,
@@ -259,11 +259,11 @@ The same counts for `cmus`_ a command line music player which will show 'Now pla
         txt_weight=0        , txt_size=10 ,
         txt_fg_colour=theme , txt_fg_alpha=fga ,
     };display_text(settings)
-	
+
 
 4 cpu's will be used to draw the CPU graphics and showing the load of the local machine:
 ::
-    
+
     settings = {--CPU GRAPH CPU1
             value=tonumber(conky_parse("${cpu cpu1}")),
             value_max=100              ,
@@ -356,7 +356,7 @@ The same counts for `cmus`_ a command line music player which will show 'Now pla
             caption_fg_colour=fgc      , caption_fg_alpha=fga        ,
     };draw_gauge_ring(settings)
 
-    settings = {--LOAD 
+    settings = {--LOAD
             txt=conky_parse("${loadavg}"),
             x=xp+10             , y=yp+38,
             txt_weight=0        , txt_size=10 ,
@@ -365,7 +365,7 @@ The same counts for `cmus`_ a command line music player which will show 'Now pla
 
 I also added a additional graph for the temperature based on acpi:
 ::
-    
+
     settings = {--TEMP GRAPH
             value=tonumber(conky_parse("${acpitemp}")),
             value_max=100              ,
@@ -459,16 +459,16 @@ Depending on those locations I get other ip addresses on other networks and ther
                conky_parse("${exec setsmtp -t}")
                todo='personal'
             end
- 
+
             settings = {--IP ADDRESS
                     txt=ip,
                     x=xp+10             , y=83,
                     txt_weight=0        , txt_size=10 ,
                     txt_fg_colour=theme , txt_fg_alpha=fga ,
             };display_text(settings)
- 
+
     elseif iface == 'wlan0' then
- 
+
             ssid = conky_parse("${wireless_essid wlan0}")
             if ssid == 'SSID WORK PLACE ONE' then
                conky_parse("${exec setsmtp -b}")
@@ -481,7 +481,7 @@ Depending on those locations I get other ip addresses on other networks and ther
                conky_parse("${exec setsmtp -t}")
                todo='personal'
             end
-    
+
             settings = {--WIRELESS INFO
                     txt=conky_parse("${wireless_link_qual wlan0} %"),
                     x=xp+10             , y=83,
@@ -518,7 +518,7 @@ To monitor my battery state I added this graph:
             caption_weight=1           , caption_size=10.0           ,
             caption_fg_colour=fgc      , caption_fg_alpha=fga        ,
     };draw_gauge_ring(settings)
- 
+
     settings = {--BATTERY CHARGING STATE
             txt=conky_parse("${acpiacadapter} ${battery_time}"),
             x=xp-25             , y=83,
@@ -532,7 +532,7 @@ As you saw in the network topic I set a todo variable based on my location. That
     -- TODO COLUMN
     conky_parse("${execpi 53 ~/.conky/scripts/tracks-" .. todo .. ".sh}")
     arrayYfactors={'20', '35', '51', '65'}
- 
+
     for i, Yfactor in ipairs(arrayYfactors) do
             firstchar=conky_parse("${exec head -" .. i .. " ~/.conky/scripts/todo-" .. todo .. " | tail -1 | sed -r 's/^  //' | cut -d ' ' -f 1}")
             if firstchar == '*' then
@@ -545,7 +545,7 @@ As you saw in the network topic I set a todo variable based on my location. That
                     tmpweight='1'
                     tmpcolour=theme
             end
- 
+
             settings = { --TODO column
                     txt=conky_parse("${exec head -" .. i .. " ~/.conky/scripts/todo-" .. todo .. " | tail -1 | sed -r 's/^  //' | cut -d '(' -f 1}"),
                     x=xp+80             , y=Yfactor,
@@ -557,14 +557,14 @@ As you saw in the network topic I set a todo variable based on my location. That
 And last but not least based on location I monitor also a specific `jenkins`_ job using the `conky hudson`_ script
 ::
 
-  settings = { --JENKINS TITLE 
+  settings = { --JENKINS TITLE
             txt=conky_parse("${exec ~/.conky/scripts/hudson/conkyhudson.py -t ~/.conky/scripts/hudson/" .. todo .. ".template | cut -d '|' -f 1 | head -1}"),
             x=xp+80             , y=80,
             txt_weight=1       , txt_size=9,
             txt_fg_colour=theme , txt_fg_alpha=fga ,
     };display_text(settings)
- 
-    settings = { --JENKINS line 
+
+    settings = { --JENKINS line
             txt=conky_parse("${exec ~/.conky/scripts/hudson/conkyhudson.py -t ~/.conky/scripts/hudson/" .. todo .. ".template | cut -d '|' -f 2 | sed 's/_/ /' | head -1}"),
             x=xp+178             , y=80,
             txt_weight=0        , txt_size=10,
