@@ -6,9 +6,9 @@ Tags: 	     raspberry, pi, archlinux, ARM, software, RAID, mdadm, irssi, bitlbee
 
 Since I discovered the joy of linux servers over desktop distributions a few years ago I revived an old portable and promoted him to be my home server. Connected him to our router in the little storage room on a top shelf gathering dust I could test, configure, break (and pass sleep) a huge variety of open-source software.
 
-Many of those adventures I also used to provide my blog with content. After a while I figured this setup isn't really needed to be powered on 24h a day 7 days a week. So I bought myself a [raspberry pi](http://www.raspberrypi.org/) which would cover the basic functionalities I needed to be online as much as possible without the need of a subscription for a VPS or dedicated server in one fancy pancy datacenter.
+Many of those adventures I also used to provide my blog with content. After a while I figured this setup isn't really needed to be powered on 24h a day 7 days a week. So I bought myself a [raspberry pi](http://www.raspberrypi.org/) which would cover the basic functionalities I needed to be online as much as possible without the need of a subscription for a VPS or dedicated server in one fancy pansy datacenter.
 
-For the operating system I choosed not for the default [raspbian](http://www.raspbian.org), mainly because I don't need a graphical interface. So I headed over to archlinux arm, also called [alarm](http://archlinuxarm.org/platforms/armv6/raspberry-pi).
+For the operating system I didn't choose for the default [raspbian](http://www.raspbian.org), mainly because I don't need a graphical interface. So I headed over to archlinux arm, also called [alarm](http://archlinuxarm.org/platforms/armv6/raspberry-pi).
 
 The [installation](http://archlinuxarm.org/platforms/armv6/raspberry-pi#qt-platform_tabs-ui-tabs2) is quite straight forward. After that I installed some basics I use like:
 
@@ -19,7 +19,7 @@ The [installation](http://archlinuxarm.org/platforms/armv6/raspberry-pi#qt-platf
 
 # Communication
 
-Te bo online day and night I installed a chat client using [bitlbee and irssi](https://wiki.archlinux.org/index.php/Screen_Irssi_Bitlbee). When I am not connected to this chat terminal and I get some message on one of the connected channels a notification will be sent through my android phone using [irssinotifier](https://irssinotifier.appspot.com/) so I could decide if it's important enough to connect using my phone, [juicessh](https://play.google.com/store/apps/details?id=com.sonelli.juicessh) or spin up my laptop.
+To be online day and night I installed a chat client using [bitlbee and irssi](https://wiki.archlinux.org/index.php/Screen_Irssi_Bitlbee). When I am not connected to this chat terminal and I get some message on one of the connected channels a notification will be sent through my android phone using [irssinotifier](https://irssinotifier.appspot.com/) so I could decide if it's important enough to connect using my phone, [juicessh](https://play.google.com/store/apps/details?id=com.sonelli.juicessh) or spin up my laptop.
 
 Be sure to check out all the nifty [scripts](http://scripts.irssi.org/) which can increase the joy of using the irssi chat client.
 
