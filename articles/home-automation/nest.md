@@ -3,6 +3,7 @@ Author:      Jan
 Date: 	     2014-05-24 23:30
 Slug:	     nest
 Tags: 	     nest, thermostat, belgium, nest.com, honeywell, ICY, vaillant, TurboTec
+Modified:    Fri 31 May 2014
 
 A few years ago I discovered the [nest](http://nest.com) thermostat. It looked nice, is connected to the internet, self learning but a bit expensive and not so much documentation if it will work in Belgium nor with the boiler we have installed (Vaillant TurboTec).
 
@@ -84,12 +85,19 @@ I went to all the configuration steps, connecting to the wifi, adding to my onli
 
 ![nest-working]( ../../images/nest/nest-working.jpg)
 
-Since I took the decision to install this thermostat in the summer when we don't need the CV system I could not yet fully test the device. I didn't wanted to take the risk not having a working CV when it was cold. So I had to turn it off for now and will come back with a review of the usage in most likely december when the winter has taken his start over here in Belgium.
+Since I took the decision to install this thermostat in the summer when we don't need the CV system I could not yet fully test the device. I didn't wanted to take the risk not having a working CV when it was cold.
 
 ![nest-off]( ../../images/nest/nest-off.jpg)
+
+So I had to turn it off for now and will come back with a review of the usage in most likely december when the winter has taken his start over here in Belgium.
+
+In the meantime I could see how I can collect this data, already found a nice [nest-api](https://github.com/gboudreau/nest-api) which can deliver the data to [nest-graph](https://github.com/chriseng/nestgraph) so I can report back to you with some neat graphs.
 
 # Resources
 
 * [fousa.be](http://www.fousa.be/blog/nest-thermostat)
 * [promo-code.be](http://promo-code.be/nest-thermostaat/) (dutch)
+* [how-stuff-works](http://home.howstuffworks.com/nest-learning-thermostat.htm)
+* [nest-api](https://github.com/gboudreau/nest-api)
+* [nest-graph](https://github.com/chriseng/nestgraph)
 * [open-source](http://blog.spark.io/2014/01/17/open-source-thermostat/) nest alternative
