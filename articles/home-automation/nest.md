@@ -9,7 +9,11 @@ A few years ago I discovered the [nest](http://nest.com) thermostat. It looked n
 
 Doing some research on the internet I figured that they have updated their system software and are supporting European countries including Belgium. A solution for the power has also been found by an ICY converter so it could easily be implemented in setups where no power is transferred over those wires.
 
-So I had only to tackle the price, you could order one using the official nest store of the [UK](http://store.nest.com/uk/) but then you would pay about € 300 euro's for only the device. And that was still too pricy for me. Luckily you can find them for about € 190 on [amazon](http://www.amazon.com/gp/offer-listing/B009GDHYPQ/ref=sr_1_1_olp?ie=UTF8&qid=1401011588&sr=8-1&keywords=nest&condition=new), you have to take into account the shipping and handling fee, € 8 and the import fees € 42. Together with the [ICY converter](http://www.eco-logisch.be/Details.asp?ProductID=3484&category=115) which is about € 50 you have the whole setup for about € 290. So you could save some money by ordering with amazon!
+So I had only to tackle the price, you could order one using the official nest store of the [UK](http://store.nest.com/uk/) but then you would pay about € 300 euro's for only the device. And that was still too pricy for me.
+
+Luckily you can find them for about € 190 on [amazon](http://www.amazon.com/gp/offer-listing/B009GDHYPQ/ref=sr_1_1_olp?ie=UTF8&qid=1401011588&sr=8-1&keywords=nest&condition=new), you have to take into account the shipping and handling fee, € 8 and the import fees € 42. Together with the [ICY converter](http://www.eco-logisch.be/Details.asp?ProductID=3484&category=115) which is about € 50 you have the whole setup for about € 290.
+
+So you could save some money by ordering with amazon!
 
 Convincing myself it's worth the money, and it could save me some on the very long term I took the plunge and ordered one so I could enjoy those geeky features. (Doing so my girlfriend is convinced I'm a nerd, especially because I'm also blogging about it right now)
 
@@ -37,7 +41,7 @@ First thing I did was charging the display using a micro USB cable, so I could s
 
 After a night of charging I started configuring the thermostat by first connecting it to our wireless network (using a WPA2 encryption) without any hassle it got connected and started downloading the latest updates
 
-![nest-updating]( ../../images/nest/nest-updating.jpg)
+![nest-updating]( ../../images/nest/nest-updating.png)
 
 After the updated had been downloaded and got installed the device rebooted itself and was ready for the real work.
 
@@ -75,7 +79,7 @@ After connecting all the wires I did not yet plugged the converter in. I first i
 
 After disassembling my old thermostat I discovered that the wall has some holes and missing paint behind that old mount plate. Luckily you could use the enclosed base cover to hide those imperfections. Once I drilled the holes, screwed the base plate onto the wall I could connect the wires. As you can see on the picture you have to connect on on the W1 port and one on the Rh port.
 
-![nest-wires]( ../../images/nest/nest-wires.jpg)
+![nest-wires]( ../../images/nest/nest-wires.png)
 
 When I then attached the display, powered on the boiler and plugged in the converter the nest asked configuration of the heating equipment I first got the [E24](http://support.nest.com/#troubleshooting/e24) error which means no power is detected coming to the nest device. I switched the wires from W1 and Rh and repowered the boiler. Now I got the [N23](http://support.nest.com/#troubleshooting/n23) looking at the support pages it's indicating you are using an unusual configuration but my boiler picked up signals coming from the nest thermostat.
 
@@ -83,11 +87,11 @@ When I then attached the display, powered on the boiler and plugged in the conve
 
 I went to all the configuration steps, connecting to the wifi, adding to my online nest account, setting the auto-away options, ... and many more. Once that's done you could see on the screen that I turned the nest to it's minimal, 9° C and that on the moment of taking the picture it was 26° C inside the nest device.
 
-![nest-working]( ../../images/nest/nest-working.jpg)
+![nest-working]( ../../images/nest/nest-working.png)
 
 Since I took the decision to install this thermostat in the summer when we don't need the CV system I could not yet fully test the device. I didn't wanted to take the risk not having a working CV when it was cold.
 
-![nest-off]( ../../images/nest/nest-off.jpg)
+![nest-off]( ../../images/nest/nest-off.png)
 
 So I had to turn it off for now and will come back with a review of the usage in most likely december when the winter has taken his start over here in Belgium.
 
