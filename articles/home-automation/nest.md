@@ -109,6 +109,19 @@ After successfully running the command
 	$ php test.php
 ```
 
+Once that test is succeeded you could use
+
+```php
+	$ php insert.php
+```
+
+to fetch the real time data from your nest device and import them into your mysql database.
+
+From my [raspberry-pi](../raspberry-pi.html) I configured a cron job to log in into the my one.com hosting account using ssh and start the import job every 5 minutes.
+
+```cron
+	*/5 * * * * ssh ONE.COM-URL "/bin/rm -f /tmp/nest_php_* ; /usr/bin/php /path/to/nestgraph/insert.php > /dev/null"
+```
 Last but not least I added some security to this service using [htaccess](http://one-docs.com/tools/htaccess/) so all this information isn't publicly available. Now I only have to wait to winter so I can finally start monitoring our heating usage!
 
 ![nest-graph](../../images/nest/nest-graph.png)
