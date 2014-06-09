@@ -3,7 +3,7 @@ Author:      Jan
 Date: 	     2014-05-24 23:30
 Slug:	     nest
 Tags: 	     nest, thermostat, belgium, nest.com, honeywell, ICY, vaillant, TurboTec
-Modified:    Fri 31 May 2014
+Modified:    Mon 9 June 2014
 
 A few years ago I discovered the [nest](http://nest.com) thermostat. It looked nice, is connected to the internet, self learning but a bit expensive and not so much documentation if it will work in Belgium nor with the boiler we have installed (Vaillant TurboTec).
 
@@ -95,7 +95,23 @@ Since I took the decision to install this thermostat in the summer when we don't
 
 So I had to turn it off for now and will come back with a review of the usage in most likely december when the winter has taken his start over here in Belgium.
 
-In the meantime I could see how I can collect this data, already found a nice [nest-api](https://github.com/gboudreau/nest-api) which can deliver the data to [nest-graph](https://github.com/chriseng/nestgraph) so I can report back to you with some neat graphs.
+# Statistics
+
+Doing some research about applications for the nest thermostat I discovered a tool called [nest-graph](https://github.com/chriseng/nestgraph). This tool collects data from the nest device using the unofficial [nest-api](https://github.com/gboudreau/nest-api) through php.
+
+I forked the nest-graph repository to make some [customizations](https://github.com/visibilityspots/nestgraph.git) like using Celsius instead of Fahrenheit, adding the nest-api-master as a git submodule, changing the database setup and some ignoration of configuration files.
+
+Cause I have the availability of a mysql database on my [one.com](http://one.com) account I decided to collect the data into that database and running the nestgraph service onto that website. Some modifications had to be made to the dbsetup file and adding the login parameters to inc/config.php file.
+
+After successfully running the command
+
+```php
+	$ php test.php
+```
+
+Last but not least I added some security to this service using [htaccess](http://one-docs.com/tools/htaccess/) so all this information isn't publicly available. Now I only have to wait to winter so I can finally start monitoring our heating usage!
+
+![nest-graph](../../images/nest/nest-graph.png)
 
 # Resources
 
