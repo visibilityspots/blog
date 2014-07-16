@@ -16,7 +16,7 @@ And hell I like it. It's not a GUI interface which is a plus for me, it don't us
 
 So I bought myself a [lacie slim P9223 SSD](https://www.lacie.com/products/product.htm?id=10609) external USB 3.0 disk from about 120GB only used for backing up my system.
 
-![lacie]( ../../images/backup/lacie-p9223-slim.jpg)
+![lacie]( ../../images/backup/lacie-p9223-slim.png)
 
 # Encryption
 
