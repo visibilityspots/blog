@@ -66,4 +66,4 @@ I read the wiki page of [rsnapshot](https://wiki.archlinux.org/index.php/Rsnapsh
 
 ```
 
-So from now on my data is back upped on an encrypted USB hard disk without using any fancy pansy GUI interface :)
+So from now on my data is back upped on an encrypted USB hard disk without using any fancy pansy GUI interface :) Hence feel free to comment if there are some quirks you tackled another way around!
