@@ -12,7 +12,7 @@ Therefore I started looking for backup solutions. The first one I tried was [bac
 
 Looking for a more decent piece of software I found [rsnapshot](http://rsnapshot.org)
 
-And hell I like it. It's not a GUI interface which is a plus for me, it don't use a huge amount of disk space for all the backups, instead it uses symlinks between non changed files and it's completely indepented and automizable by cron.
+And hell I like it. It's not a GUI interface which is a plus for me, it don't use a huge amount of disk space for all the backups, instead it uses hard links between non changed files and it's completely indepented and automizable by cron.
 
 So I bought myself a [lacie slim P9223 SSD](https://www.lacie.com/products/product.htm?id=10609) external USB 3.0 disk from about 120GB only used for backing up my system.
 
