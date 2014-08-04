@@ -3,19 +3,55 @@ Author:      Jan
 Date: 	     2014-05-16 19:00
 Slug:	     raspberry-pi
 Tags: 	     raspberry, pi, archlinux, ARM, software, RAID, mdadm, irssi, bitlbee, usb, disks
+Modified:    Mon 04 August 2014 19:00
 
-Since I discovered the joy of linux servers over desktop distributions a few years ago I revived an old portable and promoted him to be my home server. Connected him to our router in the little storage room on a top shelf gathering dust I could test, configure, break (and pass sleep) a huge variety of open-source software.
+Since I discovered the joy of linux servers over desktop distributions a few years ago I revived an old portable and promoted him to be my home server.
+
+Connected him our router in the little storage room on a top shelf gathering dust I could test, configure, break (and pass sleep) a huge variety of open-source software.
 
 Many of those adventures I also used to provide my blog with content. After a while I figured this setup isn't really needed to be powered on 24h a day 7 days a week. So I bought myself a [raspberry pi](http://www.raspberrypi.org/) which would cover the basic functionalities I needed to be online as much as possible without the need of a subscription for a VPS or dedicated server in one fancy pansy datacenter.
 
 For the operating system I didn't choose for the default [raspbian](http://www.raspbian.org), mainly because I don't need a graphical interface. So I headed over to archlinux arm, also called [alarm](http://archlinuxarm.org/platforms/armv6/raspberry-pi).
 
-The [installation](http://archlinuxarm.org/platforms/armv6/raspberry-pi#qt-platform_tabs-ui-tabs2) is quite straight forward. After that I installed some basics I use like:
+The [installation](http://archlinuxarm.org/platforms/armv6/raspberry-pi#qt-platform_tabs-ui-tabs2) is quite straight forward. After that I installed and configured some other stuff on it to gather my ultimate personal little mini server:
 
 * [vim](https://wiki.archlinux.org/index.php/vim)
 * [ssh](https://wiki.archlinux.org/index.php/Secure_Shell)
+* [mosh](https://wiki.archlinux.org/index.php/Secure_Shell#SSH_alternative:_Mobile_Shell_-_responsive.2C_survives_disconnects)
+* [noip](https://wiki.archlinux.org/index.php/Noip)
 * [screen](https://wiki.archlinux.org/index.php/GNU_Screen)
 * [yaourt](https://wiki.archlinux.org/index.php/yaourt)
+* [pkgfile](https://wiki.archlinux.org/index.php/pkgfile)
+* [bash-completion](https://www.archlinux.org/packages/extra/any/bash-completion/)
+* [ncdu](https://www.archlinux.org/packages/community/x86_64/ncdu/)
+* [htop](https://www.archlinux.org/packages/extra/x86_64/htop/)
+* [mlocate](https://wiki.archlinux.org/index.php/locate)
+* [msmtp](https://wiki.archlinux.org/index.php/msmtp)
+* [locale](https://wiki.archlinux.org/index.php/locale)
+* [timedatectl](https://wiki.archlinux.org/index.php/time)
+* [fake-hwclock](https://github.com/xanmanning/alarm-fake-hwclock)
+* [lsyncd](https://github.com/axkibe/lsyncd)
+
+# Partitioning
+
+After a while I couldn't update any packages anymore cause my root parition was full. When looking at the partititions I noticed I had only 1.7G for my root partition available but I installed it on a 4G sd card.
+
+Looking for a solution I discovered the base image I copied over is by default configured for 2G cards. You have to expand the file system yourself if you want to benefit the full amount of storage on your sd card.
+
+Following this [tutorial](http://jan.alphadev.net/post/53594241659/growing-the-rpi-root-partition) I found on the net I achieved to grow my root partition without extracting the sd card.
+
+# RAM
+
+Using ssh I will only use terminal connections to the pi without any graphical interfaces though the HDMI socket. By default the memory of the pi is shared for those graphical stuff and normal os operations.
+
+I decided to decrease the amount of memory for the gpu by setting those amounts into the /boot/config.txt file:
+
+```bash
+	gpu_mem_512=48
+	gpu_mem_256=48
+```
+
+That way I could benefit of more memory for the stuff I will run on the pi.
 
 # Communication
 
@@ -25,9 +61,25 @@ Be sure to check out all the nifty [scripts](http://scripts.irssi.org/) which ca
 
 # RAID
 
-For one of projects running at [inuits](https://www.inuits.eu) I was asked to set up a software raid using [mdadm](http://en.wikipedia.org/wiki/Mdadm). Through the years I have collected a bunch of USB disks. Combining those two facts I figured I could set up a raid using a little usb hub.
+For one of projects running at [inuits](https://www.inuits.eu) I was asked to set up a software raid using [mdadm](http://en.wikipedia.org/wiki/Mdadm). Through the years I have collected a bunch of USB disks.
+
+Combining those two facts I figured I could set up a raid using a little usb hub.
+
+## Model B
 
 I am aware of the bottle neck this hub creates to the raid setup but since it's not for a production environment and I like to play around I doesn't care about it :)
+
+![raspberry]( ../../images/raspberry/raspberry.jpg)
+
+## Model B+
+
+An updated model of the raspberry pi was launched, the [model b+](http://www.raspberrypi.org/introducing-raspberry-pi-model-b-plus/) extended with to 4 USB ports in total. So finally I could gain benefit of my raid setup.
+
+I reconfigured my whole RAID setup by using those 4 individual USB sockets intstead of the hub I used before. And man what a difference! It runs a lot faster and is a lot more usefull and efficient nowdays.
+
+![raspberry-b+]( ../../images/raspberry/raspberry-b+.jpg)
+
+# Configuration
 
 This whole setup is based on the well documented archlinux wiki [page](https://wiki.archlinux.org/index.php/RAID)
 
@@ -123,6 +175,24 @@ This script is triggered by cron after every reboot.
 
 And the output is logged in the file /tmp/startup.log.
 
+# Backup
+
+## image
+Once a week I overnight I have a cron job running which creates a compressed image file of the whole sd card of my running pi and pushes it to a mounted network share on my [boxee](http://www.trustedreviews.com/iomega-tv-with-boxee_DVRs-and-Media-players-_review) iomega device.
+
+```bash
+	#!/bin/bash
+	DATE=$(date +%d-%m-%Y)
+	if /usr/bin/mount | grep MOUNT; then
+    		dd if=/dev/mmcblk0 | gzip -1 - | dd of=MOUNT/backup-$DATE.img.gz
+	fi
+```
+That way I can easily pull this image onto a new sd card if there goes something wrong with the existing one without the need of reinstalling everything
+
+## directory backup
+
+For some minor applications like irssi I use [lsyncd](https://github.com/axkibe/lsyncd) to sync between different machines. I have one daemon running which is used to backup directories to a network share and another one to mirror between different machines through ssh.
+
 # VPN
 
 One of the next steps will be a vpn setup based on this [tutorial](https://raymii.org/s/tutorials/IPSEC_L2TP_vpn_on_a_Raspberry_Pi_with_Arch_Linux.html)
@@ -132,5 +202,3 @@ One of the next steps will be a vpn setup based on this [tutorial](https://raymi
 Once I got configured the VPN setup I will reconfigure my old laptop as being an [sms-service](https://visibilityspots.com/sms-server.html). Since I don't need this service being up all the time I will configure the wake on lan service on that laptop.
 
 That way I can get him up from remote by logging in at my pi and sending the magical WOL packet to that laptop.
-
-![raspberry]( ../../images/raspberry/raspberry.jpg)
