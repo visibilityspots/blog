@@ -9,7 +9,7 @@ Since I discovered the joy of linux servers over desktop distributions a few yea
 
 Connected him our router in the little storage room on a top shelf gathering dust I could test, configure, break (and pass sleep) a huge variety of open-source software.
 
-Many of those adventures I also used to provide my blog with content. After a while I figured this setup isn't really needed to be powered on 24h a day 7 days a week. So I bought myself a [raspberry pi](http://www.raspberrypi.org/) which would cover the basic functionalities I needed to be online as much as possible without the need of a subscription for a VPS or dedicated server in one fancy pansy datacenter.
+Many of those adventures I also used to provide my blog with content. After a while I figured this setup isn't really needed to be powered on 24h a day 7 days a week. So I bought myself a [raspberry pi](http://www.raspberrypi.org/) which would cover the basic functionalities I needed to be online as much as possible without the need of a subscription for a VPS or dedicated server in one fancy pansy data center.
 
 For the operating system I didn't choose for the default [raspbian](http://www.raspbian.org), mainly because I don't need a graphical interface. So I headed over to archlinux arm, also called [alarm](http://archlinuxarm.org/platforms/armv6/raspberry-pi).
 
@@ -34,7 +34,7 @@ The [installation](http://archlinuxarm.org/platforms/armv6/raspberry-pi#qt-platf
 
 # Partitioning
 
-After a while I couldn't update any packages anymore cause my root parition was full. When looking at the partititions I noticed I had only 1.7G for my root partition available but I installed it on a 4G sd card.
+After a while I couldn't update any packages anymore cause my root partition was full. When looking at the partitions I noticed I had only 1.7G for my root partition available but I installed it on a 4G sd card.
 
 Looking for a solution I discovered the base image I copied over is by default configured for 2G cards. You have to expand the file system yourself if you want to benefit the full amount of storage on your sd card.
 
@@ -75,7 +75,9 @@ I am aware of the bottle neck this hub creates to the raid setup but since it's 
 
 An updated model of the raspberry pi was launched, the [model b+](http://www.raspberrypi.org/introducing-raspberry-pi-model-b-plus/) extended with to 4 USB ports in total. So finally I could gain benefit of my raid setup.
 
-I reconfigured my whole RAID setup by using those 4 individual USB sockets intstead of the hub I used before. And man what a difference! It runs a lot faster and is a lot more usefull and efficient nowdays.
+I reconfigured my whole RAID setup by using those 4 individual USB sockets instead of the hub I used before. And man what a difference! It runs a lot faster and is a lot more use full and efficient nowadays.
+
+Since there are no case available yet for this model I looked on [thingiverse](http://thingiverse.com) and found a closed [case](http://www.thingiverse.com/thing:398399) which I printed out on the ultimaker2 robot we can use at the office. It's a neat case but the top isn't clicked in to the bottom part so I had to use tape to stick them together..
 
 ![raspberry-b+_open]( ../../images/raspberry/raspberry-b+_open.jpg)
 ![raspberry-b+_closed]( ../../images/raspberry/raspberry-b+_closed.jpg)
