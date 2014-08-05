@@ -77,7 +77,8 @@ An updated model of the raspberry pi was launched, the [model b+](http://www.ras
 
 I reconfigured my whole RAID setup by using those 4 individual USB sockets intstead of the hub I used before. And man what a difference! It runs a lot faster and is a lot more usefull and efficient nowdays.
 
-![raspberry-b+]( ../../images/raspberry/raspberry-b+.jpg)
+![raspberry-b+_open]( ../../images/raspberry/raspberry-b+_open.jpg)
+![raspberry-b+_closed]( ../../images/raspberry/raspberry-b+_closed.jpg)
 
 # Configuration
 
