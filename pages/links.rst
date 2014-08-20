@@ -12,6 +12,11 @@ Personal
 - A `cool`_ blog about everyday crazy stuff I follow
 - Listing of some fancy technological `gadgets`_
 
+Feeds
+~~~~~
+
+- List of all the RSS `feeds`_ I follow using `newsbeuter`_
+
 Tools
 ~~~~~
 
@@ -51,6 +56,9 @@ Friends
 .. _scouting: http://www.scoutsnieuwenrode.be
 .. _cool: http://www.likecool.com
 .. _gadgets: http://www.freshgadgets.nl
+
+.. _feeds: https://raw.githubusercontent.com/visibilityspots/newsbeuter/master/urls
+.. _newsbeuter: http://www.newsbeuter.org/
 
 .. _Packages: https://packagecloud.io/visibilityspots/packages
 .. _Hubot: http://hubot.github.com
