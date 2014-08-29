@@ -16,7 +16,7 @@ For installation in archlinux you can use pacman:
   $ pkgfile qrencode
   extra/qrencode
 
-  $ sudo -Syu qrencode
+  $ sudo pacman -Syu qrencode
 ```
 
 Once installed you can generate a qr code consisting of your wifi data base on some standardized [barcode contents](https://github.com/zxing/zxing/wiki/Barcode-Contents).
