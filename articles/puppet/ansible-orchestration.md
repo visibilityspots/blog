@@ -1,6 +1,6 @@
 Title:       Ansible orchestration
 Author:      Jan
-Date: 	     2014-10-21 19:00
+Date: 	     2014-10-21 23:00
 Slug:	     ansible-orchestration
 Tags: 	     ansible, orchestration, tool, puppet, dynamic, inventory, puppetdb
 
@@ -40,14 +40,16 @@ Once I found out about the [inventory](http://docs.ansible.com/developing_invent
 
 But I am using [puppetdb](https://docs.puppetlabs.com/puppetdb/latest/index.html), and puppetdb has a great [API](https://docs.puppetlabs.com/puppetdb/2.2/api/index.html). So I could take advantage of it by using this great API, melting it down into an inventory script and using the json generated output through ansible.
 
-So I started coding in simple pure bash and got it working by writing a [puppetdb.sh](https://github.com/visibilityspots/ansible-puppet-inventory) dynamic inventory script. Together with the [puppet-ansible](https://github.com/visibilityspots/puppet-ansible) module I wrote for it I even got it automated too!
+So I started modifying the code example I found on codecentrec and got it working by writing a [puppetdb.sh](https://github.com/visibilityspots/ansible-puppet-inventory) dynamic inventory script. Together with the [puppet-ansible](https://github.com/visibilityspots/puppet-ansible) module it even got automated too!
 
 # still need some attention
 
-I need some time to look which processes it takes to run a command through ansible so I could specify more clear the sudoers file. Also the environments should be more abstract in my puppetdb.sh script without having to manually adapt the necessary puppetdb query files.
+I need some time to look which processes it takes to run a command through ansible so I could specify more clear the sudoers file.
+
+Also the environments should be more abstract in my puppetdb.sh script without having to manually adapt the necessary puppetdb query files.
 
 # drinking cocktails
 
 From now on it only takes less than 5 minutes to push your code, get it through jenkins tests into a package on an apt or yum repository got pulled into a repository and deploy it through puppet using ansible on the development servers. All without any manual action, without any cron job all automated, glued the pieces together.
 
-I'll dig deeper into the whole deployment process later on, when I found time between drinking cocktails, looking at my daughter and living the dream. 
+I'll dig deeper into the whole deployment process later on, when I found time between drinking cocktails, looking at my daughter and living the dream.
