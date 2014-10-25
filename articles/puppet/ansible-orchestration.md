@@ -2,13 +2,20 @@ Title:       Ansible orchestration
 Author:      Jan
 Date: 	     2014-10-21 23:00
 Slug:	     ansible-orchestration
+Modified:    Sat 25 October 2014
 Tags: 	     ansible, orchestration, tool, puppet, dynamic, inventory, puppetdb
 
-I do use [puppet](https://docs.puppetlabs.com/#puppetpuppet) as our main configuration management tool. Together with [puppetdb](https://docs.puppetlabs.com/#puppetdbpuppetdblatest) puppet configures all our services from bottom to top.
+I do use [puppet](https://docs.puppetlabs.com/#puppetpuppet) as our main configuration management tool. Together with [puppetdb](https://docs.puppetlabs.com/#puppetdbpuppetdblatest) all our services are automatically configured from bottom to top.
 
-In the past we had puppet running through cron, on the development environment puppet ran every 15 minutes, on production every hour. But I strongly hate polling jobs, 99% of the time they don't have to do anything. So to me it's just useless, a waste of time, energy and resources.
+And it rocks, getting automated as much as possible it is like easy as hell to get a server up and running. The only feature it lacked in my opinion is orchestration. I do know about [collective](http://puppetlabs.com/mcollective) which is made for this purpose.
+
+Only it's yet again using an agent which fails from time to time and eating resources which can be avoided. It's the same reason I don't use the puppet agent daemon but trigger puppet every time.
 
 # orchestration
+
+We have puppet running every 15 minutes through cron, main reason is to pick up and install the latest software which has been deployed. The other reason puppet runs after installation is to make sure the configuration files were not manually manipulated and making sure necessary services are still running.
+
+Using puppet for making sure services are running and configuration files are not being changed an hourly puppet run would be enough. Thing is for those deployment flows it's merely like polling. And I strongly hate polling jobs, 99% of the time they don't have to do anything. So to me it's just useless, a waste of time, energy and resources.
 
 It meant that developers had to wait in worst case scenario 15 minutes before their changes where deployed on the development environment. Their changes were already processed by jenkins, packages are been made, deployed on the repository only waiting for puppet to install the latest version of them. Nobody complained, but in my opinion it was waaay too long!
 
