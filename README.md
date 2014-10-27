@@ -1,3 +1,9 @@
+Title:       README
+Author:      Jan
+Date:        2014-02-22 19:00
+Slug:        readme
+Tags:        readme, blog, visibilityspots, com, source, code, open
+
 # blog
 
 This repository contains the source code of my blog [visibilityspots.com](https://visibilityspots.com) generated using [pelican](http://getpelican.com).
