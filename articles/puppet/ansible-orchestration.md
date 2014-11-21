@@ -2,7 +2,7 @@ Title:       Ansible orchestration
 Author:      Jan
 Date: 	     2014-10-21 23:00
 Slug:	     ansible-orchestration
-Modified:    Sat 25 October 2014
+Modified:    Fri 21 November 2014
 Tags: 	     ansible, orchestration, tool, puppet, dynamic, inventory, puppetdb
 
 I do use [puppet](https://docs.puppetlabs.com/#puppetpuppet) as our main configuration management tool. Together with [puppetdb](https://docs.puppetlabs.com/#puppetdbpuppetdblatest) all our services are automatically configured from bottom to top.
@@ -48,6 +48,14 @@ Once I found out about the [inventory](http://docs.ansible.com/developing_invent
 But I am using [puppetdb](https://docs.puppetlabs.com/puppetdb/latest/index.html), and puppetdb has a great [API](https://docs.puppetlabs.com/puppetdb/2.2/api/index.html). So I could take advantage of it by using this great API, melting it down into an inventory script and using the json generated output through ansible.
 
 So I started modifying the code example I found on codecentrec and got it working by writing a [puppetdb.sh](https://github.com/visibilityspots/ansible-puppet-inventory) dynamic inventory script. Together with the [puppet-ansible](https://github.com/visibilityspots/puppet-ansible) module it even got automated too!
+
+# adding it to ansible-core
+
+I went to the [Cloudstack Collaboration Conference](http://events.linuxfoundation.org/events/cloudstack-collaboration-conference-europe) in Budapest where I followed a [tutorial](https://github.com/runseb/runseb.github.io/blob/master/ONEPAGE.md) by [Sebastien Goasguen](http://sebgoa.blogspot.hu/).
+
+It turned out he wrote an ansible apache-libcloud inventory script and tried to pushing it in to the ansible core. This inspired my to rewrite my bash script in python so it could be added to ansible-core too.
+
+After fooling around a bit in python I used the [pypuppetdb](https://github.com/puppet-community/pypuppetdb) library so I don't have to make all the API calls natively myself through urllib request. And it turned out quite fine and I got it up and running in my setup. So those days I'm waiting on feedback from the ansible community to my [pull request](https://github.com/ansible/ansible/pull/9593) so everyone can benefit of the joy between ansible and puppet.
 
 # still need some attention
 
