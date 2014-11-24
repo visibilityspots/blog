@@ -71,19 +71,19 @@ I read the wiki page of [rsnapshot](https://wiki.archlinux.org/index.php/Rsnapsh
 I ran into some ext4 troubles on my encrypted filesystem, it took me a while to figure out how I could resolve them. You had to open the encrypted container without actually mounting the device.
 
 ```bash
-	# cryptsetup luksOpen /dev/sdX# backup
+	sudo cryptsetup luksOpen /dev/sdX# backup
 ```
 
 Once that's done you could use fsck to fix the filesystem.
 
 ```bash
-	# fsck.ext4 /dev/sdX#
+	sudo fsck.ext4 /dev/sdX#
 ```
 
 If everything got fixed you could mount the partition and use the fixed filesystem again.
 
 ```bash
-	# mount /mnt/backup
+	sudo mount /mnt/backup
 ```
 
 So from now on my data is back upped on an encrypted USB hard disk without using any fancy pansy GUI interface :)
