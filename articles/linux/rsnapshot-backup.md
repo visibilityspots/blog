@@ -3,6 +3,7 @@ Author:      Jan
 Date: 	     2014-07-16 19:00
 Slug:	     rsnapshot-backup
 Tags: 	     udev, usb, disk, archlinux, mount, uuid, serial, cryptsetup, backup, rsnapshot
+Modified:    Mon 24 Nov 2014
 
 Some weeks ago I removed some files on my system I wish I didn't cause I still needed them.
 
@@ -64,6 +65,25 @@ I read the wiki page of [rsnapshot](https://wiki.archlinux.org/index.php/Rsnapsh
 	45 12 * * 1 /usr/bin/rsnapshot weekly
 	0 13 1 * 1 /usr/bin/rsnapshot monthly
 
+```
+# Fsck
+
+I ran into some ext4 troubles on my encrypted filesystem, it took me a while to figure out how I could resolve them. You had to open the encrypted container without actually mounting the device.
+
+```bash
+	# cryptsetup luksOpen /dev/sdX# backup
+```
+
+Once that's done you could use fsck to fix the filesystem.
+
+```bash
+	# fsck.ext4 /dev/sdX#
+```
+
+If everything got fixed you could mount the partition and use the fixed filesystem again.
+
+```bash
+	# mount /mnt/backup
 ```
 
 So from now on my data is back upped on an encrypted USB hard disk without using any fancy pansy GUI interface :)
