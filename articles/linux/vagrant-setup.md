@@ -218,7 +218,7 @@ To get the name of the running lxc-container you can use the lxc-ls command.
 
 # Example project
 
-I abuse the [vagrant-yum-repo-server](https://github.com/visibilityspots/vagrant-yum-repo-server) project to showcase the usage of vagrant in my world. By using puppet, hiera, directory environments all with the vagrant puppet provisioner you actually get up and running a yum-repo-server yourself without big efforts.
+I abuse the [vagrant-yum-repo-server](https://github.com/visibilityspots/vagrant-yum-repo-server) project to showcase the usage of vagrant in my world. By using puppet, hiera, [directory environments](https://github.com/rasschaert/vagrant-puppet-stub) thanks to a colleague [kenny](http://www.kennyrasschaert.be) all with the vagrant puppet provisioner you actually get up and running a yum-repo-server yourself without big efforts.
 
 As you can imagine that open up gates for developers AND operations cause they are all using the same puppet-tree so you should have control over the configuration of the box in all stages of the project.
 
@@ -229,3 +229,5 @@ Some improvements where I need more time for are
 * automating the actual box creation by for example [jenkins](https://jenkins-ci.org)
 * auto update the base boxes processed like a development box using the [ansible](ansible-orchestration.html) orchestration flow
 * ..
+
+And of course the suggestions made by who know you? Cause this setup can always be improved, it will never been done..
