@@ -22,7 +22,7 @@ It works great, but it's slow as hell when you spin up boxes again and again to 
 
 # LXC
 
-Looking around I found out about lxc containers. My interest was triggered at both [linuxcon](../linuxcon-edinburgh.html) and [CloudCollab](../cloudcollab-amsterdam.html) 2013 where some talks went about containers.
+Looking around I found out about lxc containers. My interest was triggered at both [linuxcon](linuxcon-edinburgh.html) and [CloudCollab](cloudcollab-amsterdam.html) 2013 where some talks went about containers.
 
 But I struggled configuring the lxc part on my previous fedora machine. It's one of the reasons I switched about a year ago. So I installed [ArchLinux](https://archlinux.org) on my machine and started reading the related [wiki](https://wiki.archlinux.org/index.php/Linux_Containers) pages.
 
@@ -227,5 +227,5 @@ As you can imagine that open up gates for developers AND operations cause they a
 Some improvements where I need more time for are
 
 * automating the actual box creation by for example [jenkins](https://jenkins-ci.org)
-* auto update the base boxes processed like a development box using the [ansible](../ansible-orchestration.html) orchestration flow
+* auto update the base boxes processed like a development box using the [ansible](ansible-orchestration.html) orchestration flow
 * ..
