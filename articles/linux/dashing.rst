@@ -5,7 +5,7 @@ Dashing
 :tags: dashing, monitoring, dashboard, overview, screenly, raspberry pi
 :slug: dashing
 
-Using multiple nice interface dashboards to get an overview of your services is a great thing. But navigating to them all separately could sometimes be rather pain full. 
+Using multiple nice interface dashboards to get an overview of your services is a great thing. But navigating to them all separately could sometimes be rather pain full.
 
 Therefore I looked for some central place to give a broad overview of all of them. During last year many passed through during my search on the internet. The 2 most interesting ones where `team dashboard`_ and `dashing`_.
 
@@ -13,12 +13,12 @@ Team dashboard is a promising one which could gather extremely specific data and
 
 But I was looking for something more simpler and that's what I found with `dashing`_. By using some custom jobs and views I gathered data from `icinga`_, `jenkins`_, `foreman`_ & `bacula`_.
 
-.. image:: static/images/dashing/rowOne.png
-        :target: static/images/dashing/rowOne.png
+.. image:: images/dashing/rowOne.png
+        :target: images/dashing/rowOne.png
 	:alt: Dashing first row
 
-.. image:: static/images/dashing/rowTwo.png
-        :target: static/images/dashing/rowTwo.png
+.. image:: images/dashing/rowTwo.png
+        :target: images/dashing/rowTwo.png
 	:alt: Dashing second row
 
 As you can see the square's are showing the total amount of checks from the different dashboard services, if there is one check failing the square of the service will change to a red blinking background. If everything is alright (as it should be) the square is green.
