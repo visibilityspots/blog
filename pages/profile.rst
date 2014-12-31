@@ -13,7 +13,7 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-**August 2012 - present | Automation of devops workflow -** `UGent Boekentoren`_ **- GENT**
+**August 2012 - December 2014 | Automation of devops workflow -** `UGent Boekentoren`_ **- GENT**
 
 Implementation of puppet, maintaining those server configurations. CentOS/RedHat based. Providing support to the dev team by using a bunch of open-source tools.
 
@@ -33,7 +33,7 @@ Deploying zenoss 3 and customizing to the requirements of belnet.
 April 2010 - May 2012 | Support Engineer at `Dataflow Consultancy`_ - HEVERLEE
 ------------------------------------------------------------------------------
 
-**November 2010 - Maart 2012 | Service Engineer -** `Belgacom`_ **- BRUSSELS**
+**November 2010 - March 2012 | Service Engineer -** `Belgacom`_ **- BRUSSELS**
 
 Configuration of business customers for both single-site and multi-sites within the explore network (Cisco, Alcatel, Thomson ..)
 with the specific options as shared netfirewall configuration (FortiGate), mobile data / workers / backup (3G), backup silver and gold, teleworking.
