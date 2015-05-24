@@ -13,6 +13,14 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
+**March 2015 - June 2015 | System engineer -** `International Post Corporation`_ **- EVERE**
+
+Helping the IT Team a hand during a datacenter migration of their production, test and uat environments. Troubleshooting various issues through the migrations of the different tomcat application servers.
+
++ Provisioning new systems through puppet
++ Implementing puppet roles & profiles
++ Introducing LVM
+
 **August 2012 - December 2014 | Automation of devops workflow -** `UGent Boekentoren`_ **- GENT**
 
 Implementation of puppet, maintaining those server configurations. CentOS/RedHat based. Providing support to the dev team by using a bunch of open-source tools.
@@ -67,7 +75,7 @@ Final `project`_: Automated unix server park using puppet
 Skills
 ======
 
-Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm
+Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm - Spacewalk - Cobbler
 
 Certificates
 ------------
@@ -94,6 +102,7 @@ Actively done for about 14 years, 5 years as a member, 7 years as a chief from w
 .. _409464168482JNAN: http://www.ciscocertificates.com/verify.cfm
 .. _group: http://www.scoutsnieuwenrode.be
 .. _Scouts en Gidsen Vlaanderen: https://www.scoutsengidsenvlaanderen.be/groepsleiding
+.. _International Post Corporation: http://www.ipc.be/
 .. _UGent Boekentoren: http://www.boekentoren.be
 .. _Belnet: http://www.belnet.be
 .. _Belgacom: http://www.belgacom.be/nl/grote-bedrijven/producten-en-diensten/connectivity/belgacom-explore/data-connectivity?page=p_ent_data_connectivity

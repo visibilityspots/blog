@@ -12,7 +12,11 @@ Since the beginning of my career at inuits I'm using [vagrant](https://vagrantup
 
 For almost 99% of the use cases I use this nifty tool it's related to puppet. Writing modules, testing out some configuration changes on a virtual machine first before pushing the changes to development, fighting with selinux, .. it are all crucial but changes that requires a lot of destroyments of boxes.
 
-# Virtualbox
+# Virtualization
+
+Vagrant uses some virtualization techniques to start stop and halt the different development machines. I listed the ones I use on a daily base or from time to time :)
+
+## Virtualbox
 
 Like most of us I started using vagrant together with [virtualbox](https://www.virtualbox.org/). In the beginning I had a lot of issues when updating virtualbox, every time it was upgraded my vagrant environment failed to stay up and running.
 
@@ -20,7 +24,7 @@ Once I figured out most of my used vagrant boxes where reliant on the extension 
 
 It works great, but it's slow as hell when you spin up boxes again and again to test stuff out since it has to boot a whole vm every time. So about a year ago I started looking at some alternatives.
 
-# LXC
+## LXC
 
 Looking around I found out about lxc containers. My interest was triggered at both [linuxcon](linuxcon-edinburgh.html) and [CloudCollab](cloudcollab-amsterdam.html) 2013 where some talks went about containers.
 
@@ -116,7 +120,7 @@ Since I develop on puppet a lot, that minimal box needed at least the puppet sof
 
 And it worked out great! So great I'm sharing the box through [vagrantcloud](https://vagrantcloud.com/visibilityspots/boxes/centos-6.x-puppet-3.x) so everyone can benefit of the usage of vagrant-lxc.
 
-# Vagrant-cloudstack
+# Cloudstack
 
 At the Cloudstack Collaboration Conference 2014 in Budapest I followed this [tutorial](https://github.com/runseb/runseb.github.io/blob/master/ONEPAGE.md#vagrant) of [Sebastien Goasguen](http://sebgoa.blogspot.be/) where I successfully got a vagrant project up and running as a vm through cloudstack.
 
@@ -204,7 +208,7 @@ The custom.box is the actual box you need to provision on an accessible place fo
 
 For the lxc part a custom base box can also be created. To get all the processes done automatically I extended the vagrant-lxc-base-boxes project with an [own_box](https://github.com/visibilityspots/vagrant-lxc-base-boxes/commit/92f14dd76e0e3f777b2a95d8643a45bbb0fff75c) feature.
 
-That way you can easily create a vagrantbox from an actively running lxc container you configured for your own needs.
+That way you can easily create a vagrant box from an actively running lxc container you configured for your own needs.
 
 ```bash
   $ git clone git@github.com:visibilityspots/vagrant-lxc-base-boxes.git
@@ -215,12 +219,56 @@ That way you can easily create a vagrantbox from an actively running lxc contain
 
 To get the name of the running lxc-container you can use the lxc-ls command.
 
+# Vagrantfile
+
+When starting to use both virtualization platforms next to each other I had created 2 identical Vagrantfile with the only difference the box.
+
+But when reading through the docs I found out about you could also [override](https://docs.vagrantup.com/v2/providers/configuration.html) some settings.
+
+So I combined those 2 vagrantfiles into one. Depending of which platform you choose (virtualbox by default) the right box and settings are configured.
+
+That way you only have to manage one Vagrantfile!
+
+```ruby
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+VAGRANTFILE_API_VERSION = "2"
+
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+  config.vm.define "default" do |default|
+    default.vm.hostname = "vagrant0"
+
+    default.vm.provider :virtualbox do |virtualbox, override|
+      override.vm.box = "vStone/centos-6.x-puppet.3.x"
+      override.vm.network :forwarded_port, guest: 80, host: 8080
+    end
+
+    default.vm.provider :lxc do |lxc, override|
+      override.vm.box = "visibilityspots/centos-6.x-puppet-3.x"
+      lxc.container_name = 'vagrant-container'
+    end
+
+  end
+end
+
+```
 
 # Example project
 
-I abuse the [vagrant-yum-repo-server](https://github.com/visibilityspots/vagrant-yum-repo-server) project to showcase the usage of vagrant in my world. By using puppet, hiera, [directory environments](https://github.com/rasschaert/vagrant-puppet-stub) thanks to a colleague [kenny](http://www.kennyrasschaert.be) all with the vagrant puppet provisioner you actually get up and running a yum-repo-server yourself without big efforts.
+I abuse the [vagrant-yum-repo-server](https://github.com/visibilityspots/vagrant-yum-repo-server) project to showcase the usage of vagrant in my world.
+
+By using puppet, hiera, [directory environments](https://github.com/rasschaert/vagrant-puppet-stub) thanks to a colleague [kenny](http://www.kennyrasschaert.be) all with the vagrant puppet provisioner you actually get up and running a yum-repo-server yourself without big efforts.
 
 As you can imagine that open up gates for developers AND operations cause they are all using the same puppet-tree so you should have control over the configuration of the box in all stages of the project.
+
+# Vagrant-plugins I use
+
+* [vagrant-cloudstack](https://github.com/klarna/vagrant-cloudstack)
+* [vagrant-global-status](https://github.com/fgrehm/vagrant-global-status)
+* [vagrant-hostmanager](https://github.com/smdahlen/vagrant-hostmanager)
+* [vagrant-lxc](https://github.com/fgrehm/vagrant-lxc)
+* [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest)
 
 # Improvements
 
