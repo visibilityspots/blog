@@ -1,4 +1,5 @@
 :Title: Contact
-:Heading: Jan Collijs 
+:Heading: Jan Collijs
 :Subheading: Linux & Open-source consultant - Inuits.eu
-:Template: contact 
+:Template: contact
+:Status: published

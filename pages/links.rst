@@ -3,6 +3,7 @@ Links
 :date: 2010-02-24 20:07
 :author: Jan
 :slug: links
+:status: published
 
 Personal
 ~~~~~~~~

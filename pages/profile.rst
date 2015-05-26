@@ -3,6 +3,7 @@ Profile
 :date: 2009-12-27 18:06
 :author: Jan
 :slug: profile
+:status: published
 
 Experience
 ==========
