@@ -4,6 +4,7 @@ Using EID certificate on chromium
 :author: Jan
 :tags: archlinux, fedora, linux, eid, fod, Belgium, chrome, chromium, browser
 :slug: chrome-eid
+:status: published
 
 During this time of the year in Belgium most people needs to fill in their taxes forms. Since a few years the Belgium government provided an electronic way to accomplish this task. Using a digital passport you can authenticate yourself.
 

@@ -4,6 +4,7 @@ Ratpoison window manager
 :author: Jan
 :tags: ratpoison, window, manager, fedora, desktop
 :slug: ratpoison
+:status: published
 
 My first steps in linux where on a ubuntu distribution, when you could order the ISO images on a cd-rom delivered by the post.
 
@@ -24,44 +25,44 @@ Once I figured that out I started to configure the whole environment for my need
 
 The configuration is done in the ~/.ratpoisonrc file:
 ::
-	
+
 	# Ratpoison configuration
   	startup_message off
 	set winname class
-  	
-	# Desktop 
+
+	# Desktop
 	set padding 0 0 0 93
 	exec conky -c ~/.conky/conkyrc
  	feh --bg-scale ~/path/to/background/picture.png
 	exec xscreensaver -nosplash
- 
+
 To begin I disable the startup message which only says what your keystroke is. Then I configure my desktop, setting a padding at the bottom of my screen so my `conky`_ setup is displayed smoothly on my screen. Starting the conky daemon, setting a background picture and starting the xscreensaver daemon.
 ::
-	
+
 	 # Startup programs
 	exec dropbox start
 	exec dropbox2
-	
+
 	exec /home/Jan/.scripts/fnotify -s
 	exec /home/Jan/.scripts/ratcpi
 	exec /home/Jan/.scripts/detectPhone
 
 The second part of my .ratpoisonrc file is the file with my startup scripts. To start my dropbox scripts as explained on a previous `post`_, the `fnotify`_ script to display irssi notifications, `ratcpi`_ for displaying battery notifications and `detectPhone`_ which looks for my phone by bluetooth to decide to lock my laptop yes or no.
 ::
-	
+
 	# Aliasses
 	alias showroot exec ratpoison -c $HOME/.rpfdump; ratpoison -c 'select -' -c only
 	alias unshowroot exec ratpoison -c "frestore at $HOME/.rpfdump"
 	alias showpadding set padding 0 0 0 93
 	alias showfullscreen set padding 0 0 0 0
 	alias term exec terminator
- 
+
 	# Bindings
 	unbind n
 	unbind c
 	unbind s
 	unbind Q
- 
+
 	## Software bindings
 	bind d exec chromium-browser
 	bind c exec terminator
@@ -69,7 +70,7 @@ The second part of my .ratpoisonrc file is the file with my startup scripts. To 
 	bind l exec xscreensaver-command -lock
 	bind C-s exec spotify
 	bind s exec synapse
- 
+
 	## Move bindings
 	bind C-k delete
 	bind r restart
@@ -79,12 +80,12 @@ The second part of my .ratpoisonrc file is the file with my startup scripts. To 
 	bind B unshowroot
 	bind p showpadding
 	bind f showfullscreen
-	
+
 	bind v hsplit
 	bind h vsplit
 	bind q only
 
-This last part is about setting my key stroke bindings. Most of them are self explaining, all those keys need a pre hit of CTRL-T before called. 
+This last part is about setting my key stroke bindings. Most of them are self explaining, all those keys need a pre hit of CTRL-T before called.
 
 .. _mate-desktop: http://mate-desktop.org
 .. _ratpoison: http://www.nongnu.org/ratpoison/

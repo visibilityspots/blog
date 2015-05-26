@@ -3,18 +3,19 @@ Lighttpd change tcp port in CentOS
 :date: 2012-12-05 21:24
 :author: Jan
 :tags: centOS, lighttpd, selinux, webserver
-:slug: selinux 
+:slug: selinux
+:status: published
 
-It seems like a very simple job, and in fact it is. But I had an issue when I tried to change this in my Cent OS 6.3 setup. 
+It seems like a very simple job, and in fact it is. But I had an issue when I tried to change this in my Cent OS 6.3 setup.
 
 After some digging on the internet I found out selinux was the blocking factor.
 
-The configuration of the new port has to be done in the lighttpd conf file. 
+The configuration of the new port has to be done in the lighttpd conf file.
 
 /etc/lighttpd/lighttpd.conf
 
 ::
-	
+
 	server.port = 2080
 
 
@@ -24,7 +25,7 @@ When I changed the config file and restarted the /etc/init.d/lighttpd service I 
 
 	(network.c.379) can't bind to port:  2080 Permission denied
 
-I checked that I added the port to iptables, tried other ports, nothing worked. Until I found out it was related to the default selinux configuration. 
+I checked that I added the port to iptables, tried other ports, nothing worked. Until I found out it was related to the default selinux configuration.
 
 On many forums was indicated that the problem is solved by disabling the selinux service. Nevertheless I wanted to do it the right way and after some try and error found out that by installing the package policycoreutils-python you can look up the status of the selinux feature
 
@@ -51,7 +52,7 @@ On many forums was indicated that the problem is solved by disabling the selinux
 	Repo : base
 	Matched from:
 	Filename : /usr/sbin/semanage
-	
+
 	# yum install policycoreutils-python
 
 Once this is done we can use the semanage command to add our new port to the selinux security feature. First we can list all already configured ports for the http service:

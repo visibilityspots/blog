@@ -4,12 +4,13 @@ Git server
 :author: Jan
 :tags: git, server, repo, gitweb, gitalist, centos
 :slug: git-server
+:status: published
 
 For some of my development projects I'm using git repositories because of the flexibility of it. But the initial beta phase I don't want to keep private until I created something working. Normally I use github.com repositories for them, a good service except you have to pay for private repositories.
 
 So I searched the internet for private alternatives and installed `gitlab`_ on my CentOS 6 machine. It worked fine, but it was a bit of an overkill to manage about 10 repositories for only one user, myself. So I decided to migrate it back to the essence.
 
-The essence as: the command line git server with a nice web interface on top of it to have a quick overview of the changes made in which repositories. 
+The essence as: the command line git server with a nice web interface on top of it to have a quick overview of the changes made in which repositories.
 
 I based my git server setup on the git-scm tutorial after reading the chapter about the `git-server`_. It a clear and detailed explanation of the different steps to configure your own private git server.
 

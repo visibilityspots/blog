@@ -3,13 +3,14 @@ Showing birthdays using php
 :date: 2009-12-30 11:27
 :author: Jan
 :tags: MySQL, php, scouts, script, birthdays
-:slug: birthday-script 
+:slug: birthday-script
+:status: published
 
 For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.
 
 Something like "We wish XXX a happy # anniversary!'
 
-To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message. 
+To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.
 
 database connection (db_connectPear.php)
 
@@ -52,7 +53,7 @@ birthday script (birthday.php)
     if (mysql_num_rows($queryLeden) == 0) {
     if (mysql_num_rows($queryStam) == 0) {
     } else {
-    
+
     echo "       Wij wensen";
     while($list = mysql_fetch_object($queryStam)){
     $naam = $list->voornaam." ".$list->achternaam;

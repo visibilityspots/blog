@@ -4,6 +4,7 @@ Taskwarrior
 :author: Jan
 :tags: inuits, tasks, task, taskwarrior, centos, command, line, task-web, mirakel, todo
 :slug: taskwarrior
+:status: published
 
 I've used a lot's of tools to get a grip on my todo lists for work, for the scouting movement, for technical projects, household, etc. Started by using pen and paper, switched to a little notebook (which I still use for short-term tasks) to start using software to organize them.
 
@@ -11,14 +12,14 @@ I've used evernote, gtasks, tracks, github issues, gitlab issues, redmine ticket
 
 Nevertheless there was still some sort of missing feature, an integration with the other issue trackers I use like github and redmine for example. I dreamed of one central overview of all my tasks/issues/projects. And some weeks ago I just stumbled into the solution of that dream, `taskwarrior`_ will organize my life from now on.
 
-It's a nifty command line based piece of software with all the features I needed, due dates, projects, tags, customized reports, etc. I completely get enthusiastic when finding out the `bugwarrior`_ module from Ralph Bean which let you to import tasks from many different services like github, redmine & trac. 
+It's a nifty command line based piece of software with all the features I needed, due dates, projects, tags, customized reports, etc. I completely get enthusiastic when finding out the `bugwarrior`_ module from Ralph Bean which let you to import tasks from many different services like github, redmine & trac.
 
 So I started on this new project by adding a new task to my tracks instance: "Migrate to taskwarrior".
 
 Installation of the `task service`_
 
 .. code:: bash
-	
+
 	# yum install task
 
 By following the `30 sec tutorial`_ you get an idea of the basics, but for a full experience and howto I recommend reading the full `tutorial`_. I created a dedicated user for managing my todo list on my CentOS 6.4 machine.
@@ -44,7 +45,7 @@ As mentioned before the biggest advantage of using taskwarrior to me is the impo
 
 	$ pip install bugwarrior
 
-After that you can configure the ~/.bugwarriorrc file to your needs. After some struggling I got it working with the great help of the developer Ralph Bean. 
+After that you can configure the ~/.bugwarriorrc file to your needs. After some struggling I got it working with the great help of the developer Ralph Bean.
 
 Example of my ~/.bugwarriorrc file:
 
@@ -57,15 +58,15 @@ Example of my ~/.bugwarriorrc file:
 	bitly.api_user = USERNAME
 	bitly.api_key = API-KEY
 	multiprocessing = True
-	
+
 	[notifications]
 	notifications = False
-	
+
 	[github]
 	service = github
 	username = USERNAME
 	default_priority = M
-	login = USERNAME 
+	login = USERNAME
 	passw = PASSWORD
 
 	[redmine]
@@ -84,14 +85,14 @@ Once configured you can run the server and check the log's:
 	$ task list
 
 Once you initialized the import you can create a cronjob for it:
-	
+
 ::
 
 	$ crontab -e
 	# Bugwarrior import
 	30 5 * * * /usr/bin/bugwarrior-pull
 
-That way every day at 5:30AM the tasks from 3Th party services will be imported. 
+That way every day at 5:30AM the tasks from 3Th party services will be imported.
 
 The only feature I'm still missing is a 2 way synchronization. So I can edit the tasks in taskwarrior too, but that's something for utopia :)
 
@@ -112,10 +113,10 @@ Using a ssh connection you can then fetch the output from the command 'task conk
 
 Because all my project definitions containing a hyphen I can parse them so I can grep titles and create new lines so I can parse them using the conky syntax.
 
-	
+
 .. code ::bash
 
-	#!/bin/bash                                                                                                            
+	#!/bin/bash
 	ssh username@taskwarrior.server "task conky | head -7 | tail -4 | sed 's/^*[A-Z]*-[A-Z]*/&\n-/g' | sed -e 's/^- [ \t]*/ - /g' | sed 's/^/ /g' | head -4"
 
 I do still have 2 things I need to investigate time into:
@@ -126,7 +127,7 @@ Using `taskreport`_ but I got some errors after installing using 'pip install ta
 
 ::
 
-	$ taskreport 
+	$ taskreport
 	File "/usr/bin/taskreport", line 51
 	      for key in ['userName', 'server', 'port']}
 	        ^
@@ -138,7 +139,7 @@ Installation of `taskd`_ server (for synchronization with mirakel):
 Until today the `mirakel`_ app always crashes when trying to sync after initialized with the created key.
 
 .. code:: bash
-	
+
 	# git clone git://tasktools.org/taskd.git
 	# wget http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm
 	# rpm -Uvh rpmforge-release-0.5.3-1.el6.rf.x86_64.rpm

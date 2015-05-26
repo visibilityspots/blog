@@ -1,15 +1,16 @@
-Puppet sslv3 alert certificate revoked 
+Puppet sslv3 alert certificate revoked
 #######################################
 :date: 2012-10-08 11:22
 :author: Jan
 :tags: certificate, continuous integration, Linux, puppet, revoke, sign, ssl
-:slug: puppet-revoked-certificate.rst 
+:slug: puppet-revoked-certificate.rst
+:status: published
 
 I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command
 
 ::
 
-	# puppet node clean [hostname] 
+	# puppet node clean [hostname]
 
 on the puppetmaster. I did this to clean out the stored configs for those nodes.
 
@@ -34,8 +35,8 @@ Looking for the directory where those certificates are stored
 
 ::
 
-	[root@agent ~]# puppet --genconfig | grep certdir 
-	# The default value is '$certdir/$certname.pem'. 
+	[root@agent ~]# puppet --genconfig | grep certdir
+	# The default value is '$certdir/$certname.pem'.
 	# The default value is '$certdir/ca.pem'. certdir = /var/lib/puppet/ssl/certs
 
 Removing the existing certificates on the client:
@@ -60,11 +61,11 @@ As soon as new certificates are generated and we got the true back from the agen
 
 List the certificates which are waiting to get signed and sign them
 
-:: 
+::
 
-	[root@master ~]# puppet cert -l "hostname.domain" (XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX) 
-	[root@master ~]# puppet cert sign hostname.domain 
-	notice: Signed certificate request for hostname.domain 
+	[root@master ~]# puppet cert -l "hostname.domain" (XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX:XX)
+	[root@master ~]# puppet cert sign hostname.domain
+	notice: Signed certificate request for hostname.domain
 	notice: Removing file Puppet::SSL::CertificateRequest hostname.domain at '/var/lib/puppetmaster/ssl/ca/requests/hostname.domain.pem'
 
 If everything went well you should be able to run puppet again on the client

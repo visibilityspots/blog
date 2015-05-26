@@ -4,6 +4,7 @@ Create and distribute .rpm package
 :author: Jan
 :tags: build, new, package, repository, rpm, yum
 :slug: rpm-package
+:status: published
 
 You wrote a piece of software and want to distribute it on an easy way through a yum repository? That can be done, by making in the first place an rpm package of your code.
 
@@ -37,7 +38,7 @@ If everything went smooth you should find your rpm package in the RPMS directory
 
 To install your rpm package to see if it actually works:
 ::
-	
+
 	rpm -ivh name-package.rpm
 
 Now you have your own rpm package you can distribute. A nice and clean distribution solution could be your very own `yum repository`_

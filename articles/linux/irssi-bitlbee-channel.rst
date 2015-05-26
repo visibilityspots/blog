@@ -3,11 +3,12 @@ Irssi bitlbee channel
 :date: 2013-05-10 13:30
 :author: Jan
 :tags: irssi, bitlbee, channel, chat, groupchat, jabber, xmpp
-:slug: irssi-bitlbee-channel 
+:slug: irssi-bitlbee-channel
+:status: published
 
-Every time I want to join a channel on a jabber account using bitlbee I'm a bit confused and have to search the whole inter-webs before actually finding out howto configure my chat setup to do so. 
+Every time I want to join a channel on a jabber account using bitlbee I'm a bit confused and have to search the whole inter-webs before actually finding out howto configure my chat setup to do so.
 
-My online search points me out to the `bitlbee wiki`_. Nevertheless those commands never got to the point to have it actually working. After many attempts a colleague pointed me to the right solution. 
+My online search points me out to the `bitlbee wiki`_. Nevertheless those commands never got to the point to have it actually working. After many attempts a colleague pointed me to the right solution.
 
 To never forget it anymore and sharing the working setup with the world I summarize it in this blog post.
 

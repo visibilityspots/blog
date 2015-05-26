@@ -4,6 +4,7 @@ BGP announcing default route
 :author: Jan
 :tags: bgp, cisco, default, networking, route
 :slug: bgp-default-route
+:status: published
 
 Advertising default route with BGP
 ==================================
@@ -18,8 +19,8 @@ If you want to announce the default route which is statically routed then you ha
 
 when you then clear the ip bgp routing softly (so the current connecting will not be broken)
 ::
-	
-	clear ip bgp soft in  
+
+	clear ip bgp soft in
 	clear ip bgp soft out
 
 you should see that the default route is will be advertised:

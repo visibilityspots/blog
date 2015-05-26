@@ -4,6 +4,7 @@ CentOS 6.4 software raid & LVM
 :author: Jan
 :tags: software, raid, softwareraid, lvm, mdadm, centos
 :slug: raid
+:status: published
 
 Been asked to setup a software raid of 12TB on a minimal CentOS 6.4 installation with 5 disks of 3TB each. Never played with raid nor lvm before so the challenge was great!
 
@@ -99,7 +100,7 @@ Resources:
 - tcpdump: `restarting`_
 - `cheat`_ sheet
 - raid `states`_
-- `howtoforge`_ initramfs 
+- `howtoforge`_ initramfs
 
 .. _RAID: http://www.cyberciti.biz/tips/raid5-vs-raid-10-safety-performance.html
 .. _mdadm: http://linux.die.net/man/8/mdadm

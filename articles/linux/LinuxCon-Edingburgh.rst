@@ -4,6 +4,7 @@ LinuxCon Edinburgh
 :author: Jan
 :tags: linuxcon, Edinburgh, linux, foundation, inuits
 :slug: linuxcon-edinburgh
+:status: published
 
 I got a great opportunity by attending LinuxCon in Edinburgh.
 
@@ -32,7 +33,7 @@ OpenSAF is an open source project focused on Service Availability (SA) that goes
 
 A novel about IT, Devops and helping your business win.
 
-`Buildbot`_	
+`Buildbot`_
 
 Buildbot is a continuous integration system designed to automate the build/test cycle
 
@@ -43,7 +44,7 @@ hydrogen: `http://www.opendaylight.org/news/2013/09/converge-network-digest-open
 
 `Blackduck`_
 
-Offers some services about open-source licensing 
+Offers some services about open-source licensing
 
 Interesting people:
 -------------------
@@ -72,7 +73,7 @@ In times as today where the whole NSA topic is as hot as hell this guy talked ab
 .. _Buildbot: http://trac.buildbot.net/
 .. _Opendaylight: http://www.opendaylight.org/
 .. _http://www.opendaylight.org/news/2013/09/converge-network-digest-opendaylight-hydrogen-open-source-sdn: http://www.opendaylight.org/news/2013/09/converge-network-digest-opendaylight-hydrogen-open-source-sdn
-.. _Blackduck: http://www.blackducksoftware.com/                       
+.. _Blackduck: http://www.blackducksoftware.com/
 .. _Colin Charles: https://twitter.com/bytebot
 .. _James Bottomley: https://twitter.com/jejb_
 .. _David Nalley: https://twitter.com/ke4qqq

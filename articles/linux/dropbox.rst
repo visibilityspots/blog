@@ -4,8 +4,9 @@ Dropbox
 :author: Jan
 :tags: accounts, centOS, dropbox, encfs, encryption, multiple, security
 :slug: dropbox
+:status: published
 
-Reading this article will go through the process I went through configuring multiple dropbox accounts on my centos machine (one personal and one for work) and encrypting them both using encfs. 
+Reading this article will go through the process I went through configuring multiple dropbox accounts on my centos machine (one personal and one for work) and encrypting them both using encfs.
 
 That way I'm sure dropbox can't read the data stored into it. Because no I don't trust anybody on the cloud!
 
@@ -48,7 +49,7 @@ To accomplish this encryption I opted for encfs. On a CentOS machine you can ins
 	sudo yum install fuse-encfs
 
 Once the package is installed we can configure our encrypted volumes.
-The way this encryption will work is quite simple. You have 2 folders, a private folder which is the working directory where you can edit delete and create files and folders to work with. 
+The way this encryption will work is quite simple. You have 2 folders, a private folder which is the working directory where you can edit delete and create files and folders to work with.
 All content in your private folder will be encrypted to you encrypted folder which will be synchronized to the dropbox online services.
 
 So in our case we have to create 4 folders, 2 for our work account (~/Private & ~/Dropbox/.encrypted) and 2 for our personal account (~/Personal/Private-personal & ~/Personal/Dropbox/.encrypted-personal).
@@ -59,7 +60,7 @@ Once those folders are created we can configure the encfs volumes:
 
 	encfs ~/Dropbox/.encrypted ~/Private encfs ~/Personal/Dropbox/.encrypted-personal ~/Personal/Private-personal
 
-where you can use the paranoia mode to encrypt your files 
+where you can use the paranoia mode to encrypt your files
 
 ::
 
@@ -88,7 +89,7 @@ On every computer where you install encfs to decrypt those files you have to cop
 Be aware you can't use your encrypted files using the dropbox web interface. On your android phone you can install `cryptonite`_ which will decrypt your files so you can use them on your phone.
 
 I created a Startup script which can decrypt and umount the encrypted folders and shared it on `github`_ by adding the script with the preferred parameters to your Startup
-programs you have to fill in the passwords each time you log in so your folders are decrypted and you can start using them. 
+programs you have to fill in the passwords each time you log in so your folders are decrypted and you can start using them.
 (or add the script to your /usr/bin/ folder named encryption so you can handle it as a command called encryption as you named it in your terminal)
 
 You can also use this setup to share for example your evolution mails via dropbox on an encrypted way so nobody can read your mails except your on your different computers with evolution. (Make sure the

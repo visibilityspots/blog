@@ -4,6 +4,7 @@ CloudCollab Amsterdam #CCCEU13
 :author: Jan
 :tags: cloudstack, conference, cloudcollab, Amsterdam, cloud, apache, 2013, #CCCEU13
 :slug: cloudcollab-amsterdam
+:status: published
 
 Cloudstack, an item I had on my todo list with some lower priority against daily maintenance of our server park. But since attending `David Nalley's`_ talk on LinuxCon I shifted it up some places. Although I expected a real hands on session the talk he gave about a cloudstack environment for development was really intriguing and matched completely with what I had in mind. 
 

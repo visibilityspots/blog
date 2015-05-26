@@ -4,11 +4,12 @@ Writing customized icinga checks
 :author: Jan
 :tags: centOS, checks, icinga, monitoring, nrpe, server
 :slug: icinga-checks
+:status: published
 
-Recently I started to try writing a customized script for the `icinga`_ monitoring tool. I will try to describe the steps I went trough to achieve this in this post. I assume you already have a working icinga setup. 
+Recently I started to try writing a customized script for the `icinga`_ monitoring tool. I will try to describe the steps I went trough to achieve this in this post. I assume you already have a working icinga setup.
 If not you can find documentation about this on \ `http://docs.icinga.org/`_.
 
-First of all you need to script. I created a script which will check if a service is running using the command 
+First of all you need to script. I created a script which will check if a service is running using the command
 
 ::
 
@@ -39,8 +40,8 @@ We have to add the command check\_NAME into the file /etc/icinga/objects/command
 
 ::
 
-	define command { 
-		command_name check_NAME 
+	define command {
+		command_name check_NAME
 		command_line $USER1$/check_NAME
 	}
 
@@ -48,11 +49,11 @@ To configure the specified service you have to configure a node with this newly 
 
 ::
 
-	define service { 
-		service_description DESCRIPTION 
+	define service {
+		service_description DESCRIPTION
 		check_command check_nrpe_command!
-		check_NAME use generic-service 
-		notification_period 24x7 
+		check_NAME use generic-service
+		notification_period 24x7
 		host_name HOSTNAME.OF.SERVER
 	}
 

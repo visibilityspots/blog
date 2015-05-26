@@ -4,6 +4,7 @@ SMS server using CentOS, kannel and playsms
 :author: Jan
 :tags: centOS, debian, gsm, huawai, kannel, playsms, server, sms, option, globetrotter, falcom, mobile, vikings
 :slug: sms-server
+:status: published
 
 On this page I will describe the way I went trough to configure an sms gateway using a laptop, `huawei`_ modem, `falcom`_ A2D-1 or the `option`_ Globetrotter hardware using the open source software `kannel`_ & `playsms`_.
 
@@ -36,7 +37,7 @@ Before starting configuring the services which were going to communicate with th
 	# yum install minicom
 	# minicom
 
-In this terminal you can control the modem using AT commands. A nice tutorial about those commands is available on `qualityguru`_. 
+In this terminal you can control the modem using AT commands. A nice tutorial about those commands is available on `qualityguru`_.
 
 Steps for entering the PIN.
 ::
@@ -45,7 +46,7 @@ Steps for entering the PIN.
 	OK
 	AT+CPIN?
 	+CPIN: READY
-	OK 
+	OK
 
 Checking if the SMS center is configured:
 ::
@@ -78,13 +79,13 @@ If not, check the `troubleshoot`_ page of qualityguru for some common mistakes.
 Kannel
 ------
 At the moment of writing this post the last stable version is 1.4.3. Using CentOS 6.4 you can install kannel from the epel `repository`_:
-::        
-          
+::
+
         # yum install kannel
-          
+
 Or you can choose to compile it from source:
 ::
- 
+
         # wget http://www.kannel.org/download/1.4.3/gateway-1.4.3.tar.gz
         # tar zxvf gateway-1.4.3.tar.gz -C /usr/local/src/
         # cd /usr/local/src/gateway-1.4.3/
@@ -97,7 +98,7 @@ I installed the kannel service from the repository and created a symlink from /e
 ::
 
 	# mkdir /etc/kannel/
-	# ln -s /etc/kannel.conf /etc/kannel/kannel.conf	
+	# ln -s /etc/kannel.conf /etc/kannel/kannel.conf
 
 Once you configured your device you start kannel by starting the kannel service:
 ::
@@ -120,7 +121,7 @@ I used different sorts of hardware and listed the specific kannel.conf files her
 In the first phase I used a `huawei`_ USB dongle:
 
 ::
- 
+
         #CORE
         group = core
         admin-port = 13000
@@ -132,7 +133,7 @@ In the first phase I used a `huawei`_ USB dongle:
         smsbox-port = 13001
         store-type = file
         store-location = "/var/log/kannel/kannel.store"*
- 
+
         #SMSC MODEM GSM
         group = smsc
         smsc = at
@@ -146,13 +147,13 @@ In the first phase I used a `huawei`_ USB dongle:
         sms-center = "+32486000005"
         my-number = "+324XXXXXXXX"
 	pin = XXXX
- 
+
         group = modems
         id = huawei
         name = huawei
         detect-string = "huawei"
         init-string = "AT+CNMI=2,1,0,0,0;+CMEE=1"
- 
+
         #SMSBOX SETUP
         group = smsbox
         bearerbox-host = 127.0.0.1
@@ -163,13 +164,13 @@ In the first phase I used a `huawei`_ USB dongle:
         log-file = "/var/log/kannel/smsbox.log"
         log-level = 0
         access-log = "/var/log/kannel/access.log"
- 
+
         #SEND-SMS USERS
         group = sendsms-user
         username = #USERNAME
         password = #PASSWORD
         user-allow-ip = "\*.\*.\*.\*"
- 
+
         #SMS SERVICE
         group = sms-service
         keyword = default
@@ -178,13 +179,13 @@ In the first phase I used a `huawei`_ USB dongle:
         accepted-smsc = at2
         max-messages = 0
         assume-plain-text = true
-        catch-all = true         
-                                                                                                                              
+        catch-all = true
+
         get-url = "http://localhost/playsms/index.php?app=call&cat=gateway&plugin=kannel&access=geturl&t=%t&q=%q&a=%a"
 
 During the event was in the possession of a `falcom`_ A2D-1 gateway which was connected from serial to usb:
-::      
-        
+::
+
         group = core
         admin-port = 13000
         admin-password = playsms
@@ -194,7 +195,7 @@ During the event was in the possession of a `falcom`_ A2D-1 gateway which was co
         smsbox-port = 13001
         store-type = file
         store-location = "/var/log/kannel/kannel.store"*
-        
+
         group = smsc
         smsc = at
         modemtype = falcom
@@ -202,13 +203,13 @@ During the event was in the possession of a `falcom`_ A2D-1 gateway which was co
         my-number = "+324XXXXXXXX"
         sms-center = "+32486000005"
 	pin = XXXX
-        
+
         group = modems
         id = falcom
         name = "Falcom"
         detect-string = "Falcom"
         reset-string = "AT+CFUN=1"
-        
+
         #SMSBOX SETUP
         group = smsbox
         bearerbox-host = localhost
@@ -216,12 +217,12 @@ During the event was in the possession of a `falcom`_ A2D-1 gateway which was co
         log-file = "/var/log/kannel/smsbox.log"
         log-level = 0
         access-log = "/var/log/kannel/access.log"
-        
+
         #SEND-SMS USERS
         group = sendsms-user
         username = #USER
         password = #PASSWORD
-        
+
         #SMS SERVICE
         group = sms-service
         keyword = default
@@ -247,7 +248,7 @@ After the event I had to give back the falcom and got my hands on an `option`_ g
 	smsbox-port = 13001
 	store-type = file
 	store-location = /var/log/kannel/kannel.store
-	
+
 	#SMSC MODEM GSM
 	group = smsc
 	smsc = at
@@ -261,13 +262,13 @@ After the event I had to give back the falcom and got my hands on an `option`_ g
 	sms-center = "32486000005"
 	my-number = "324XXXXXXXX"
 	pin = XXXX
-	
+
 	# If modemtype=auto, try everyone and defaults to this one
 	group = modems
 	id = generic
 	name = "Generic Modem"
 	reset-string = "AT&F"
-	
+
 	#SMSBOX SETUP
 	group = smsbox
 	bearerbox-host = 127.0.0.1
@@ -278,12 +279,12 @@ After the event I had to give back the falcom and got my hands on an `option`_ g
 	log-file = “/var/log/kannel/smsbox.log”
 	log-level = 0
 	access-log = “/var/log/kannel/access.log”
-	
+
 	#SEND-SMS USERS
 	group = sendsms-user
 	username = playsms
 	password = playsms
-	
+
 	#SMS SERVICE
 	group = sms-service
 	keyword = default
@@ -299,7 +300,7 @@ For the playsms service we need to have a webserver configured. You can use ever
 
 During the event I used with the xampp web service because it was working after all by following the howto of `kasrut`_.
 
-After the event was finished I migrated to lighttpd mainly because I already had some other applications running on that service. 
+After the event was finished I migrated to lighttpd mainly because I already had some other applications running on that service.
 
 **Xampp**
 ::
@@ -329,7 +330,7 @@ I used the `git`_ repository to easily update my instance to the newest releases
 Creation of the necessary directories and copy the web files to the webserver directory
 
 ::
-	
+
 	# mkdir -p /var/www/html/playsms /var/spool/playsms /var/log/playsms /var/lib/playsms
 	# cp -r usr/local/src/playSMS/web/* /var/www/html/playsms/
 
@@ -349,14 +350,14 @@ Creation of a mysql db and user:
 
 	# mysql> grant all privileges on playsms.* to USER@localhost ;
 	Query OK, 0 rows affected (0.00 sec)
-	
+
 	# mysql> quit
 
 	# msql -u root -p playsms < /usr/local/src/playSMS/db/playsms.sql
 
 Next step is to configure the playsms web service. Therefore follow those steps:
 ::
-	
+
 	# cd /var/www/html/playsms
 	# cp config-dist.php config.php
 
@@ -372,20 +373,20 @@ Now we configured the parameters we can start to install the services:
 
 I've used rc.local to start the service at boot:
 ::
-	
+
 	# vim /etc/rc.d/rc.local
 
 and put /usr/local/bin/playsmsd_start at the end of that file
 
 Next I configured 2 new aliases in my ~/.bashrc to easily start and stop the service:
 ::
-	
+
 	alias playsms-start='/usr/local/bin/playsmsd_start'
 	alias playsms-stop='/usr/local/bin/playsmsd_stop'
 
 By re-logging in you can start the service by:
 ::
-	
+
 	# playsms-start
 
 And check if the necessary services are started:
@@ -397,7 +398,7 @@ And check if the necessary services are started:
 	root     21847  0.0  0.0 106184  1536 pts/4    S    12:25   0:05 /bin/bash ./sendsmsd /var/www/html/playsms
 
 Finally you can browse http://<your web server IP>/playsms/ and login using
-      username: admin 
+      username: admin
       password: admin
 
 Where you need to configure kannel in the menu: Gateway > Manage Kannel > kannel (Inactive) (click here to activate) and adopt the parameters to the ones you configured in kannel.conf

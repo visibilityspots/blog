@@ -4,6 +4,7 @@ Cisco HWIC 3G configuration to 2G
 :author: Jan
 :tags: 2G, 3G, auto-band, band, cellular, cisco, gsm, gsm-all-bands, Mobile, router
 :slug: cisco-3g
+:status: published
 
 In some cisco routing devices you have the possibility to extend the features with a HWIC 3G card so mobile connectivity is added to your network infrastructure. This can be interesting for a mobile fail-over connection.
 
@@ -12,7 +13,7 @@ But as we all now, the mobile reception isn't always that good. To see the signa
 
 	show cellular 0/0/0 connection
 
-depending on which slot you plugged the HWIC card into. If the measured value is beneath the -100 dBm then you have sufficient signal to setup a 3G ( CDMA - WCDMA) connection on. 
+depending on which slot you plugged the HWIC card into. If the measured value is beneath the -100 dBm then you have sufficient signal to setup a 3G ( CDMA - WCDMA) connection on.
 
 If that's not the case or the values of different measurements are very different you should consider to downgrade too a 2G connection because else your 3G connection will be very wonky!
 

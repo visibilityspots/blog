@@ -4,6 +4,7 @@ Command line printing & scanning
 :author: Jan
 :tags: print, scan, command, line, linux, lpr, scanimage
 :slug: printing-scanning
+:status: published
 
 Since I discovered the joy of using the ratpoison window manager I'm trying to do all tasks I need to perform on my system using the command line.
 
@@ -24,7 +25,7 @@ Nowadays I use the command line to perform those tasks. To print out documents I
 
 	"Cancel a specific print job using the queue id"
 	$ lprm ID
-	
+
 	"Cancel all printing jobs"
 	$ lprm -
 
@@ -36,7 +37,7 @@ For scanning I use `scanimage`_ from sane. There are too many options to explain
 
 	"List your scan devices"
 	$ scanimage -L
-	
+
 	"Scan the image to a pdf file"
 	$ scanimage -p > fileName.pdf
 

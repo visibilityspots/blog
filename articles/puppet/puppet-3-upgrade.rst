@@ -3,15 +3,16 @@ Upgrade to puppet 3.3.0
 :date: 2013-09-20 19:00
 :author: Jan
 :tags: puppet, upgrade, 3.3.0, 2.6.x, issues, foreman, passenger, puppetdb
-:slug: puppet-3-upgrade 
+:slug: puppet-3-upgrade
+:status: published
 
-I finally got to the point where I upgraded a whole puppet infrastructure from puppet 2.6.x to the last stable version of puppet, `3.3.0`_. And after finding out the way to go it was surprisingly easy and no big issues came across. 
+I finally got to the point where I upgraded a whole puppet infrastructure from puppet 2.6.x to the last stable version of puppet, `3.3.0`_. And after finding out the way to go it was surprisingly easy and no big issues came across.
 
 One of the main reasons to upgrade was to start using the latest version of foreman, were we used 0.4, so we can start provisioning our own development vm's with some fancy cloud solution like for example `cloudstack`_ using our production puppet tree.
 
 Before the upgrade we had the puppet-client & server (2.6.18), puppetdb (1.4), (ruby 1.8.7) and foreman (0.4.2) running on a CentOS 6.3 machine.
 
-After upgrading we are running puppet-client & server (3.3.0) puppetdb (1.4), ruby (1.8.7) and foreman (1.2) all managed by puppet itself. (feels quite satisfying ;) ) 
+After upgrading we are running puppet-client & server (3.3.0) puppetdb (1.4), ruby (1.8.7) and foreman (1.2) all managed by puppet itself. (feels quite satisfying ;) )
 
 The very fist time I started upgrading the puppet master, but instead of upgrading the puppet-server package from the yum puppetlabs repository I upgraded only the agent.
 
@@ -34,7 +35,7 @@ This command is executed on a Cent0S 6.3 x86_64 machine:
 
 ::
 
-	# rpm -ivh http://yum.puppetlabs.com/el/6.0/products/x86_64/puppetlabs-release-6-7.noarch.rpm	
+	# rpm -ivh http://yum.puppetlabs.com/el/6.0/products/x86_64/puppetlabs-release-6-7.noarch.rpm
 
 Upgrading the puppetmaster
 --------------------------
@@ -42,7 +43,7 @@ Upgrading the puppetmaster
 So after shamelessly updated only the puppet package the first time, this time I did upgrade the puppet-server package without any issue. Be sure to read the `docs`_ first about upgrading!
 
 ::
-	
+
 	# yum update puppet-server
 
 Once the puppetmaster is updated we can try our first puppet runs against the upgraded version.
@@ -55,7 +56,7 @@ Before I get further in our upgrade process on passenger and stuff I wanted to k
 So I had to start the puppetmaster as a daemon, did a local puppet noop run on the master itself and stopped the puppetmaster daemon after I checked the run.
 
 ::
-	
+
 	# puppet resource service puppetmaster ensure=running enable=true
 	# puppet agent --test --noop
 	# puppet resource service puppetmaster ensure=stopped enable=true
@@ -63,7 +64,7 @@ So I had to start the puppetmaster as a daemon, did a local puppet noop run on t
 Upgrade the passenger setup
 ---------------------------
 
-We are using a passenger setup to have our puppet master in a scalable setup. Therefore we also needed to upgrade passenger on our puppetmaster and adopt the puppetmaster vhost to the upgraded environment. 
+We are using a passenger setup to have our puppet master in a scalable setup. Therefore we also needed to upgrade passenger on our puppetmaster and adopt the puppetmaster vhost to the upgraded environment.
 
 To accomplish this I simply followed the `passenger`_ documentation of puppetlabs which was quite easy to follow.
 
@@ -74,8 +75,8 @@ Once the puppetmaster was upgraded I tested a puppet run with a still not update
 
 There fore I just upgraded the client itself where the puppetlabs repository already was enabled:
 
-::	
-	
+::
+
 	# yum update puppet
 
 Issues

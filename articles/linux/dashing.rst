@@ -4,6 +4,7 @@ Dashing
 :author: Jan
 :tags: dashing, monitoring, dashboard, overview, screenly, raspberry pi
 :slug: dashing
+:status: published
 
 Using multiple nice interface dashboards to get an overview of your services is a great thing. But navigating to them all separately could sometimes be rather pain full.
 

@@ -4,6 +4,7 @@ Puppet module mumble-server
 :author: Jan
 :tags: centOS, Linux, module, mumble, mumble-server, open-source, puppet
 :slug: puppet-mumble
+:status: published
 
 `Mumble`_ is an open source, low-latency, high quality voice chat software primarily intended for use while gaming.
 
@@ -11,7 +12,7 @@ Puppet module mumble-server
 
 The `puppet-mumble`_ module installs a mumble server (version 1.2.3) automatically on a CentOS 6.x machine using the puppet software based on `mumble-documentation`_.
 
-The module needs a repository which contains the `mumble-server`_ package. I distribute this package on my own `visibilityspots`_ repository. 
+The module needs a repository which contains the `mumble-server`_ package. I distribute this package on my own `visibilityspots`_ repository.
 
 Using puppet this will create the necessary mumble user and group and will configure the mumble-server using your desired settings, like username, password, and tcp port the daemon will listen on.
 

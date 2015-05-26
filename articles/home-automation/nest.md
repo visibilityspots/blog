@@ -4,6 +4,7 @@ Date: 	     2014-05-24 23:30
 Slug:	     nest
 Tags: 	     nest, thermostat, belgium, nest.com, honeywell, ICY, vaillant, TurboTec
 Modified:    Mon 9 June 2014
+Status:      Published
 
 A few years ago I discovered the [nest](http://nest.com) thermostat. It looked nice, is connected to the internet, self learning but a bit expensive and not so much documentation if it will work in Belgium nor with the boiler we have installed (Vaillant TurboTec).
 

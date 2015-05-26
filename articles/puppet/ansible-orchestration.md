@@ -4,6 +4,7 @@ Date: 	     2014-10-21 23:00
 Slug:	     ansible-orchestration
 Modified:    Fri 21 November 2014
 Tags: 	     ansible, orchestration, tool, puppet, dynamic, inventory, puppetdb
+Status:      published
 
 I do use [puppet](https://docs.puppetlabs.com/#puppetpuppet) as our main configuration management tool. Together with [puppetdb](https://docs.puppetlabs.com/#puppetdbpuppetdblatest) all our services are automatically configured from bottom to top.
 
