@@ -3,6 +3,7 @@ Author:      Jan
 Date: 	     2015-05-26 19:00
 Slug:	     simple-monitoring
 Tags: 	     monitoring, sms, mail, ifttt, raspberry, monitor, ping
+Status:      published
 
 As I already wrote about in the past I have a [raspberry pi](https://visibilityspots.com/raspberry-pi.html) running at home. I do also have a VPS running somewhere on the interweb for an owncloud instance.
 
