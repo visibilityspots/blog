@@ -40,7 +40,7 @@ Next I wrote a bash script which I could pass some parameters so I could use it 
 
 ```bash
 
-$ sudo vim /usr/bin/mail-alert
+$ sudo vim /usr/local/bin/mail-alert
   #!/bin/bash
   #
   # Script which sends out mail using the given params
@@ -72,7 +72,7 @@ $ mail-alert recipient@domain.eu "Subject" "Your actual message"
 So now I could actually send out mails through the command line I wrote a little bash script which performs some tests and based on the output triggers the mail-alert command:
 
 ```bash
-$ sudo vim /usr/bin/monitor-lan
+$ sudo vim /usr/local/bin/monitor-lan
   #!/bin/bash
   HOSTS="8.8.4.4 gateway.ip.address"
   COUNT=4
@@ -106,7 +106,7 @@ You create yourself an ifttt account and configure the [sms-alerting](https://if
 I used the #alert hashtag and therefore needed to reconfigure the monitor-lan script:
 
 ```bash
-$ vim /usr/bin/monitor-lan
+$ vim /usr/local/bin/monitor-lan
   #!/bin/bash
   PING_HOSTS="8.8.4.4 gateway.ip.address"
   COUNT=4
@@ -150,7 +150,7 @@ Now everything is functional and in place you can configure a scheduled cronjob 
 ```bash
 # crontab -e
   # Monitor LAN
-  */15 * * * * /usr/bin/monitor-lan
+  */15 * * * * /usr/local/bin/monitor-lan
 ```
 
 You have now a rather easy peasy monitoring setup up and running which provides your the most basic monitoring for your different systems totally for free!
