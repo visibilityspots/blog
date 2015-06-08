@@ -10,5 +10,6 @@ script: nosetests
 before_install:
   - openssl aes-256-cbc -K $encrypted_0ec63286c3a4_key -iv $encrypted_0ec63286c3a4_iv
     -in id_travis.enc -out id_travis -d
+  - chmod 0600 id_travis
 after_success:
   - ssh -i id_travis visibilityspots.com@ssh.visibilityspots.com 'whoami'
