@@ -12,4 +12,9 @@ before_install:
     -in id_travis.enc -out id_travis -d
   - chmod 0600 id_travis
 after_success:
+  - ls -latr
   - ssh -i id_travis visibilityspots.com@ssh.visibilityspots.com 'whoami'
+
+notifications:
+  email:
+    - travis-blog@visibilityspots.com
