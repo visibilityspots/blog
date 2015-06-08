@@ -4,3 +4,5 @@ branches:
     - master
 install:
   - pip install pelican ghp-import
+
+script: nosetests
