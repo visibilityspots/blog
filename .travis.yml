@@ -1,12 +1,14 @@
 language: python
 branches:
   only:
-  - master
+    - master
 install:
-- pip install pelican ghp-import
+  - pip install pelican ghp-import
+before_script:
+  - echo -e "Host ssh.visibilityspots.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
 script: nosetests
 before_install:
-- openssl aes-256-cbc -K $encrypted_0ec63286c3a4_key -iv $encrypted_0ec63286c3a4_iv
-  -in id_travis.enc -out id_travis -d
+  - openssl aes-256-cbc -K $encrypted_0ec63286c3a4_key -iv $encrypted_0ec63286c3a4_iv
+    -in id_travis.enc -out id_travis -d
 after_success:
-- ssh -i id_travis visibilityspots.com@ssh.visibilityspots.com 'whoami'
+  - ssh -i id_travis visibilityspots.com@ssh.visibilityspots.com 'whoami'
