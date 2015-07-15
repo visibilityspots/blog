@@ -3,7 +3,7 @@ Author:      Jan
 Date: 	     2014-07-16 19:00
 Slug:	     rsnapshot-backup
 Tags: 	     udev, usb, disk, archlinux, mount, uuid, serial, cryptsetup, backup, rsnapshot
-Modified:    Wed 31 Dec 2014
+Modified:    Wed 15 Jul 2015
 Status:      published
 
 Some weeks ago I removed some files on my system I wish I didn't cause I still needed them.
@@ -75,10 +75,16 @@ I ran into some ext4 troubles on my encrypted filesystem, it took me a while to 
 	sudo cryptsetup luksOpen /dev/sdX# SOMENAME
 ```
 
-Once that's done you could use fsck to fix the filesystem.
+Once that's done you could use fsck to manually fix the filesystem.
 
 ```bash
 	sudo fsck.ext4 /dev/mapper/SOMENAME
+```
+
+or let fsck automatically fix the filesystem.
+
+```bash
+	sudo fsck.ext4 -y /dev/mapper/SOMENAME
 ```
 
 If everything got fixed you could mount the partition and use the fixed filesystem again.
