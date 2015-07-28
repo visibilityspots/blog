@@ -14,6 +14,13 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
+**June 2015 - present | System engineer -** `Newtec Cy`_ **- SINT-NIKLAAS**
+
+Automating the validation environment for the `dialog`_ infrastructure using different types of open-source tools like puppet for configuration management, looking at packer for building reproducible image artefacts and a private cloud for the provisioning part. In such a way a validation engineer can easily spin up a specific test environment to perform the necessary test banks to validate the dialog hub against many different setups.
+
++ Puppetizing of many different tools for testing purposes
++ Implementing the torrent protocol for benchmarking against other protocols
+
 **March 2015 - June 2015 | System engineer -** `International Post Corporation`_ **- EVERE**
 
 Helping the IT Team a hand during a datacenter migration of their production, test and uat environments. Troubleshooting various issues through the migrations of the different tomcat application servers.
@@ -104,6 +111,8 @@ Actively done for about 14 years, 5 years as a member, 7 years as a chief from w
 .. _group: http://www.scoutsnieuwenrode.be
 .. _Scouts en Gidsen Vlaanderen: https://www.scoutsengidsenvlaanderen.be/groepsleiding
 .. _International Post Corporation: http://www.ipc.be/
+.. _dialog: http://www.newtec.eu/product/newtec-dialog
+.. _Newtec Cy: http://www.newtec.eu
 .. _UGent Boekentoren: http://www.boekentoren.be
 .. _Belnet: http://www.belnet.be
 .. _Belgacom: http://www.belgacom.be/nl/grote-bedrijven/producten-en-diensten/connectivity/belgacom-explore/data-connectivity?page=p_ent_data_connectivity
