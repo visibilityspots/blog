@@ -5,6 +5,7 @@ Puppet sslv3 alert certificate revoked
 :tags: certificate, continuous integration, Linux, puppet, revoke, sign, ssl
 :slug: puppet-revoked-certificate.rst
 :status: published
+:modified: 2015-10-08 11:10
 
 I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command
 
@@ -27,7 +28,7 @@ To be sure the certificates are completely removed on the puppetmaster I explici
 
 ::
 
-	i[root@master ~]#puppet cert -c hostname
+	[root@master ~]#puppet cert -c hostname
 
 Now we are sure those certificates are cleaned up on the master we have to do this also on the agent
 
@@ -38,6 +39,12 @@ Looking for the directory where those certificates are stored
 	[root@agent ~]# puppet --genconfig | grep certdir
 	# The default value is '$certdir/$certname.pem'.
 	# The default value is '$certdir/ca.pem'. certdir = /var/lib/puppet/ssl/certs
+
+For older versions of puppet
+
+::
+
+	[root@agent ~]# puppet config print | grep certdir
 
 Removing the existing certificates on the client:
 
