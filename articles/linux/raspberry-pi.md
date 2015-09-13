@@ -80,8 +80,8 @@ I reconfigured my whole RAID setup by using those 4 individual USB sockets inste
 
 Since there are no case available yet for this model I looked on [thingiverse](http://thingiverse.com) and found a closed [case](http://www.thingiverse.com/thing:398399) which I printed out on the ultimaker2 robot we can use at the office. It's a neat case but the top isn't clicked in to the bottom part so I had to use tape to stick them together..
 
-![raspberry-b+_open]( ../../images/raspberry/raspberry-b+_open.jpg)
-![raspberry-b+_closed]( ../../images/raspberry/raspberry-b+_closed.jpg)
+![raspberry-b-open]( ../../images/raspberry/raspberry-b-open.jpg)
+![raspberry-b-closed]( ../../images/raspberry/raspberry-b-closed.jpg)
 
 # Configuration
 
