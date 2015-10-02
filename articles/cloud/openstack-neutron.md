@@ -4,6 +4,7 @@ Date: 	     2015-09-29 19:00
 Slug:	     vlan-flat-neutron-provider
 Tags: 	     vlan,flat,neutron,provider,network,openstack,openvswitch,ovs
 Status:      published
+Updated:     2015-10-02 12:00
 
 at one of my projects I was been asked to set up a private cloud for a validation platform. The whole idea behind this proof of concept is based on the flexibility to spin up and down certain instances providing some specific functionality so tests banks can be ran against them.
 
@@ -24,6 +25,12 @@ By spinning up an instance based on this crafted image you could gain like about
 # Openstack
 
 We used the RDO [all-in-one](https://www.rdoproject.org/Quickstart) installer to get an openstack up and running on one physical machine rather quickly (15-30 minutes for the initial services).
+
+To set openstack up without the demo data:
+
+```
+# packstack --allinone --provision-demo=n
+```
 
 This openstack instance is based on [CentOS 7 minimal](https://www.centos.org/download/) since it's a requirement of the used openstack release [kilo](https://wiki.openstack.org/wiki/ReleaseNotes/Kilo).
 
