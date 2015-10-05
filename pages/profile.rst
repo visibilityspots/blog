@@ -20,6 +20,8 @@ Automating the validation environment for the `dialog`_ infrastructure using dif
 
 + Puppetizing of many different tools for testing purposes
 + Implementing the torrent protocol for benchmarking against other protocols
++ Configuring [packer.io](https://packer.io) templates for the cloud images
++ Setting up an openstack POC in line with the current validation environment
 
 **March 2015 - June 2015 | System engineer -** `International Post Corporation`_ **- EVERE**
 
