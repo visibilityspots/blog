@@ -13,7 +13,7 @@ But what I struggled with the most where the many different projects. Each time 
 
 So I tried to figure out a way I could keep them all up to date with the same code base. We are using [git](https://git.org) for almost all our projects as our versioning platform. So I figured out I could use the features of git to achieve the goals I've setted for my setup. One code base I could update without interrupting the functionality of the different proof of concepts but with the availability of upgrading those in a easy way.
 
-So I started my [vagrant-puppet](https://github.com/visibilityspots/vagrant-puppet.git) project on github. In the master branch a base setup has been configured with a puppetmaster container and a client container. Both are running the latest stable release of puppet 3.x. The puppetmaster is setted up using puppetdb puppetserver or apache/passenger it can be used both with the [centos6](https://atlas.hashicorp.com/visibilityspots/boxes/centos-6.x-puppet-3.x) or [centos7](https://atlas.hashicorp.com/visibilityspots/boxes/centos-7.x-puppet-3.x) containers I crafted using the [lxc-base-boxes](https://github.com/visibilityspots/vagrant-lxc-base-boxes).
+So I started my [vagrant-puppet](https://github.com/visibilityspots/vagrant-puppet.git) project on github. In the master branch a base setup has been configured with a puppetmaster container and a client container. Both are running the latest stable release of puppet 3.x. The puppetmaster is setted up using puppetdb puppetserver or apache/passenger it can be used both with the [centos6](https://atlas.hashicorp.com/visibilityspots/boxes/centos-6.x-puppet-3.x) or [centos7](https://atlas.hashicorp.com/visibilityspots/boxes/centos-7.x-puppet-3.x) containers I crafted using the [lxc-base-boxes](https://github.com/visibilityspots/vagrant-lxc-base-boxes) repository.
 
 # puppet
 
@@ -83,7 +83,7 @@ $ git clean -d -f -f
 $ git merge origin/master
 $ git submodule update --init --recursive
 $ vagrant up puppetmaster --provider=lxc
-$ vagrant up ### --provider=lxc
+$ vagrant up node --provider=lxc
 ```
 
 By configuring this setup I know have a flexible environment to test deploy and write new puppet code when some piece of software needs to be automated on my local machine with a puppetmaster almost simultaneous to a production one.
