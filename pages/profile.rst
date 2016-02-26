@@ -85,7 +85,7 @@ Final `project`_: Automated unix server park using puppet
 Skills
 ======
 
-Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm - Spacewalk - Cobbler
+Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm - Spacewalk - Cobbler - Packer - OpenStack - Packstack - AWS - InfluxDB - Grafana - Telegraph - Icinga2
 
 Certificates
 ------------
