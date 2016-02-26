@@ -2,10 +2,10 @@ Title:       Openstack layer2
 Author:      Jan
 Date: 	     2016-02-26 20:30
 Slug:	     openstack-layer2
-Tags: 	     openstack, layer2, security, groups, linux, bridge, ovs, open, vswitch, dhcp
+Tags: 	     openstack, layer2, security, groups, linux, bridge, ovs, open, vswitch, dhcp, kilo, rdo
 Status:	     published
 
-A few months ago I implemented an RDO based openstack private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.
+A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.
 
 We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)
 
