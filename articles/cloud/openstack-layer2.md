@@ -1,6 +1,6 @@
 Title:       Openstack layer2
 Author:      Jan
-Date: 	     2016-02-22 19:00
+Date: 	     2016-02-26 20:30
 Slug:	     openstack-layer2
 Tags: 	     openstack, layer2, security, groups, linux, bridge, ovs, open, vswitch, dhcp
 Status:	     published
