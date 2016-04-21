@@ -3,6 +3,7 @@ Author:      Jan
 Date: 	     2016-02-26 20:30
 Slug:	     openstack-layer2
 Tags: 	     openstack, layer2, security, groups, linux, bridge, ovs, open, vswitch, dhcp, kilo, rdo
+Modified:    Thu 21 April 2016 15:00
 Status:	     published
 
 A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.
@@ -63,7 +64,7 @@ vim /etc/nova/nova.conf
 force_config_drive=True
 ```
 
-Also be aware with the lock_passwd feature with passing users through cloud init in openstack: https://bugs.launchpad.net/cloud-init/+bug/1521554
+Also be aware with the lock_passwd feature with passing users through cloud init in openstack due to a [bug](https://bugs.launchpad.net/cloud-init/+bug/1521554)
 
 So now the minor issues are tackled let's switch to the major and more impacting ones.
 
