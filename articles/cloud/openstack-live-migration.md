@@ -7,8 +7,8 @@ Status:	     published
 
 Some of you may already have notices others just stumbled on this post through a search engine, I have setted up an openstack private cloud at one of our projects:
 
-https://visibilityspots.org/vlan-flat-neutron-provider.html
-https://visibilityspots.org/openstack-layer2.html
+* [vlan flat-neutron provider network](https://visibilityspots.org/vlan-flat-neutron-provider.html)
+* [layer2](https://visibilityspots.org/openstack-layer2.html)
 
 We have noticed that the benefits of having a private cloud is spreading through the different teams within the organization and therefore the interest into this flexibility is growing. Since this wasn't the original [use case](https://visibilityspots.org/vlan-flat-neutron-provider.html) we are encountering some design issues right now.
 
