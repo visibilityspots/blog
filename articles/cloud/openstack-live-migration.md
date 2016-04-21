@@ -5,7 +5,7 @@ Slug:	     openstack-live-migration
 Tags: 	     openstack, live, migration, kilo, kvm, block, config, drive, vfat
 Status:	     published
 
-Some of you may already have notices others just stumbled on this post through a search engine, I have setted up an openstack private cloud at one of our projects:
+Some of you may already have notices others just stumbled on this post through a search engine, I have set up an openstack private cloud at one of our projects:
 
 * [vlan flat-neutron provider network](https://visibilityspots.org/vlan-flat-neutron-provider.html)
 * [layer2](https://visibilityspots.org/openstack-layer2.html)
@@ -14,9 +14,9 @@ We have noticed that the benefits of having a private cloud is spreading through
 
 For the original instances the default [overcommit](http://docs.openstack.org/openstack-ops/content/compute_nodes.html#overcommit) ratios are fine. But the request for new machines with other goals are like interfering with those original instances running in the same default [availability zone](http://docs.openstack.org/openstack-ops/content/scaling.html#az_s3).
 
-So we are looking to configure some [aggregate zones](http://docs.openstack.org/openstack-ops/content/scaling.html#ha_s3) to keep this under control. As soon as we figured out a workable solution I will write about it in a new blog post.
+So we are looking to configure some [aggregate zones](http://docs.openstack.org/openstack-ops/content/scaling.html#ha_s3) to keep this under control. As soon as we figure out a workable solution I will write about it in a new blog post.
 
-But in the discussions to come to a solution one remark was couldn't openstack tackle those issues of having an hypervisor with a growing load and memory issues itself by migrating instances to another hypervisors? Which is like a valuable argument to me. So before even looking into such a solution the feature of live migration should work..
+But in the discussions to come to a solution one remark was , couldn't openstack tackle the issues of having an hypervisor with a growing load and memory issues itself by migrating instances to another hypervisors? Which is like a valuable argument to me. So before even looking into such a solution the feature of live migration should work..
 
 Since we aren't using shared storage for our cloud this could be tricky. So I went to the web to inform myself about the different options.
 
