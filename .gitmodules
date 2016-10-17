@@ -1,0 +1,12 @@
+[submodule "content"]
+	path = content
+	url = git@github.com:visibilityspots/blog.git
+[submodule "pelican-plugins"]
+	path = pelican-plugins
+	url = git@github.com:getpelican/pelican-plugins.git
+[submodule "pelican-themes/pelican-cait"]
+	path = pelican-themes/pelican-cait
+	url = git@github.com:visibilityspots/pelican-cait.git
+[submodule "pelican-themes/Tipue-Search"]
+	path = pelican-themes/Tipue-Search
+	url = git@github.com:Tipue/Tipue-Search.git
