@@ -26,10 +26,10 @@ DEFAULT_PAGINATION = 10
 RELATIVE_URLS = True
 USE_CUSTOM_MENU = True
 CUSTOM_MENUITEMS = (('Blog', ''),
-                    ('Projects', 'pages/projects.html'),
                     ('Profile', 'pages/profile.html'),
                     ('Links', 'pages/links.html'),
-                    ('Search', 'pages/search.html'))
+                    ('Projects', 'pages/projects.html'),
+                    ('Contact', 'pages/contact.html'))
 
 CONTACT_EMAIL = "blog@visibilityspots.com"
 CONTACT_TITLE = True
