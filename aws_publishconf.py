@@ -25,4 +25,4 @@ DELETE_OUTPUT_DIRECTORY = True
 DISQUS_SITENAME = "visibilityspots"
 ARTICLE_EXCLUDES = ['drafts']
 
-CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2016 <a href="https://visibilityspots.org">visibilityspots.org</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="https://visibilityspots.org/feeds/all.atom.xml" rel="alternate">Atom</a> feed'
+CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2017 <a href="https://visibilityspots.org">visibilityspots.org</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="https://visibilityspots.org/feeds/all.atom.xml" rel="alternate">Atom</a> feed'

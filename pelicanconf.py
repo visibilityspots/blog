@@ -11,7 +11,7 @@ TIMEZONE = 'Europe/Brussels'
 DEFAULT_LANG = 'en'
 GITHUB_ACTIVITY_FEED = 'https://github.com/visibilityspots.atom'
 GITHUB_ACTIVITY_MAX_ENTRIES = 10
-GITHUB_USER = 'visibilityspots'
+#GITHUB_USER = 'visibilityspots'
 DISQUS_SITENAME = "visibilityspots"
 DEFAULT_METADATA = {
             'status': 'draft',
@@ -24,7 +24,7 @@ ICON = "icon-dashboard"
 DISPLAY_CATEGORIES_ON_MENU = False
 DEFAULT_PAGINATION = 10
 RELATIVE_URLS = True
-USE_CUSTOM_MENU = False
+USE_CUSTOM_MENU = True
 CUSTOM_MENUITEMS = (('Blog', ''),
                     ('Projects', 'pages/projects.html'),
                     ('Profile', 'pages/profile.html'),
@@ -45,7 +45,7 @@ CONTACTS = (('facebook', 'https://www.facebook.com/visibilityspots'),
 
 TAG_CLOUD_STEPS = 4
 TAG_CLOUD_MAX_ITEMS = 100
-CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2016 <a href="http://localhost:8000">localhost:8000</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="http://localhost:8000/feeds/all.atom.xml" rel="alternate">Atom</a> feed'
+CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2017 <a href="http://localhost:8000">localhost:8000</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="http://localhost:8000/feeds/all.atom.xml" rel="alternate">Atom</a> feed'
 
 # Documentes, files and images
 STATIC_PATHS = ['images','documents','extra/robots.txt','extra/favicon.ico']

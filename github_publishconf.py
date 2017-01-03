@@ -11,7 +11,7 @@ sys.path.append(os.curdir)
 from pelicanconf import *
 
 SITEURL = "https://visibilityspots.github.io/blog"
-RELATIVE_URLS = True
+RELATIVE_URLS = False
 
 FEED_ALL_ATOM = 'feeds/all.atom.xml'
 FEED_ALL_RSS = 'feeds/all.rss.xml'
@@ -23,4 +23,4 @@ DELETE_OUTPUT_DIRECTORY = True
 DISQUS_SITENAME = "visibilityspots"
 ARTICLE_EXCLUDES = ['drafts']
 
-CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2016 <a href="https://visibilityspots.github.io/blog">visibilityspots.github.io</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="https://visibilityspots.github.io/blog/feeds/all.atom.xml" rel="alternate">Atom</a> feed'
+CUSTOM_FOOTER = '<a href="http://creativecommons.org/licenses/by-nc/2.0/be/deed.nl">License</a> | 2009 - 2017 <a href="https://visibilityspots.github.io/blog">visibilityspots.github.io</a> | Powered by <a href="http://getpelican.com/" target="pelican">Pelican</a> | <a href="https://visibilityspots.github.io/blog/feeds/all.atom.xml" rel="alternate">Atom</a> feed'
