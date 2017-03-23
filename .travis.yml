@@ -6,11 +6,13 @@ install:
 - pip install -r requirements.txt
 script:
 - make clean
-- make travis_push
+- make github_travis_push
+- make clean
+- make aws_push
 notifications:
   email:
     on_success: change
-    on_failure: always
+    on_failure: change
 env:
   global:
     secure: A16p9Y0BVoqmdyIKqSCnEeWuz+iLtaUgr2moxdZKm+mQ/YMsKq4JlPHC1UfD4/ea+zVMxdv0ojmMa94oqF/YE23vsTbbg0dh6CbwLgklj7ztl48XwYYa+rx2BVhQkrMHwEC1jEHEEAnoRcWRcyEy1qIfL3SAG4cFYXSDZjOu08c=

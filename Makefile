@@ -81,7 +81,7 @@ aws_push: aws
 github_push: github
 	cd $(INPUTDIR) && ghp-import -m 'Updating repository to real world blog' -n $(OUTPUTDIR) && git push origin gh-pages
 
-travis_push: github
+github_travis_push: github
 	ghp-import -n $(OUTPUTDIR)
 	@git push -fq https://${GH_TOKEN}@github.com/$(TRAVIS_REPO_SLUG).git gh-pages > /dev/null
 
