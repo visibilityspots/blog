@@ -6,4 +6,4 @@
 	url = https://github.com/visibilityspots/pelican-cait.git
 [submodule "pelican-themes/Tipue-Search"]
 	path = pelican-themes/Tipue-Search
-	url = https://github.com/Tipue/Tipue-Search.git
+	url = https://github.com/visibilityspots/Tipue-Search.git
