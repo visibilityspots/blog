@@ -1,6 +1,6 @@
 [submodule "pelican-plugins"]
 	path = pelican-plugins
-	url = https://github.com/getpelican/pelican-plugins.git
+	url = https://github.com/visibilityspots/pelican-plugins.git
 [submodule "pelican-themes/pelican-cait"]
 	path = pelican-themes/pelican-cait
 	url = https://github.com/visibilityspots/pelican-cait.git
