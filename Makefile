@@ -11,12 +11,6 @@ CONFFILE=$(BASEDIR)/pelicanconf.py
 PUBLISHCONF=$(BASEDIR)/publishconf.py
 GITHUBPUBLISHCONF=$(BASEDIR)/github_publishconf.py
 AWSPUBLISHCONF=$(BASEDIR)/aws_publishconf.py
-ONEPUBLISHCONF=$(BASEDIR)/one_publishconf.py
-
-SSH_HOST=ssh.visibilityspots.com
-SSH_PORT=22
-SSH_USER=visibilityspots.com
-SSH_TARGET_DIR=/www
 
 S3_BUCKET=visibilityspots.org
 
@@ -35,10 +29,8 @@ help:
 	@echo '   make clean                       remove the generated files         '
 	@echo '   make regenerate                  regenerate files upon modification '
 	@echo '   make publish                     generate using production settings '
-	@echo '   make serve [PORT=8000]           serve site at http://localhost:8000'
 	@echo '   make devserver [PORT=8000]       start/restart develop_server.sh    '
 	@echo '   make stopserver                  stop local server                  '
-	@echo '   make one.com                     upload to one.com		      '
 	@echo '   make aws	                   upload to aws instances            '
 	@echo '   make github                      upload the web site via gh-pages   '
 	@echo '                                                                       '
@@ -53,13 +45,6 @@ clean:
 
 regenerate:
 	$(PELICAN) -r $(INPUTDIR) -o $(OUTPUTDIR) -s $(CONFFILE) $(PELICANOPTS)
-
-serve:
-ifdef PORT
-	cd $(OUTPUTDIR) && $(PY) -m pelican.server $(PORT)
-else
-	cd $(OUTPUTDIR) && $(PY) -m pelican.server
-endif
 
 devserver:
 ifdef PORT
@@ -82,25 +67,22 @@ publish:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
 
-github_publish:
+github:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(GITHUBPUBLISHCONF) $(PELICANOPTS)
 
-one_publish:
-	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
-	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(ONEPUBLISHCONF) $(PELICANOPTS)
-
-aws_publish:
+aws:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(AWSPUBLISHCONF) $(PELICANOPTS)
 
-one.com: one_publish
-	rsync -e "ssh -p $(SSH_PORT)" -P -rvz $(OUTPUTDIR)/ $(SSH_USER)@$(SSH_HOST):$(SSH_TARGET_DIR) --cvs-exclude
-
-aws: aws_publish
+aws_publish: aws
 	cd $(OUTPUTDIR) && s3cmd sync $(OUTPUTDIR)/ s3://$(S3_BUCKET) --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type
 
-github: github_publish
+github_push: github
 	cd $(INPUTDIR) && ghp-import -m 'Updating repository to real world blog' -n $(OUTPUTDIR) && git push origin gh-pages
+
+travis: github_publish
+	ghp-import -n $(OUTPUTDIR)
+	@git push -fq https://${GH_TOKEN}@github.com/$(TRAVIS_REPO_SLUG).git gh-pages > /dev/null
 
 .PHONY: html help clean regenerate serve devserver publish one.com aws github
