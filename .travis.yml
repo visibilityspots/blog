@@ -6,19 +6,9 @@ install:
 - pip install -r requirements.txt
 script:
 - make clean
-- make github_push
+- make travis_push
 #- make clean
-#- make aws_publish
-#deploy:
-#    provider: s3
-#    access_key_id: $AWS_ACCESS_KEY
-#    secret_access_key: $AWS_SECRET_KEY
-#    bucket: visibilityspots.org
-#    region: eu-west-1
-#    skip_cleanup: true
-#    local-dir: output
-#    acl: public_read
-#    detect_encoding: true
+#- make aws_push
 notifications:
   email:
     on_success: always
