@@ -7,12 +7,10 @@ install:
 script:
 - make clean
 - make travis_push
-#- make clean
-#- make aws_push
 notifications:
   email:
-    on_success: always
+    on_success: change
     on_failure: always
 env:
   global:
-    secure: VABgUaZao06J3QYKEBoDJqhgDg5C6Z7L6nY0rmdyGFc6Rm7gpTsM76teFIcAuzlXurzEgJ78S/s5W97SbYU1JK/iZNe6ZxeVn0YxpHiQCiW5y6Qnigbfm86G4ohgWjQ7P7vo3urwx3Te8ZpULKhWsVst1+v9UomQtCySzIImx3hlGqtFNhjKuk8YFUKsoAYMTlCwhIJx1L8RygXyZmtKyhY2voXew8utnUdfmjX/PBSpOR+BTiT0rIYU36wZEVkC/4QtWvRpypwz9tGjMGmTngBZ4GoELSxg5OsPFGM/XgabxGz5FeU/0SpeV1ipFlMRUpQmYmSluI9KycRcIZgnVfOm6i9e10dON6FOz84mat6fK6A1JiIIxl5b7Z6BU7Gcs46K+y1HEYcPQF90kd4cGfNRDUcSe18XK6kN4WuK87kSZk3yMXsyUYiMqwWrsVJvSAfaB+PLmwrOSmW4AoiL/3z+WdTTFuFbyvEfgPenr3XtflM80FH5PkU2uX+FRwdo3hXr2iI9VtVY+tToWLFHdKlde9PzBnXYbSIpKxoPTtOyhL7WFYxHRNZfTwZ1iz2k/5bfwAnuetfc1ma6ZmLEgxEG+PMc9xhE5YbbiMvmUygPrIr5wA2Ze1aoDN25tTTideOfVGM8XPLAkTDjui7g5e4HHaS6IqhBaF+TJE+WzyA=
+    secure: A16p9Y0BVoqmdyIKqSCnEeWuz+iLtaUgr2moxdZKm+mQ/YMsKq4JlPHC1UfD4/ea+zVMxdv0ojmMa94oqF/YE23vsTbbg0dh6CbwLgklj7ztl48XwYYa+rx2BVhQkrMHwEC1jEHEEAnoRcWRcyEy1qIfL3SAG4cFYXSDZjOu08c=
