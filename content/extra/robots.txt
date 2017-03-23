@@ -1,0 +1,12 @@
+User-agent: *
+Disallow: /documents/
+Disallow: /images/
+Disallow: /roomba/
+Disallow: *.zip
+Disallow: /cloudstack/
+Disallow: /nestgraph/
+Disallow: /owa/
+Disallow: /owncloud/
+Disallow: /repos/
+Disallow: /vagrant-boxes/
+Disallow: /drafts/
