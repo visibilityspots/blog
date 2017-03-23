@@ -1,3 +1,4 @@
 pelican
 ghp-import
 Markdown
+s3cmd
