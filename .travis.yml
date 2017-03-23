@@ -1,0 +1,28 @@
+language: python
+branches:
+  only:
+  - master
+install:
+- pip install -r requirements.txt
+script:
+- make clean
+- make github_push
+#- make clean
+#- make aws_publish
+#deploy:
+#    provider: s3
+#    access_key_id: $AWS_ACCESS_KEY
+#    secret_access_key: $AWS_SECRET_KEY
+#    bucket: visibilityspots.org
+#    region: eu-west-1
+#    skip_cleanup: true
+#    local-dir: output
+#    acl: public_read
+#    detect_encoding: true
+notifications:
+  email:
+    on_success: always
+    on_failure: always
+env:
+  global:
+    secure: VABgUaZao06J3QYKEBoDJqhgDg5C6Z7L6nY0rmdyGFc6Rm7gpTsM76teFIcAuzlXurzEgJ78S/s5W97SbYU1JK/iZNe6ZxeVn0YxpHiQCiW5y6Qnigbfm86G4ohgWjQ7P7vo3urwx3Te8ZpULKhWsVst1+v9UomQtCySzIImx3hlGqtFNhjKuk8YFUKsoAYMTlCwhIJx1L8RygXyZmtKyhY2voXew8utnUdfmjX/PBSpOR+BTiT0rIYU36wZEVkC/4QtWvRpypwz9tGjMGmTngBZ4GoELSxg5OsPFGM/XgabxGz5FeU/0SpeV1ipFlMRUpQmYmSluI9KycRcIZgnVfOm6i9e10dON6FOz84mat6fK6A1JiIIxl5b7Z6BU7Gcs46K+y1HEYcPQF90kd4cGfNRDUcSe18XK6kN4WuK87kSZk3yMXsyUYiMqwWrsVJvSAfaB+PLmwrOSmW4AoiL/3z+WdTTFuFbyvEfgPenr3XtflM80FH5PkU2uX+FRwdo3hXr2iI9VtVY+tToWLFHdKlde9PzBnXYbSIpKxoPTtOyhL7WFYxHRNZfTwZ1iz2k/5bfwAnuetfc1ma6ZmLEgxEG+PMc9xhE5YbbiMvmUygPrIr5wA2Ze1aoDN25tTTideOfVGM8XPLAkTDjui7g5e4HHaS6IqhBaF+TJE+WzyA=
