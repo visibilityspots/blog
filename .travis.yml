@@ -14,7 +14,7 @@ deploy:
     access_key_id: $AWS_ACCESS_KEY
     secret_access_key: $AWS_SECRET_KEY
     bucket: visibilityspots.org
-    region: us-west-1
+    region: eu-west-1
     skip_cleanup: true
     local-dir: output
     acl: public_read
