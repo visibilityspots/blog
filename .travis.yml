@@ -8,7 +8,7 @@ script:
 - make clean
 - make github_travis_push
 - make clean
-- travis_wait make aws
+- travis_wait 30 make aws
 #deploy:
 #    provider: s3
 #    access_key_id: $AWS_ACCESS_KEY
