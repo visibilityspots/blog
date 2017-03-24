@@ -67,7 +67,7 @@ publish:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(PUBLISHCONF) $(PELICANOPTS)
 
-github:
+github-create:
 	[ ! -d $(OUTPUTDIR) ] || rm -rf $(OUTPUTDIR)
 	$(PELICAN) $(INPUTDIR) -o $(OUTPUTDIR) -s $(GITHUBPUBLISHCONF) $(PELICANOPTS)
 
@@ -79,10 +79,10 @@ aws: aws-create
 	cd $(OUTPUTDIR)
 	s3cmd sync $(OUTPUTDIR)/ s3://$(S3_BUCKET) --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v
 
-github_push: github
+github: github-create
 	cd $(INPUTDIR) && ghp-import -m 'Updating repository to real world blog' -n $(OUTPUTDIR) && git push origin gh-pages
 
-github_travis_push: github
+github-travis: github-create
 	ghp-import -n $(OUTPUTDIR)
 	@git push -fq https://${GH_TOKEN}@github.com/$(TRAVIS_REPO_SLUG).git gh-pages > /dev/null
 
