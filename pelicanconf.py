@@ -29,6 +29,7 @@ CUSTOM_MENUITEMS = (('Blog', ''),
                     ('Profile', 'pages/profile.html'),
                     ('Links', 'pages/links.html'),
                     ('Projects', 'pages/projects.html'),
+                    ('Tools', 'pages/tools.html'),
                     ('Contact', 'pages/contact.html'))
 
 CONTACT_EMAIL = "blog@visibilityspots.org"
