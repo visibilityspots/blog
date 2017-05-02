@@ -5,11 +5,13 @@ Slug:	     mkdocs
 Tags:	     documentation, mkdoc, automation, pandoc, markdown, html, linux
 Status:	     published
 
+Updated:     2017-05-02 21:00
+
 To make our and other lives less painful writing documentation is a good start to decrease the level of frustration when working on a shared project.
 
-It's a common feeling writing documentation isn't something we are all waiting for to do. In an effort to make it easier for all of us an automatically way of deployment can be managed by our good friend jenkins.
+It's a common feeling writing documentation isn't something we are all waiting for to do. In an effort to make it easier for all of us an automatically way of deployment can be managed by our good friend jenkins in combination with docker.
 
-The details about this flow is been described on this page. After reading through this documentation section you should be aware of the general deployement idea so you can implement it yourself and start writing documentation without any hassle.
+The details about this flow is been described on this page. After reading through this documentation section you should be aware of the general deployment idea so you can implement it yourself and start writing documentation without any hassle.
 
 ## Mark down
 
@@ -170,6 +172,10 @@ Next you could configure a jenkins job which for examples logs in through ssh an
 ### Configuration management
 
 Instead of the deployment-package job you could also use a configuration management tool which does the installation/upgrade for you ;)
+
+## Docker
+
+Instead of installing the tools on your local machine or your build server you could also opt for docker, there are a lot of preconfigured docker containers available on the internet or you could start making your own docker file relying on for example a centos official docker container and only mount your markdown documents into the container. That way you have more control over the environment and releases independent of the host system both by the ones who are writing the documentation as your build system..
 
 ## Useful links
 * [Adam-p](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet)
