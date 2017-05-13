@@ -10,15 +10,19 @@ script:
 - make clean
 - make aws-create
 deploy:
-    provider: s3
-    access_key_id: $AWS_ACCESS_KEY
-    secret_access_key: $AWS_SECRET_KEY
-    bucket: visibilityspots.org
-    region: eu-west-1
-    skip_cleanup: true
-    local-dir: output
-    acl: public_read
-    detect_encoding: true
+  provider: s3
+  access_key_id: $AWS_ACCESS_KEY
+  secret_access_key: $AWS_SECRET_KEY
+  bucket: visibilityspots.org
+  region: eu-west-1
+  skip_cleanup: true
+  local-dir: output
+  acl: public_read
+  detect_encoding: true
+  cache_control: "max-age=21600"
+after_deploy:
+  - aws configure set preview.cloudfront
+  - aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
 notifications:
   email:
     on_success: change
