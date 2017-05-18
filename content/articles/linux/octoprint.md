@@ -3,10 +3,10 @@ Author:      Jan
 Date: 	     2014-05-02 19:00
 Slug:	     octoprint
 Tags: 	     raspberry, pi, octoprint, ultimaker, 3d, printing
-Modified:    Fri 10 May 2014
+Modified:    Fri 10 May 2017
 Status:      published
 
-At our [office](https://inuits.eu) we have an [ultimaker](https://www.ultimaker.com/pages/our-printers/ultimaker-2) installed, we have it now for some weeks and already printed out a bunch of stuff. It's cool to see, amazed by the technology.
+At our [office](https://inuits.eu) we have an [ultimaker 2](https://www.ultimaker.com/pages/our-printers/ultimaker-2) installed, we have it now for some weeks and already printed out a bunch of stuff. It's cool to see, amazed by the technology.
 
 Expect the manner to start a print job, you have to save your generated [gcode](http://reprap.org/wiki/G-code) files onto an SD card, stick it into the ultimaker and use the rather simple menu from the tiny display to start the print job.
 
