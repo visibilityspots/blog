@@ -20,7 +20,7 @@ Automating the validation environment for the `dialog`_ infrastructure using dif
 
 + Puppetizing of many different tools for testing purposes
 + Implementing the torrent protocol for benchmarking against other protocols
-+ Configuring [packer.io](https://packer.io) templates for the cloud images
++ Configuring `packer.io`_ templates for the cloud images
 + Setting up an openstack private cloud in line with the current validation environment
 
 Next to the use case of the validation tests on the openstack private cloud also using it to have virtual development environments for the dialog platforms so developers have a flexible way of developing/bugfixing the product.
@@ -125,3 +125,4 @@ Actively done for about 14 years, 5 years as a member, 7 years as a chief from w
 .. _Belnet: http://www.belnet.be
 .. _Belgacom: http://www.belgacom.be/nl/grote-bedrijven/producten-en-diensten/connectivity/belgacom-explore/data-connectivity?page=p_ent_data_connectivity
 .. _project: https://github.com/visibilityspots/endterm-project
+.. _packer.io: https://packer.io
