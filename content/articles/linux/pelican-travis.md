@@ -73,4 +73,34 @@ Besides the github token you'll also need to configure the previously created AW
 
 Now the most of the administrative part is done a [.travis.yaml](https://github.com/visibilityspots/blog/blob/master/.travis.yml) file is needed in your repository which contains a list of steps to be performed by travis every time a new commit will be pushed.
 
-The result of your build can be followed on the travis webpage as for example the [build](https://travis-ci.org/visibilityspots/blog) of this page
+## dependencies
+The travis file I'm reffering to is divided in four parts, the first one being the installation of the different python [dependencies](https://github.com/visibilityspots/blog/blob/master/requirements.txt) needed to build and deploy our website.
+
+```python
+pip install -r requirements.txt
+```
+
+## make
+Secondly we rely on the [Makefile](https://github.com/visibilityspots/blog/blob/master/Makefile) to first build and deploy the website to github pages and secondly build it for AWS;
+
+```bash
+$ make clean
+$ make github-travis
+$ make clean
+$ make aws-create
+```
+
+## deployment to AWS
+
+When the website is prepared for AWS it can be deployed using the builtin [deploy](https://docs.travis-ci.com/user/deployment/s3/) of travis.
+
+## cache invalidation
+
+Last but not least is the invalidation of the cache on the different cloudfront edge locations so the updated website is also renewed on those servers.
+
+```
+$ aws configure set preview.cloudfront true
+$ aws cloudfront create-invalidation --distribution-id $CLOUDFRONT_DISTRIBUTION_ID --paths "/*"
+```
+
+The result of your build can be followed on the travis webpage as for example the [build](https://travis-ci.org/visibilityspots/blog/builds/234608263) of this page
