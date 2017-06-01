@@ -4,7 +4,8 @@ Date: 	     2017-05-21 22:00
 Slug:	     pelican-travis
 Tags: 	     pelican, travis, ci, travis-ci, s3, github, pages, static
 Status:      published
-Updated:     2017-05-21 22:00
+Updated:     2017-06-01 09:00
+
 many years ago I created my own webpage, it all started with pure, HTML evolved to a wordpress and finally became a [pelican](https://blog.getpelican.com/) based setup. It got served on many different hosting providers but since a few years it's running on [S3](https://visibilityspots.org/aws-migration.html) storage and hosted through cloudfront all over the world.
 
 It's a very fast setup, and once the site has been deployed and every little service has been configured and implemented the only thing I need to do is writing content in [markdown](https://daringfireball.net/projects/markdown/) without having to consider how to deploy or how it will look.
@@ -61,6 +62,44 @@ Cloudfront caches your site on the different edge locations, by using [cache inv
 
 [letsencrypt](https://letsencrypt.org/) is a free, automated and open Certificate Authority which can be used in combination with S3 using the [certbot-s3front](https://github.com/dlapiduz/certbot-s3front) tool to get your site served through https.
 
+I automated this process with a script based in /usr/local/bin/:
+
+```
+#!/bin/bash
+#
+# renew certificates for X
+
+export AWS_ACCESS_KEY_ID=""
+export AWS_SECRET_ACCESS_KEY=""
+
+certbot --agree-tos -a certbot-s3front:auth \
+--certbot-s3front:auth-s3-bucket BUCKET-NAME \
+--certbot-s3front:auth-s3-region REGION \
+-i certbot-s3front:installer \
+--certbot-s3front:installer-cf-distribution-id CLOUDFRONT-ID \
+-d DOMAIN --renew-by-default --text
+
+if [[ $? -ne 0 ]]; then
+	/usr/bin/ntfy -b telegram send "ERROR | Certificate renewal for DOMAIN has failed on $(date)!"
+	exit 1;
+fi
+
+/usr/bin/ntfy -b telegram send "SUCCESS | Certificates for DOMAIN have been renewed till $(date -d "3 months") "
+
+```
+
+It will source the IAM credentials you created for this specific use case, use certbot to renew your certificate on the specified cloudfront distribution and use [ntfy](http://ntfy.readthedocs.io/en/latest/) to inform you about it through telegram in this case.
+
+When the renewal fails it will also sent a notification, I didn't had this feature in the past which lead to expiration of the certificate..
+
+It's triggered by cron:
+
+```
+0 0 1 */2 * /usr/local/bin/letsencrypt-*
+```
+
+it will be triggered the [first day every 2 months](https://crontab.guru/#0_0_1_*/2_*), I used this sequence so in case of issues I have time enough to solve it before it expires.
+
 Since we now have everything in place and your website should already be available hosted on AWS we can now automate the whole setup. Meaning the only thing you'll have to perform afterwards is writing content and pushing to git.
 
 # Travis
@@ -74,7 +113,7 @@ Besides the github token you'll also need to configure the previously created AW
 Now the most of the administrative part is done a [.travis.yaml](https://github.com/visibilityspots/blog/blob/master/.travis.yml) file is needed in your repository which contains a list of steps to be performed by travis every time a new commit will be pushed.
 
 ## dependencies
-The travis file I'm reffering to is divided in four parts, the first one being the installation of the different python [dependencies](https://github.com/visibilityspots/blog/blob/master/requirements.txt) needed to build and deploy our website.
+The travis file I'm referring to is divided in four parts, the first one being the installation of the different python [dependencies](https://github.com/visibilityspots/blog/blob/master/requirements.txt) needed to build and deploy our website.
 
 ```python
 pip install -r requirements.txt
@@ -92,7 +131,7 @@ $ make aws-create
 
 ## deployment to AWS
 
-When the website is prepared for AWS it can be deployed using the builtin [deploy](https://docs.travis-ci.com/user/deployment/s3/) of travis.
+When the website is prepared for AWS it can be deployed using the built in [deploy](https://docs.travis-ci.com/user/deployment/s3/) of travis.
 
 ## cache invalidation
 
