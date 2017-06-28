@@ -14,7 +14,7 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-**June 2015 - present | System engineer -** `Newtec Cy`_ **- SINT-NIKLAAS**
+**June 2015 - June 2017 | System engineer -** `Newtec Cy`_ **- SINT-NIKLAAS**
 
 Automating the validation environment for the `dialog`_ infrastructure using different types of open-source tools like puppet for configuration management, looking at packer for building reproducible image artefacts and a private cloud for the provisioning part. In such a way a validation engineer can easily spin up a specific test environment to perform the necessary test banks to validate the dialog hub against many different setups.
 
