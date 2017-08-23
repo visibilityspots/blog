@@ -5,7 +5,7 @@ Slug:	     docker-openstackclient-kilo
 Tags: 	     docker, hub, automated, github, container, openstack, openstackclient, tools, source, at, run, rdo, kilo
 Status:	     published
 
-Updated:     2017-05-29 21:00
+Updated:     2017-08-23 10:00
 
 A couple of years ago I deployed an openstack cluster based on [RDO](https://www.rdoproject.org/). Back in the days we implemented the [kilo](https://www.openstack.org/software/kilo/) release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.
 
@@ -196,6 +196,14 @@ env:
 ```
 
 It will install dgoss and build the container locally on the travis infrastructure. Next it will run the dgoss tests based on the goss.yaml file. When those tests are finished it will upload the created and tested docker container to the docker hub.
+
+To have travis authorized to push to the docker hub we have to provide him our docker credentials in a secure way. Luckily travis thought that through and provided us with the encrypt feature.
+
+```
+$ travis encrypt DOCKER_PASSWORD=YOUR-DOCKER-HUB-PASSWORD --add
+```
+
+That way the password is stored into the travis environment variable $DOCKER_PASSWORD through an encrypted way as can be seen in your .travis.yaml file.
 
 A detailled log will be provided on [travis](https://travis-ci.org/visibilityspots/dockerfile-openstackclient-kilo)
 
