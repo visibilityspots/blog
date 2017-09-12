@@ -14,6 +14,10 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
+**July 2017 - present | Contineous Integration Engineer -** `Zappware`_ **- HASSELT**
+
+Automation of the CI chains for the components developed by the different teams in a dockerized container world. From IOS to Android to C++ and some backends.
+
 **June 2015 - June 2017 | System engineer -** `Newtec Cy`_ **- SINT-NIKLAAS**
 
 Automating the validation environment for the `dialog`_ infrastructure using different types of open-source tools like puppet for configuration management, looking at packer for building reproducible image artefacts and a private cloud for the provisioning part. In such a way a validation engineer can easily spin up a specific test environment to perform the necessary test banks to validate the dialog hub against many different setups.
@@ -91,7 +95,7 @@ Final `project`_: Automated unix server park using puppet
 Skills
 ======
 
-Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm - Spacewalk - Cobbler - Packer - OpenStack - Packstack - AWS - InfluxDB - Grafana - Telegraph - Icinga2
+Linux - Ubuntu - TCP/IP - Cisco - Unix - LaTeX - Scripting - PHP - Fortinet - Routing - WAN - BGP - VLAN - Ethernet - HSRP - Nagios - Cacti - Cisco Technologies - MySQL - Organizational Behavior - AJAX - Apache - Mobile Communications - Python - Puppet - Eucalyptus - Optical Fiber - Copper Cabling - CentOS - KVM - Xen - Zenoss - Icinga - RedHat - Jenkins - Bash - Bacula - Pelican - Tracks - Hubot - Bacula-web - LVM - Software RAID - ArchLinux - Arduino - Digital Signage - Dashing - Xibo - Concerto - Raspberry pi - Raspbian - ArchLinx arm - Spacewalk - Cobbler - Packer - OpenStack - Packstack - AWS - InfluxDB - Grafana - Telegraph - Icinga2 - Docker - LXC - cAdvisor - Prometheus
 
 Certificates
 ------------
