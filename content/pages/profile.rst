@@ -14,7 +14,7 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-**July 2017 - present | Contineous Integration Engineer -** `Zappware`_ **- HASSELT**
+**July 2017 - present | Continuous Integration Engineer -** `Zappware`_ **- HASSELT**
 
 Automation of the CI chains for the components developed by the different teams in a dockerized container world. From IOS to Android to C++ and some backends.
 
