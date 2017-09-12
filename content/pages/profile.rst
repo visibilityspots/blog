@@ -124,6 +124,7 @@ Actively done for about 14 years, 5 years as a member, 7 years as a chief from w
 .. _Scouts en Gidsen Vlaanderen: https://www.scoutsengidsenvlaanderen.be/groepsleiding
 .. _International Post Corporation: http://www.ipc.be/
 .. _dialog: http://www.newtec.eu/product/newtec-dialog
+.. _Zappware: https://www.zappware.com
 .. _Newtec Cy: http://www.newtec.eu
 .. _UGent Boekentoren: http://www.boekentoren.be
 .. _Belnet: http://www.belnet.be
