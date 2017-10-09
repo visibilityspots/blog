@@ -14,9 +14,11 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-**July 2017 - present | Continuous Integration Engineer -** `Zappware`_ **- HASSELT**
+**July 2017 - October 2017 | Continuous Integration Engineer -** `Zappware`_ **- HASSELT**
 
-Automation of the CI chains for the components developed by the different teams in a dockerized container world. From IOS to Android to C++ and some backends.
+Automation of the CI/CD chains for the components developed by the different teams in a dockerized container world. From IOS to Android to C++ and some backends.
+
+Designed and implemented the dockerized container world using a docker swarm cluster, from the jenkins master and the different slaves to the actual artifact which is stored in a nexus repository and deployed on an internal node for QA and development against latest pushed code base for a maven project.
 
 **June 2015 - June 2017 | System engineer -** `Newtec Cy`_ **- SINT-NIKLAAS**
 
