@@ -41,7 +41,8 @@ CONTACTS = (('facebook', 'https://www.facebook.com/visibilityspots'),
 	    ('map-marker', 'https://foursquare.com/visibilityspots'),
 	    ('pinterest', 'http://pinterest.com/visibilityspots/'),
             ('linkedin', 'http://be.linkedin.com/in/jancollijs'),
-            ('desktop', 'http://www.slideshare.net/visibilityspots'))
+            ('desktop', 'http://www.slideshare.net/visibilityspots'),
+            ('heart-empty', 'https://www.strava.com/athletes/12495503'))
 #	    ('ok-circle', 'http://osrc.dfm.io/visibilityspots'))
 
 TAG_CLOUD_STEPS = 4
