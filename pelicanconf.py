@@ -63,7 +63,8 @@ PLUGINS = [
   'github_activity',
   'sitemap',
   'tipue_search',
-  'feed_summary'
+  'feed_summary',
+  'readtime'
 ]
 
 SITEMAP = { 'format': 'xml'}
