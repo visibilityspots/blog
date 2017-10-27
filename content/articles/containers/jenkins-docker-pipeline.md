@@ -12,9 +12,9 @@ The next thing on the roadmap was to use this jenkins setup to actually build ne
 
 This jenkins job will build a generic jenkins slave docker container which will be used by the jenkins master to build some generic jobs.
 
-to be able to build docker images through jenkins there is the [docker-pipeline](https://wiki.jenkins.io/display/JENKINS/Docker+Pipeline+Plugin)Â plugin which can be used by seeding a repository with the Dockerfile and a Jenkinsfile as described by this [tutorial](https://getintodevops.com/blog/building-your-first-docker-image-with-jenkins-2-guide-for-developers).
+to be able to build docker images through jenkins there is the [docker-pipeline](https://wiki.jenkins.io/display/JENKINS/Docker+Pipeline+Plugin) plugin which can be used by seeding a repository with the Dockerfile and a Jenkinsfile as described by this [tutorial](https://getintodevops.com/blog/building-your-first-docker-image-with-jenkins-2-guide-for-developers).
 
-To get it configured I had to install the pipeline plugin, configure an SSH key into jenkins and github so jenkins was able to pull the repository together with the docker registry credentials from the private nexus which will be used in the jenkinsfile.
+To get it configured I had to install the pipeline plugin, configure an SSH key into jenkins and github so jenkins was able to pull the repository together with the docker registry credentials from the private nexus which will be used in the jenkinsfile.
 
 To use the docker-plugin docker needs to be installed on the jenkinsmaster. We already covered that part in the [dockerized jenkins master/slave](https://visibilityspots.org/dockerized-jenkins.html) post.
 
@@ -31,9 +31,9 @@ The container docker GID is already configured statically to 900 so by changing 
 
 ### jenkins
 
-To enable jenkins to read from github a jenkins public SSH key need to be added to repository and the private SSH key needs to be configured in jenkins
+To enable jenkins to read from github a jenkins public SSH key need to be added to repository and the private SSH key needs to be configured in jenkins
 
-Next to the repository credentials we also need to configure credentials of the docker repository hosted on our nexus instance and refer to the ID in the jenkinsfile so the pipeline plugin can act accordingly.
+Next to the repository credentials we also need to configure credentials of the docker repository hosted on our nexus instance and refer to the ID in the jenkinsfile so the pipeline plugin can act accordingly.
 
 ## Jenkinsfile
 
@@ -82,7 +82,7 @@ node ('generic') {
 
 ## testing the docker image
 
-there is this tool called [goss](https://github.com/aelsabbahy/goss) which uses a simple yaml based approach to perform some tests against a server the same way serverspec works. But there is a great wrapper script created called [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss) which uses the same yaml file to perform the tests against a docker container it spins up especially for the testing case.
+there is this tool called [goss](https://github.com/aelsabbahy/goss) which uses a simple yaml based approach to perform some tests against a server the same way serverspe wcorks. But there is a great wrapper script created called [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss) which uses the same yaml file to perform the tests against a docker container it spins up especially for the testing case.
 
 When one of the defined tests fails after the image has been build using the Dockerfile, the jenkins pipeline will abort and will not push the image to the registry. To be able to run the goss test suite the software is also preinstalled on our jenkins-slave docker images.
 
