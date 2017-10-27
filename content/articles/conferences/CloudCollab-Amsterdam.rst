@@ -5,8 +5,9 @@ CloudCollab Amsterdam #CCCEU13
 :tags: cloudstack, conference, cloudcollab, Amsterdam, cloud, apache, 2013, #CCCEU13
 :slug: cloudcollab-amsterdam
 :status: published
+:modified: 2013-11-23
 
-Cloudstack, an item I had on my todo list with some lower priority against daily maintenance of our server park. But since attending `David Nalley's`_ talk on LinuxCon I shifted it up some places. Although I expected a real hands on session the talk he gave about a cloudstack environment for development was really intriguing and matched completely with what I had in mind. 
+Cloudstack, an item I had on my todo list with some lower priority against daily maintenance of our server park. But since attending `David Nalley's`_ talk on LinuxCon I shifted it up some places. Although I expected a real hands on session the talk he gave about a cloudstack environment for development was really intriguing and matched completely with what I had in mind.
 
 Being fully convinced it fits in my idea of a fully automated development environment which meets to all the needs of developers to start writing code real quickly on machines similar to the production environment.
 
@@ -44,7 +45,7 @@ Lunch being served stopped by some boots I started the afternoon by attending a 
 
 After Kris's talk I went to a talk about monitoring a cloudstack environment. It felt like a sales talk for ca technologies own proprietary tool. Bit disappointing that it wasn't what I expected to be after reading the summary on lanyrd about the talk.
 
-So I went for a coffee and bumped into some guys of the University Library of Cambridge at the Pinball machine in the dev room. Cool to see the story of their environment is quite the same as ours at the University Library of Ghent. 
+So I went for a coffee and bumped into some guys of the University Library of Cambridge at the Pinball machine in the dev room. Cool to see the story of their environment is quite the same as ours at the University Library of Ghent.
 
 Being at the end of the day I followed a user panel about 4 organizations who implemented cloudstack for their business all with a different approach and goals. The one that popped out for me was `Greenqloud`_ an Icelandic cloud provider running on 100% renewable energy (as everyone in Iceland), but which also does effort in other areas, like their hardware itself and the buildings their datacenters are deployed in.
 
@@ -57,11 +58,11 @@ The last day of the conference started by checking out the hotel and attending t
 
 Next talk I joined was about the `Netapp cloudstack plugin`_ which was really interesting, I hope I can get my hands on the beta version of the `VSC for cloudstack`_ software soon so I can start playing around with it on our test lab.
 
-After being disappointed by a vendor talking about a topic which ended up in a sales talk I didn't had big expectations for the talk of `Mike Tutkowski`_ from Solid-fire about Guaranteed storage performance. But man how I was wrong. What a great talk. The guy really knew what he was talking about, explained how the storage area of cloudstack works and how they integrated it with their products. All vendor based sales talks should attend this talk and learn from it. That way more people could be becoming interested in your product only because of the clear and transparent explanation. 
+After being disappointed by a vendor talking about a topic which ended up in a sales talk I didn't had big expectations for the talk of `Mike Tutkowski`_ from Solid-fire about Guaranteed storage performance. But man how I was wrong. What a great talk. The guy really knew what he was talking about, explained how the storage area of cloudstack works and how they integrated it with their products. All vendor based sales talks should attend this talk and learn from it. That way more people could be becoming interested in your product only because of the clear and transparent explanation.
 
-Because I'm looking for some scalable storage solution I attended the talk of `Wido den Hollander`_ about `ceph`_. Wido is a passionate ceph lover who gave a crash course of ceph in 30 minutes. In that little time he really gave a clear overview of how ceph could be used together with cloudstack. Using little pizza box servers with one cpu and four disks you could easily manage your own ceph storage cluster. 
+Because I'm looking for some scalable storage solution I attended the talk of `Wido den Hollander`_ about `ceph`_. Wido is a passionate ceph lover who gave a crash course of ceph in 30 minutes. In that little time he really gave a clear overview of how ceph could be used together with cloudstack. Using little pizza box servers with one cpu and four disks you could easily manage your own ceph storage cluster.
 
-After those 2 storage talks I came to this conclusion for myself that `ceph`_ would be a great challenge if you want to keep control over your own storage soft- and hardware based besides the fact you also have to keep in mind about the physical space. 
+After those 2 storage talks I came to this conclusion for myself that `ceph`_ would be a great challenge if you want to keep control over your own storage soft- and hardware based besides the fact you also have to keep in mind about the physical space.
 
 Another solution could be a solid-fire solution where you move the responsibility to a vendor. A great advantage of solid-file is that you can start with a small amount of data and grow your storage on a flexible and scalable manner to your own needs by just adding an extra node like the ceph solution and not like other vendors where you need to review the whole license contract.
 

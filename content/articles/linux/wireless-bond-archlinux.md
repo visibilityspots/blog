@@ -4,6 +4,7 @@ Date: 	     2016-10-17 21:00
 Slug:	     wireless-bond-archlinux
 Tags: 	     wireless, bond, vip, wlan0, wlan1, static, ip, wpa_supplicant, netctl, failover, bonding, bond0, archlinux, raspberry, pi, arm, alarm
 Status:	     published
+Modified:    2016-10-17
 
 for one of my projects, the [sms-twitter wall](../social-media-wall.html) setup, I configured a raspberry pi with 2 wireless network interfaces to connect through a hotspot enabled on an android device. I discovered on previous events that the wireless adapter failed on me from time to time. So I went to the internet to look if I could add a second interface and bond them together.
 

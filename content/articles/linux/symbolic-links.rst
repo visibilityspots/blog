@@ -5,7 +5,7 @@ Symbolic linux links
 :tags: /usr/bin/, link, linux, symbolic, terminal
 :slug: symbolic-links
 :status: published
-
+:date: 2010-02-10
 
 It's rather simple, but I used to look for it a while when writing my first bash/python scripts. Wanted to typing in one command so I would need to type in every time the whole path to my newly written script.
 

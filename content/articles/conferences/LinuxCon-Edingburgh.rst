@@ -5,6 +5,7 @@ LinuxCon Edinburgh
 :tags: linuxcon, Edinburgh, linux, foundation, inuits
 :slug: linuxcon-edinburgh
 :status: published
+:modified: 2013-10-24
 
 I got a great opportunity by attending LinuxCon in Edinburgh.
 

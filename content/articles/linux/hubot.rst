@@ -5,6 +5,7 @@ Hubot, the github chat automated bot
 :tags: hubot, irc, xmpp, chat, bot, github, scripts
 :slug: hubot
 :status: published
+:modified: 2013-06-03
 
 Some weeks ago I was asked by a customer to implement a bot on an IRC channel. Did some research about this topic and stumbled on the github `hubot`_.
 

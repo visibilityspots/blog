@@ -5,6 +5,7 @@ Writing customized icinga checks
 :tags: centOS, checks, icinga, monitoring, nrpe, server
 :slug: icinga-checks
 :status: published
+:modified: 2012-09-25
 
 Recently I started to try writing a customized script for the `icinga`_ monitoring tool. I will try to describe the steps I went trough to achieve this in this post. I assume you already have a working icinga setup.
 If not you can find documentation about this on \ `http://docs.icinga.org/`_.

@@ -4,8 +4,7 @@ Date: 	     2014-04-20 17:00
 Slug:	     mkdocs
 Tags:	     documentation, mkdoc, automation, pandoc, markdown, html, linux
 Status:	     published
-
-Updated:     2017-05-02 21:00
+Modified:    2017-05-02
 
 To make our and other lives less painful writing documentation is a good start to decrease the level of frustration when working on a shared project.
 

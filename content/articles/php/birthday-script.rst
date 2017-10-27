@@ -5,6 +5,7 @@ Showing birthdays using php
 :tags: MySQL, php, scouts, script, birthdays
 :slug: birthday-script
 :status: published
+:modified: 2009-12-30
 
 For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.
 

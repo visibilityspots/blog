@@ -5,6 +5,7 @@ Dropbox
 :tags: accounts, centOS, dropbox, encfs, encryption, multiple, security
 :slug: dropbox
 :status: published
+:modified: 2012-10-15
 
 Reading this article will go through the process I went through configuring multiple dropbox accounts on my centos machine (one personal and one for work) and encrypting them both using encfs.
 

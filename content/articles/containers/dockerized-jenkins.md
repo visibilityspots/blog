@@ -4,8 +4,7 @@ Date: 	     2017-09-06 22:00
 Slug:	     dockerized-jenkins
 Tags: 	     docker, jenkins, master, slave, centos, 7
 Status:	     published
-
-Updated:     2017-09-06 22:00
+Modified:    2017-09-06
 
 started at a new customer we were looking for a more flexible way of having jenkins spinning up slaves on the fly. This in a way a slave is only started and consuming resources when a specific job is running. That way those resources could be used more efficient.
 

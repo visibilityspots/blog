@@ -5,6 +5,7 @@ Permissions website
 :tags: hosting, linux, online, permissions, shell, web, security
 :slug: web-permissions
 :status: published
+:modified: 2010-02-09
 
 The most recommended permissions for files and directories on the web are 0755 and 0644. If you have shell access to your webserver you can set those permissions using those commands:
 ::

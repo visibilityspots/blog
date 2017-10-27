@@ -4,6 +4,7 @@ Date: 	     2016-04-21 19:00
 Slug:	     openstack-live-migration
 Tags: 	     openstack, live, migration, kilo, kvm, block, config, drive, vfat
 Status:	     published
+Modified:    2016-04-21
 
 Some of you may already have notices others just stumbled on this post through a search engine, I have set up an openstack private cloud at one of our projects:
 

@@ -4,6 +4,7 @@ Date: 	     2017-09-11 19:00
 Slug:	     nexus-oss-repository-manager
 Tags: 	     nexus, repository, manager, nginx, proxy, SSL, https, docker, private, group
 Status:      published
+Modified:    2017-09-11
 
 looking for a global repository store which could store maven projects, yum repositories, docker repositories, we bumped into [Nexus repository manager](https://help.sonatype.com/display/NXRM3/Repository+Manager+3). We used the official docker image to see how it can be implemented in the dockerized CI environment.
 

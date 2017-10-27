@@ -5,6 +5,7 @@ Command line printing & scanning
 :tags: print, scan, command, line, linux, lpr, scanimage
 :slug: printing-scanning
 :status: published
+:modified: 2013-08-02
 
 Since I discovered the joy of using the ratpoison window manager I'm trying to do all tasks I need to perform on my system using the command line.
 

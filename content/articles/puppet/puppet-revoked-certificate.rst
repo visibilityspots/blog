@@ -5,7 +5,7 @@ Puppet sslv3 alert certificate revoked
 :tags: certificate, continuous integration, Linux, puppet, revoke, sign, ssl
 :slug: puppet-revoked-certificate.rst
 :status: published
-:modified: 2015-10-08 11:10
+:modified: 2015-10-08
 
 I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command
 

@@ -5,6 +5,7 @@ Lighttpd change tcp port in CentOS
 :tags: centOS, lighttpd, selinux, webserver
 :slug: selinux
 :status: published
+:modified: 2012-12-05
 
 It seems like a very simple job, and in fact it is. But I had an issue when I tried to change this in my Cent OS 6.3 setup.
 

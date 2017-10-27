@@ -4,8 +4,7 @@ Date: 	     2017-03-23 19:00
 Slug:	     openstack-mtu
 Tags: 	     openstack, mtu, kilo, neutron, nova, config, ovs
 Status:      published
-
-Updated:     2017-03-23 19:00
+Modified:    2017-03-23
 
 Recently I was been asked to increase the MTU on the deployed openstack cluster at one of our customers. Since the beginning of my touch on openstack networking has been the hardest part to get my head around. In the first place because openstack does some nifty things on the networking path. But also cause for the use case at the customer a lot of customization has been done to get it implemented in their infrastructure.
 

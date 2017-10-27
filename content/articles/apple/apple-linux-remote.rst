@@ -5,6 +5,7 @@ Apple remote (A1156) - MacBook Pro 3.1 & Ubuntu 10.04
 :tags: apple, linux, ubuntu, infrared, remote, lirc, hardware
 :slug: apple-linux-remote
 :status: published
+:modified: 2011-01-27
 
 It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.
 

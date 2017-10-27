@@ -5,6 +5,7 @@ Tracks
 :tags: tracks, gtd, project, management, todo, list
 :slug: tracks
 :status: published
+:modified: 2013-05-16
 
 To get an overview of my todo's I used to list them in google tasks. Back in time I was convinced it would nicely integrate with all tools software and distributions I would use. After some month's I figured out it wouldn't.
 

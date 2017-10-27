@@ -5,6 +5,7 @@ Conky
 :tags: conky, conky-colors, monitor, ubuntu, karmic, linux
 :slug: conky
 :status: published
+:modified: 2009-12-30
 
 To monitor the different resources of my local system I use conky. After you installed the conky software you can start with the configuration of it.
 ::

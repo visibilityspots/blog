@@ -3,7 +3,7 @@ Author:      Jan
 Date: 	     2017-09-21 22:00
 Slug:	     gradle-build
 Tags: 	     gradle, android, jenkins, FAILURE, Already, finished
-Modified:    Thu 21 September 2019 22:00
+Modified:    2017-09-21
 Status:	     published
 
 Today we bumped into an interesting issue in the jenkins builds of some android based applications. The gradle commands succeeded but then suddenly failed the build with this most cryptic message ever:

@@ -4,8 +4,7 @@ Date: 	     2015-11-03 23:00
 Slug:	     social-media-wall
 Tags:	     sms,wall,sms-wall,sms-wall.org,tasker,python,php,archlinux,arch,arm,alarm,raspberry,tweet,social,pagekite
 Status:	     published
-
-Updated:     2016-10-17 22:00
+Modified:    2016-10-17
 
 A long time ago I was active in the local scouting group. To earn some money to keep our group in a healthy financial position we organized a so called vedettweekend. It's an event where people can have a beer, [vedett](http://vedett.be) obviously spin a dance, enjoy a spaghetti and have a good chat with your friends.
 
@@ -63,7 +62,7 @@ To accomplish this behavior I configured the phone as a hotspot and staticly ass
 
 Through this hotspot the raspberry also has connectivity to the outside world using mobile data.
 
-During previous events I experienced some malfunction on the wireless adapter, so I decided to introduce bonding which I spent an entire [blog post](../wireless-bond-archlinux.html) about. 
+During previous events I experienced some malfunction on the wireless adapter, so I decided to introduce bonding which I spent an entire [blog post](../wireless-bond-archlinux.html) about.
 
 ### reverse tunnel
 
@@ -73,7 +72,7 @@ By doing so I can access the pi from everywhere I have internet connectivity and
 
 ### pagekite
 
-When the pi is also connected to a local LAN through it's ethernet port the reverse tunnel is working fine. But for some events that uplink isn't an option. And for some reason the reverse tunnel option didn't worked out fine. 
+When the pi is also connected to a local LAN through it's ethernet port the reverse tunnel is working fine. But for some events that uplink isn't an option. And for some reason the reverse tunnel option didn't worked out fine.
 
 So I looked around on the net and stumbled onto [pagekite](https://www.pagekite.org). After setting up a custom frontend on a VPS I could connect the kite running on the raspberry to it. That way I didn't had to subscribe to the free service of pagekite itself and keeping control of the tunnel.
 

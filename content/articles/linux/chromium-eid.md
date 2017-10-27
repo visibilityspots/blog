@@ -4,7 +4,7 @@ Date: 	     2013-05-29 19:00
 Slug:	     chromium-eid
 Tags:        archlinux, fedora, linux, eid, fod, Belgium, chrome, chromium, browser
 Status:      published
-Modified:    2016-05-11 19:00
+Modified:    2016-05-11
 
 During this time of the year in Belgium most people needs to fill in their taxes forms.
 

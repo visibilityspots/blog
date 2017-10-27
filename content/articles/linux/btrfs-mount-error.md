@@ -4,6 +4,7 @@ Date: 	     2015-09-07 19:00
 Slug:	     btrfs-mount-issue
 Tags: 	     btrfs, mount, issue, error, transid, restore, recover, open_ctree, failed
 Status:      published
+Modified:    2015-09-07
 
 I decided to bootstrap my new machine with btrfs as filesystem instead of ext4 LVM volumes. By following the excellent arch-wiki [btrfs page](https://wiki.archlinux.org/index.php/Btrfs) I successfully crafted a base system with sub volumes, limited on size and snapshots enabled.
 

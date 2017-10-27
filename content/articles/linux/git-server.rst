@@ -5,6 +5,7 @@ Git server
 :tags: git, server, repo, gitweb, gitalist, centos
 :slug: git-server
 :status: published
+:modified: 2013-11-01
 
 For some of my development projects I'm using git repositories because of the flexibility of it. But the initial beta phase I don't want to keep private until I created something working. Normally I use github.com repositories for them, a good service except you have to pay for private repositories.
 

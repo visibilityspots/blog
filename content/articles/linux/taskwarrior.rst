@@ -5,6 +5,7 @@ Taskwarrior
 :tags: inuits, tasks, task, taskwarrior, centos, command, line, task-web, mirakel, todo
 :slug: taskwarrior
 :status: published
+:modified: 2013-09-30
 
 I've used a lot's of tools to get a grip on my todo lists for work, for the scouting movement, for technical projects, household, etc. Started by using pen and paper, switched to a little notebook (which I still use for short-term tasks) to start using software to organize them.
 

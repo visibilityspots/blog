@@ -4,6 +4,7 @@ Date: 	     2014-12-09 23:00
 Slug:	     vagrant-setup
 Tags: 	     vagrant, lxc, CentOS, containers, linux, vagrant-lxc, development, devops, operations, centos
 Status:      published
+Modified:    2014-12-09
 
 In this article I'll try to describe how I use vagrant in my daily tasks as an operations dude as well as I deployed it at one of our customers to help the developers focusing on the coding part rather than the operations part.
 

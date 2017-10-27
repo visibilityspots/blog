@@ -5,6 +5,7 @@ Conky-colors
 :tags: conky, conky-colors, fedora, desktop
 :slug: conky-colors
 :status: published
+:modified: 2013-05-20
 
 Back in the days I once wrote a `blogpost`_ about a `conky`_ setup on a Ubuntu desktop. In the meantime I'm not using ubuntu anymore and kinda tweaked my whole conky setup. I switched to fedora 18 and using `conky-colors`_ those days in front of the `ratpoison`_ window manager.
 

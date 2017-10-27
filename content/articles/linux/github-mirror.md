@@ -4,6 +4,7 @@ Date: 	     2014-10-27 22:00
 Slug:	     github-mirroring
 Tags: 	     github, mirror, pull, request, git, merge
 Status:      published
+Modified:    2014-10-27
 
 As an enthusiastic open-source addict I use [github](http://github.com) on a regularly base to share my knowledge with the world, to explore new software tools, to enhance software with new features, to fix bugs, to collaborate with others, and above all to live the open source way!
 

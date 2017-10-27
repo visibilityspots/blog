@@ -4,8 +4,7 @@ Date: 	     2017-05-29 21:00
 Slug:	     docker-openstackclient-kilo
 Tags: 	     docker, hub, automated, github, container, openstack, openstackclient, tools, source, at, run, rdo, kilo
 Status:	     published
-
-Updated:     2017-08-23 10:00
+Modified:    2017-08-23
 
 A couple of years ago I deployed an openstack cluster based on [RDO](https://www.rdoproject.org/). Back in the days we implemented the [kilo](https://www.openstack.org/software/kilo/) release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.
 

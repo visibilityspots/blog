@@ -5,6 +5,7 @@ SSH acces on Lacie Network Space 2
 :tags: access, capsule, lacie, Linux, NAS, network, root, space, ssh, update
 :slug: lacie-networkspace-2
 :status: published
+:modified: 2012-05-28
 
 Recently we installed a Lacie Network Space 2 at home. Easy to share documents on the LAN network, having a central place for common media etc. After playing around with it I wanted to see if it's possible to gain access to the underlying operating system of it. On that way I could for example use this access to wake up a pc with wake on LAN.
 

@@ -5,6 +5,7 @@ SMS server using CentOS, kannel and playsms
 :tags: centOS, debian, gsm, huawai, kannel, playsms, server, sms, option, globetrotter, falcom, mobile, vikings
 :slug: sms-server
 :status: published
+:modified: 2012-07-24
 
 On this page I will describe the way I went trough to configure an sms gateway using a laptop, `huawei`_ modem, `falcom`_ A2D-1 or the `option`_ Globetrotter hardware using the open source software `kannel`_ & `playsms`_.
 

@@ -5,6 +5,7 @@ Upgrade to puppet 3.3.0
 :tags: puppet, upgrade, 3.3.0, 2.6.x, issues, foreman, passenger, puppetdb
 :slug: puppet-3-upgrade
 :status: published
+:modified: 2013-09-20
 
 I finally got to the point where I upgraded a whole puppet infrastructure from puppet 2.6.x to the last stable version of puppet, `3.3.0`_. And after finding out the way to go it was surprisingly easy and no big issues came across.
 

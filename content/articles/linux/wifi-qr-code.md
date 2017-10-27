@@ -4,6 +4,7 @@ Date: 	     2014-08-28 22:00
 Slug:	     wifi-qr-code
 Tags: 	     wifi, qr, code, generator, qrencode, linux, archlinux
 Status:      published
+Modified:    2014-08-28
 
 To make the process of connecting to our local wifi at home a bit less complex I decided to create a qr code for it. That way people can easily use their camera of their smartphone to connect to our network without typing in the WPA key.
 

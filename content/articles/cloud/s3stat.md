@@ -4,6 +4,7 @@ Date: 	     2016-10-26 19:00
 Slug:	     s3stat
 Tags: 	     s3stat, aws, analytics, statistics, web, refers, s3, cdn, cloudfront
 Status:      published
+Modified: 	     2016-10-26
 
 Some weeks ago an article on [hacker news](https://news.ycombinator.com/item?id=12634447) got my interest. From time to time I really get an healthy dose of jealousy when people found an idea which could make them buy a tesla. My terms of someone who make a lot of money ;)
 

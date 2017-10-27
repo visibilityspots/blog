@@ -4,6 +4,7 @@ Date: 	     2015-10-10 23:00
 Slug:	     vagrant-puppet-setup
 Tags: 	     vagrant, rsync, puppetmaster, puppetserver, development, setup
 Status:      published
+Modified:    2015-10-10
 
 We at [Inuits](https://inuits.eu) are using vagrant for a lot of use cases, neither you are a developer or a sysadmin you for sure will walk into it. Me, myself I do use it merely to automate the many different use cases asked by various projects. It took some time to get myself organized with this pretty nifty piece of software.
 

@@ -5,6 +5,7 @@ CPAN rpm packages
 :tags: cpan, spec, rpm, package, packaging, centos, yum, repository, cpanspec, rpmbuild
 :slug: cpan-rpm-packages
 :status: published
+:modified: 2013-10-05
 
 I went crazy from perl and the installation of their modules. For some icinga checks we need to install a few base perl packages using `cpanminus`_. It's taking a long time before the installation succeeds depending on the internet connection or server specifications.
 

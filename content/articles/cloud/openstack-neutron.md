@@ -4,7 +4,7 @@ Date: 	     2015-09-29 19:00
 Slug:	     vlan-flat-neutron-provider
 Tags: 	     vlan,flat,neutron,provider,network,openstack,openvswitch,ovs
 Status:      published
-Updated:     2015-10-02 12:00
+Modified:    2015-10-02
 
 at one of my projects I was been asked to set up a private cloud for a validation platform. The whole idea behind this proof of concept is based on the flexibility to spin up and down certain instances providing some specific functionality so tests banks can be ran against them.
 

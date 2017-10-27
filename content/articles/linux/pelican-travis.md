@@ -4,7 +4,7 @@ Date: 	     2017-05-21 22:00
 Slug:	     pelican-travis
 Tags: 	     pelican, travis, ci, travis-ci, s3, github, pages, static
 Status:      published
-Updated:     2017-06-01 09:00
+Modified:    2017-06-01
 
 many years ago I created my own webpage, it all started with pure, HTML evolved to a wordpress and finally became a [pelican](https://blog.getpelican.com/) based setup. It got served on many different hosting providers but since a few years it's running on [S3](https://visibilityspots.org/aws-migration.html) storage and hosted through cloudfront all over the world.
 

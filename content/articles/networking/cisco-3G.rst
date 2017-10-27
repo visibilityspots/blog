@@ -5,6 +5,7 @@ Cisco HWIC 3G configuration to 2G
 :tags: 2G, 3G, auto-band, band, cellular, cisco, gsm, gsm-all-bands, Mobile, router
 :slug: cisco-3g
 :status: published
+:modified: 2012-04-03
 
 In some cisco routing devices you have the possibility to extend the features with a HWIC 3G card so mobile connectivity is added to your network infrastructure. This can be interesting for a mobile fail-over connection.
 

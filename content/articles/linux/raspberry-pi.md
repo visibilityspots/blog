@@ -3,8 +3,8 @@ Author:      Jan
 Date: 	     2014-05-16 19:00
 Slug:	     raspberry-pi
 Tags: 	     raspberry, pi, archlinux, ARM, software, RAID, mdadm, irssi, bitlbee, usb, disks
-Modified:    Mon 04 August 2014 19:00
 Status:      published
+Modified:    2014-08-04
 
 Since I discovered the joy of linux servers over desktop distributions a few years ago I revived an old portable and promoted him to be my home server.
 

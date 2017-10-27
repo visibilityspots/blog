@@ -3,8 +3,8 @@ Author:      Jan
 Date: 	     2014-07-16 19:00
 Slug:	     rsnapshot-backup
 Tags: 	     udev, usb, disk, archlinux, mount, uuid, serial, cryptsetup, backup, rsnapshot
-Modified:    Wed 15 Jul 2015
 Status:      published
+Modified:    2015-06-15
 
 Some weeks ago I removed some files on my system I wish I didn't cause I still needed them.
 

@@ -4,8 +4,7 @@ Date: 	     2016-09-18 21:00
 Slug: 	     aws-migration
 Status:      published
 Tags:	     aws, awsome, awesome. cloud, amazon, migration, pelican, rds
-
-Updated:     2017-03-17 17:00
+Modified:     2017-03-17
 
 About a year ago I attended the [AWSome Day](http://aws.amazon.com/events/awsome-day/benelux/belgium/) at [Mechelen](http://lamot-mechelen.be). Back then I wrote a first draft article about it, but it got out of my sight unfortunately. I reviewed it and decided to publish it anyway.
 

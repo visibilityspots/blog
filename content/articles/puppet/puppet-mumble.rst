@@ -5,6 +5,7 @@ Puppet module mumble-server
 :tags: centOS, Linux, module, mumble, mumble-server, open-source, puppet
 :slug: puppet-mumble
 :status: published
+:modified: 2012-04-04
 
 `Mumble`_ is an open source, low-latency, high quality voice chat software primarily intended for use while gaming.
 

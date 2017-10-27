@@ -5,6 +5,7 @@ Ratpoison window manager
 :tags: ratpoison, window, manager, fedora, desktop
 :slug: ratpoison
 :status: published
+:modified: 2013-05-22
 
 My first steps in linux where on a ubuntu distribution, when you could order the ISO images on a cd-rom delivered by the post.
 

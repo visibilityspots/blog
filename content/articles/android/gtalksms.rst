@@ -5,6 +5,7 @@ GTalkSMS mobile alerting through xmpp protocol
 :tags: alerts, Android, chat, control, gtalk, gtalksms, irssi, Mobile, Pidgin, sms, xmpp, inuits
 :slug: gtalksms
 :status: published
+:modified: 2012-12-19
 
 Recently I bumped into `GTalkSMS`_ when I was surfing the net for manuals on irssi & bitlbee using to chat so I could move away from pidgin.
 

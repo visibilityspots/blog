@@ -4,6 +4,7 @@ Date: 	     2014-04-25 19:00
 Slug:	     pakiti
 Tags:	     pakiti, monitoring, security, linux, patching, cve
 Status:	     published
+Modified:    2014-04-25
 
 Nowadays it becomes more and more relevant knowing which version of a package is installed and having an overview of the packages infected by some bugs or security holes. That way you could see which servers are possibly vulnerable for those on the dark side.
 

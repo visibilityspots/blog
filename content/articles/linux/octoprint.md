@@ -3,8 +3,8 @@ Author:      Jan
 Date: 	     2014-05-02 19:00
 Slug:	     octoprint
 Tags: 	     raspberry, pi, octoprint, ultimaker, 3d, printing
-Modified:    Fri 10 May 2017
 Status:      published
+Modified:    2017-05-10
 
 At our [office](https://inuits.eu) we have an [ultimaker 2](https://www.ultimaker.com/pages/our-printers/ultimaker-2) installed, we have it now for some weeks and already printed out a bunch of stuff. It's cool to see, amazed by the technology.
 

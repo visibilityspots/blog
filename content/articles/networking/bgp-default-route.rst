@@ -5,6 +5,7 @@ BGP announcing default route
 :tags: bgp, cisco, default, networking, route
 :slug: bgp-default-route
 :status: published
+:modified: 2012-03-31
 
 Advertising default route with BGP
 ==================================
