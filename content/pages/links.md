@@ -21,5 +21,5 @@ Modified:       2015-10-05 15:00
 # Friends
 
 - Blog of [Bart Vermijlen](http://bart.vermijlen.be)
-- Photo blog of (Sander Van Loo)[http://www.sandervanloo.be]
+- Photo blog of [Sander Van Loo](http://www.sandervanloo.be)
 - Photo - Graphical portfolio of [Gilbert Vandenbloeck](http://www.vandenbloeck.eu)
