@@ -4,7 +4,7 @@ Date: 	     2017-10-30 19:00
 Slug:	     jenkins-docker-pipeline
 Tags: 	     jenkins, docker, pipeline, plugin, jenkinsfile, centos, master, slave, 7
 Status:      published
-Modified:    2016-10-30
+Modified:    2017-10-30
 
 in a previous blog post I talked about setting up a [dockerized jenkins master/slave setup]({filename}/articles/containers/dockerized-jenkins.md) and setting up a [private docker registry using nexus]({filename}/articles/containers/nexus-oss-repository.md).
 
