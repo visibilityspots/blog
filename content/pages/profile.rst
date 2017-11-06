@@ -14,6 +14,12 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
+**November 2017 - present | Devops Engineer -** `Trendminer`_ **- HASSELT**
+
+Setup and automation of the product’s deployment options: cloud-based or on premise.
+
+Setup and automation of the internal development tooling.
+
 **July 2017 - October 2017 | Continuous Integration Engineer -** `Zappware`_ **- HASSELT**
 
 Automation of the CI/CD chains for the components developed by the different teams in a dockerized container world. From IOS to Android to C++ and some backends.
@@ -127,6 +133,7 @@ Actively done for about 14 years, 5 years as a member, 7 years as a chief from w
 .. _International Post Corporation: http://www.ipc.be/
 .. _dialog: http://www.newtec.eu/product/newtec-dialog
 .. _Zappware: https://www.zappware.com
+.. _Trendminer: https://www.trendminer.com
 .. _Newtec Cy: http://www.newtec.eu
 .. _UGent Boekentoren: http://www.boekentoren.be
 .. _Belnet: http://www.belnet.be
