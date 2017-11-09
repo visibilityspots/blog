@@ -1,10 +1,10 @@
 Title:       Test ansible playbooks with docker
 Author:      Jan
 Date: 	     2017-11-09 21:00
-Slug:	     test ansible playbooks
+Slug:	     test-ansible-playbooks
 Tags: 	     ansible, docker, playbook, test
 Status:      published
-Modified     2017-11-09
+Modified:     2017-11-09
 
 recently I started working at a new project where the infra is maintained by ansible. When been asked to write some functionality in a playbook I missed my [vagrant puppet](https://github.com/visibilityspots/vagrant-puppet) setup where I could easily test my puppet code on my local machine.
 
