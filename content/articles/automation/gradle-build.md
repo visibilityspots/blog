@@ -3,7 +3,7 @@ Author:      Jan
 Date: 	     2017-09-21 22:00
 Slug:	     gradle-build
 Tags: 	     gradle, android, jenkins, FAILURE, Already, finished
-Modified:    2017-09-21
+Modified:    2017-12-21
 Status:	     published
 
 Today we bumped into an interesting issue in the jenkins builds of some android based applications. The gradle commands succeeded but then suddenly failed the build with this most cryptic message ever:
@@ -103,8 +103,11 @@ but no solution neither. Checked out the repository to commit of the latest succ
 After reading many other gradle issues I came to one indicating killing the gradle daemons could solve the mystery. So we went ahead and killed the daemons on the build node.
 
 ```
+# ps aux | grep gradle
 jenkins   6341 33.9  7.9 14954276 2625892 ?    Ssl  18:11  58:59 /usr/lib/jvm/java-8-openjdk-amd64/bin/java -Xmx1536m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -cp /home/jenkins/.gradle/wrapper/dists/gradle-3.5-all/exhrs6ca08n232b14ue48lbye/gradle-3.5/lib/gradle-launcher-3.5.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 3.5
 jenkins  10631 19.3  6.5 14449300 2164472 ?    Ssl  18:48  26:25 /usr/lib/jvm/java-8-openjdk-amd64/bin/java -Xmx1536m -Dfile.encoding=UTF-8 -Duser.country=US -Duser.language=en -Duser.variant -cp /home/jenkins/.gradle/wrapper/dists/gradle-3.4.1-all/c3ib5obfnqr0no9szq6qc17do/gradle-3.4.1/lib/gradle-launcher-3.4.1.jar org.gradle.launcher.daemon.bootstrap.GradleDaemon 3.4.1
+
+kill -9 6341 10631
 ```
 
 And reran the build manually which succeeded, when re-triggering the job it succeeded. Victory! We assumed those daemons where stopped right after the execution but as we noticed this wasn't the case.
