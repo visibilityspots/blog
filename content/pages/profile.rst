@@ -14,7 +14,7 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-**November 2017 - present | Devops Engineer -** `Trendminer`_ **- HASSELT**
+**November 2017 - present | Operations Engineer -** `Trendminer`_ **- HASSELT**
 
 Setup and automation of the product’s deployment options: cloud-based or on premise.
 
