@@ -4,7 +4,7 @@ from __future__ import unicode_literals
 
 AUTHOR = 'Jan'
 USE_FOLDER_AS_CATEGORY = True
-SITENAME = 'Visibilityspots'
+SITENAME = 'visibilityspots'
 SITEURL = 'http://localhost:8000'
 SITESUBTITLE = 'Linux & Open-Source enthusiast | Scouting | Longboarding'
 TIMEZONE = 'Europe/Brussels'
