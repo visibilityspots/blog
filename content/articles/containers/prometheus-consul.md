@@ -40,7 +40,7 @@ Another line is used to rename the endpoints in prometheus by a more human reada
         target_label: job
 ```
 
-And that's about it. With this [prometheus.yml](https://github.com/visibilityspots/nomad-consul-prometheus/prometheus/prometheus.yml) configuration file services started through nomad with the proper 'metrics' tag are auto discovered by prometheus as target.
+And that's about it. With this [prometheus.yml](https://github.com/visibilityspots/nomad-consul-prometheus/blob/master/prometheus/prometheus.yml) configuration file services started through nomad with the proper 'metrics' tag are auto discovered by prometheus as target.
 
 To demonstrate this behavior I created a [github repository](https://github.com/visibilityspots/nomad-consul-prometheus) based on [vagrant](https://www.vagrantup.com) inspired by the [getting started](https://www.nomadproject.io/intro/getting-started/install.html) guide of nomad.
 
