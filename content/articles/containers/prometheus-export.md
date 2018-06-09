@@ -4,11 +4,11 @@ Date: 	     2018-06-06 22:00
 Slug:	     prometheus-export-import
 Tags: 	     prometheus, export, data, import, metrics, lock, waf, remote
 Status:	     Published
-Modified:    2018-06-06
+Modified:    2018-06-09
 
 bumping into the case where once deployed a full stack application we don't have any direct connection to due to no uplink for security reasons.
 
-So we looked into a way to export the prometheus data into a tar.gz which could be transferred and imported into an instance on our local machine.
+So we (yes mainly you [@Tom](https://twitter.com/TomVanHumbeeck) looked into a way to export the prometheus data into a tar.gz which could be transferred and imported into an instance on our local machine.
 
 To export the data a tar.gz can be created from the configured storage.tsdb.path (default /prometheus) data directory.
 
@@ -42,3 +42,6 @@ When you now go to [http://localhost:9090](http://localhost:9090) you have the d
 For example by starting a grafana container next to this prometheus container and configuring the prometheus one as data source.
 
 That way you could create some dashboards for readability.
+
+references: https://www.nomadproject.io/guides/nomad-metrics.html
+
