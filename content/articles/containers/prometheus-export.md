@@ -8,7 +8,7 @@ Modified:    2018-06-11
 
 bumping into the case where once deployed a full stack application we don't have any direct connection due to no uplink for security reasons.
 
-So we (you too [@Tom](https://twitter.com/TomVanHumbeeck) looked into a way to export the prometheus data into a tar.gz which could be transferred and imported into an instance on our local machine.
+So we (you too [@Tom](https://twitter.com/TomVanHumbeeck)) looked into a way to export the prometheus data into a tar.gz which could be transferred and imported into an instance on our local machine.
 
 After the initial blog post where we created a tar.gz file from the prometheus storage.tsdb.path on the filesystem [@roidelapluie](https://twitter.com/roidelapluie) pointed me out about the [snapshot](https://prometheus.io/docs/prometheus/latest/querying/api/#snapshot) feature.
 
