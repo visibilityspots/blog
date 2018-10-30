@@ -4,7 +4,7 @@ Date:        2018-08-06 19:00
 Slug:        ansible-archlinux-upgrade
 Tags:        ansible, playbook, ansible-playbook, archlinux, aur, aurman, update, upgrade, ansible-aur, pacman
 Status:      published
-Modified:    2018-11-30
+Modified:    2018-10-30
 
 Since a few years now I'm a happy [Archlinux](https://www.archlinux.org/) user. I like their [philosophy](https://wiki.archlinux.org/index.php/Arch_Linux) which was one of the major points why I made the switch back in the days.
 
