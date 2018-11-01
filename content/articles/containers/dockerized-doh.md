@@ -4,7 +4,7 @@ Date: 	     2018-04-21 21:00
 Slug:	     dockerized-cloudflared-pi-hole
 Tags: 	     docker, compose, docker-compose, pi-hole, pihole, cloudflared, proxy-dns, DoH, dns, https, over
 Status:	     published
-Modified:    2018-04-21
+Modified:    2018-11-01
 
 a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](https://visibilityspots.org/raspberry-pi.html) setup.
 
@@ -16,9 +16,12 @@ When cloudflare [announced](https://blog.cloudflare.com/announcing-1111/) their 
 
 So I stumbled on some articles from [Oliver Hough](https://oliverhough.cloud/blog/configure-pihole-with-dns-over-https/) and [Scott Helme](https://scotthelme.co.uk/securing-dns-across-all-of-my-devices-with-pihole-dns-over-https-1-1-1-1/) that describe how you can combine a [cloudflared proxy-dns](https://developers.cloudflare.com/1.1.1.1/dns-over-https/cloudflared-proxy/) with pi-hole to get your dns requests encrypted through HTTPS and still be able to filter out the advertisements.
 
-Since I got everything in docker I configured a [cloudflared](https://hub.docker.com/r/visibilityspots/cloudflared/) and a [pi-hole](https://hub.docker.com/r/visibilityspots/pi-hole/) container both automated through travis ([cloudflared](https://travis-ci.org/visibilityspots/dockerfile-cloudflared) & [pi-hole](https://travis-ci.org/visibilityspots/dockerfile-pi-hole)) with [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss) tests.
+Since I got everything in docker I configured a [cloudflared](https://hub.docker.com/r/visibilityspots/cloudflared/) container automated through [travis](https://travis-ci.org/visibilityspots/dockerfile-cloudflared) with [dgoss](https://github.com/aelsabbahy/goss/tree/master/extras/dgoss) tests.
 
-I got some inspiration from [maartje](https://twitter.com/MaartjeME) who used a [matrix](https://github.com/meyskens/docker-cloudflared/blob/master/.travis.yml) to build multiple docker images for different architectures using travis. The main reason behind this was that after I got this setup up and running using this docker-compose file on my x86_64 machine:
+I got some inspiration from [maartje](https://twitter.com/MaartjeME) who used a [matrix](https://github.com/meyskens/docker-cloudflared/blob/master/.travis.yml) to build multiple docker images for different architectures using travis. The main reason behind this was that after I got this setup up and running using this docker-compose file on my x86_64 machine I wanted to run it on a raspberry pi zero w.
+
+For the pihole container I figured out you can easily pass by the custom DNS servers through docker environment variables so no need anymore for a custom pihole docker container to maintain!
+
 
 ```
 $ cat docker-compose.yml
@@ -35,7 +38,7 @@ services:
 
   pi-hole:
     container_name: pi-hole
-    image: visibilityspots/pi-hole:amd64
+    image: pihole/pihole:v4.0_amd64
     restart: unless-stopped
     ports:
       - "80:80/tcp"
@@ -43,11 +46,12 @@ services:
       - "53:53/udp"
     environment:
       - ServerIP=10.0.0.3
+      - DNS1='10.0.0.2#54'
+      - DNS2=''
       - IPv6=false
       - TZ=CEST-2
       - DNSMASQ_LISTENING=all
       - WEBPASSWORD=admin
-      - CloudflaredServer=10.0.0.2#54
     networks:
       pihole_net:
         ipv4_address: 10.0.0.3
@@ -66,7 +70,7 @@ You can use the same dockerfile on a raspberry pi zero but with other tags for t
 
 ```
 image: visibilityspots/cloudflared:arm
-image: visibilityspots/pi-hole:armel
+image: pihole/pihole:v4.0_arm
 ```
 
 As you can see unfortunately I had to configure static ip's since the dnsmasq config needs the ip address of the cloudflared service. If someone has a better solution to implement it let me know!
