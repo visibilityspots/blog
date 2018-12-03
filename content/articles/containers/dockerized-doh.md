@@ -4,7 +4,7 @@ Date: 	     2018-04-21 21:00
 Slug:	     dockerized-cloudflared-pi-hole
 Tags: 	     docker, compose, docker-compose, pi-hole, pihole, cloudflared, proxy-dns, DoH, dns, https, over
 Status:	     published
-Modified:    2018-11-01
+Modified:    2018-12-03
 
 a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](https://visibilityspots.org/raspberry-pi.html) setup.
 
@@ -70,7 +70,7 @@ You can use the same dockerfile on a raspberry pi zero but with other tags for t
 
 ```
 image: visibilityspots/cloudflared:arm
-image: pihole/pihole:v4.0_arm
+image: pihole/pihole:v4.0_armhf
 ```
 
 As you can see unfortunately I had to configure static ip's since the dnsmasq config needs the ip address of the cloudflared service. If someone has a better solution to implement it let me know!
