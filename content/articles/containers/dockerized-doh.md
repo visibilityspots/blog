@@ -1,10 +1,10 @@
 Title:       dockerized DNS over HTTPS using pi-hole through cloudflared proxy-dns
 Author:      Jan
-Date: 	     2018-04-21 21:00
-Slug:	     dockerized-cloudflared-pi-hole
-Tags: 	     docker, compose, docker-compose, pi-hole, pihole, cloudflared, proxy-dns, DoH, dns, https, over
-Status:	     published
-Modified:    2018-12-03
+Date:        2018-04-21 21:00
+Slug:        dockerized-cloudflared-pi-hole
+Tags:        docker, compose, docker-compose, pi-hole, pihole, cloudflared, proxy-dns, DoH, dns, https, over
+Status:      published
+Modified:    2019-01-02
 
 a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](https://visibilityspots.org/raspberry-pi.html) setup.
 
@@ -46,7 +46,7 @@ services:
       - "53:53/udp"
     environment:
       - ServerIP=10.0.0.3
-      - DNS1='10.0.0.2#54'
+      - DNS1='10.0.0.2#5054'
       - DNS2=''
       - IPv6=false
       - TZ=CEST-2
@@ -93,7 +93,7 @@ $ docker-compose logs cloudflared
 Attaching to cloudflared
 cloudflared    | time="2018-04-16T20:01:14Z" level=info msg="Adding DNS upstream" url="https://1.1.1.1/.well-known/dns-query"
 cloudflared    | time="2018-04-16T20:01:14Z" level=info msg="Adding DNS upstream" url="https://1.0.0.1/.well-known/dns-query"
-cloudflared    | time="2018-04-16T20:01:14Z" level=info msg="Starting DNS over HTTPS proxy server" addr="dns://0.0.0.0:54"
+cloudflared    | time="2018-04-16T20:01:14Z" level=info msg="Starting DNS over HTTPS proxy server" addr="dns://0.0.0.0:5054"
 cloudflared    | time="2018-04-16T20:01:14Z" level=info msg="Starting metrics server" addr="127.0.0.1:35973"
 ```
 
@@ -109,7 +109,7 @@ pi-hole        | Starting pihole-FTL (no-daemon)
 pi-hole        | [services.d] done.
 pi-hole        | dnsmasq: started, version 2.76 cachesize 10000
 pi-hole        | dnsmasq: compile time options: IPv6 GNU-getopt DBus i18n IDN DHCP DHCPv6 no-Lua TFTP conntrack ipset auth DNSSEC loop-detect inotify
-pi-hole        | dnsmasq: using nameserver 10.0.0.2#54
+pi-hole        | dnsmasq: using nameserver 10.0.0.2#5054
 pi-hole        | dnsmasq: read /etc/hosts - 7 addresses
 pi-hole        | dnsmasq: read /etc/pihole/local.list - 2 addresses
 pi-hole        | dnsmasq: failed to load names from /etc/pihole/black.list: No such file or directory
@@ -161,17 +161,17 @@ pi-hole# tcpdump -i eth0 udp port 53
 ```
 
 ```
-cloudflared# tcpdump -i eth0 udp port 54
+cloudflared# tcpdump -i eth0 udp port 5054
 tcpdump: verbose output suppressed, use -v or -vv for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes
-20:39:29.029132 IP piholeContainerID.59189 > cloudflaredContainerID.54: UDP, length 40
-20:39:29.069864 IP cloudflaredContainerID.54 > piholeContainerID.59189: UDP, length 116
-20:39:30.838803 IP piholeContainerID.28892 > cloudflaredContainerID.54: UDP, length 60
-20:39:31.003756 IP cloudflaredContainerID.54 > piholeContainerID.28892: UDP, length 328
-20:39:31.352487 IP piholeContainerID.50291 > cloudflaredContainerID.54: UDP, length 31
-20:39:31.364073 IP piholeContainerID.16365 > cloudflaredContainerID.54: UDP, length 31
-20:39:31.411227 IP cloudflaredContainerID.54 > piholeContainerID.50291: UDP, length 156
-20:39:31.432364 IP cloudflaredContainerID.54 > piholeContainerID.16365: UDP, length 218
+20:39:29.029132 IP piholeContainerID.59189 > cloudflaredContainerID.5054: UDP, length 40
+20:39:29.069864 IP cloudflaredContainerID.5054 > piholeContainerID.59189: UDP, length 116
+20:39:30.838803 IP piholeContainerID.28892 > cloudflaredContainerID.5054: UDP, length 60
+20:39:31.003756 IP cloudflaredContainerID.5054 > piholeContainerID.28892: UDP, length 328
+20:39:31.352487 IP piholeContainerID.50291 > cloudflaredContainerID.5054: UDP, length 31
+20:39:31.364073 IP piholeContainerID.16365 > cloudflaredContainerID.5054: UDP, length 31
+20:39:31.411227 IP cloudflaredContainerID.5054 > piholeContainerID.50291: UDP, length 156
+20:39:31.432364 IP cloudflaredContainerID.5054 > piholeContainerID.16365: UDP, length 218
 ```
 
 So by now you can configure this new DNS service on your router or dhcp daemon within your local network.
