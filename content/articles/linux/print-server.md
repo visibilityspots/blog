@@ -4,7 +4,7 @@ Date:        2018-12-26 19:00
 Slug:        print-server
 Tags:        cups, pi, zero, w, print, server, archlinux, arm, sane, scan, remote, scanimage, hp, samsung
 Status:      published
-Modified:    2018-02-04
+Modified:    2019-02-04
 
 Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.
 
