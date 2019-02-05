@@ -4,7 +4,7 @@ Date:        2018-12-26 19:00
 Slug:        print-server
 Tags:        cups, pi, zero, w, print, server, archlinux, arm, sane, scan, remote, scanimage, hp, samsung
 Status:      published
-Modified:    2019-02-04
+Modified:    2019-02-05
 
 Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.
 
@@ -60,6 +60,12 @@ Besides printing I also wanted to enable the scan option on one of the dives ove
 
 This was rather easy as being described on the [ArchWiki](https://wiki.archlinux.org/index.php/Sane#Sharing_your_scanner_over_a_network) after I installed both sane and hp-lib on the print-server too.
 
+Do not forget to enable the saned.socket systemd service on your print-server!
+
+```
+$ sudo systemctl enable saned.socket
+```
+
 And now I'm able to put something in the scanner bed and execute a custom scan function I wrote in my zsh config
 
 ```
@@ -80,5 +86,6 @@ So yipeeyayee I do now have again a working network based print/scan setup witho
 
 
 references:
-* https://stackoverflow.com/questions/26329186/creating-a-raw-printer-queue-in-cups-host-and-adding-them-through-cups-client
-* https://forum.manjaro.org/t/how-to-set-up-a-remote-printer-which-is-attached-to-a-raspberry-pi-or-any-other-arm-computer/57056y
+
+* [https://stackoverflow.com/questions/26329186/creating-a-raw-printer-queue-in-cups-host-and-adding-them-through-cups-client](https://stackoverflow.com/questions/26329186/creating-a-raw-printer-queue-in-cups-host-and-adding-them-through-cups-client)
+* [https://forum.manjaro.org/t/how-to-set-up-a-remote-printer-which-is-attached-to-a-raspberry-pi-or-any-other-arm-computer/57056y](https://forum.manjaro.org/t/how-to-set-up-a-remote-printer-which-is-attached-to-a-raspberry-pi-or-any-other-arm-computer/57056y)
