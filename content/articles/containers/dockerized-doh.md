@@ -4,7 +4,7 @@ Date:        2018-04-21 21:00
 Slug:        dockerized-cloudflared-pi-hole
 Tags:        docker, compose, docker-compose, pi-hole, pihole, cloudflared, proxy-dns, DoH, dns, https, over
 Status:      published
-Modified:    2019-01-02
+Modified:    2019-02-18
 
 a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](https://visibilityspots.org/raspberry-pi.html) setup.
 
