@@ -38,7 +38,7 @@ services:
 
   pi-hole:
     container_name: pi-hole
-    image: pihole/pihole:v4.0_amd64
+    image: pihole/pihole:v4.2.1_amd64
     restart: unless-stopped
     ports:
       - "80:80/tcp"
@@ -55,6 +55,11 @@ services:
     networks:
       pihole_net:
         ipv4_address: 10.0.0.3
+    dns:
+      - 127.0.0.1
+      - 1.1.1.1
+    cap_add"
+      - NET_ADMIN
 
 networks:
   pihole_net:
