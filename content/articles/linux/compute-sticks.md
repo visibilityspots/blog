@@ -1,6 +1,6 @@
 Title:       ArchLinux on intel compute stick
 Author:      Jan
-Date:        2018-06-24 19:00
+Date:        2019-06-24 19:00
 Slug:        compute-sticks
 Tags:        ArchLinux, archlinux, arch, linux, intel, compute, stick, sticks, STK1A32SC
 Status:      published
