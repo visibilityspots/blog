@@ -4,7 +4,7 @@ Date:        2019-06-24 19:00
 Slug:        compute-sticks
 Tags:        ArchLinux, archlinux, arch, linux, intel, compute, stick, sticks, STK1A32SC
 Status:      published
-Modified:    2019-06-24
+Modified:    2019-06-27
 
 A few months ago we moved into a brand new office which was furnished with a dozen of samsung displays. Unfortunately the basic player included in those displays isn't capable to add a webpage/url as content. Since we've setted up a [smashing](https://smashing.github.io/) instance to create dashboards for each team this was a huge bummer.
 
@@ -140,6 +140,7 @@ then start a screen session to unpack the image to the disk of the compute stick
 ```
 # screen -S restore
 # gunzip -c /mnt/base-image-dashboards.img.gz | dd of=/dev/mmcblk0 status=progress
+# umount -R /mnt
 ```
 
 and last but not least initiate grub to install the UEFI partition
