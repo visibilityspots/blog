@@ -4,7 +4,7 @@ Date:        2019-06-24 19:00
 Slug:        compute-sticks
 Tags:        ArchLinux, archlinux, arch, linux, intel, compute, stick, sticks, STK1A32SC
 Status:      published
-Modified:    2019-06-27
+Modified:    2019-08-28
 
 A few months ago we moved into a brand new office which was furnished with a dozen of samsung displays. Unfortunately the basic player included in those displays isn't capable to add a webpage/url as content. Since we've setted up a [smashing](https://smashing.github.io/) instance to create dashboards for each team this was a huge bummer.
 
@@ -82,6 +82,8 @@ as soon as you got a working compute stick you can reboot and now use the live u
 ```
 
 now try to ssh into the live distro from another machine so you could unplug the keyboard and use that second USB port to connect an empty USB drive to store the image on.
+
+![copy]( ../../images/compute-sticks/copy.jpeg)
 
 ```
 # lsblk
@@ -171,4 +173,4 @@ So we went for chromium which is started [without a window-manager](https://wiki
 
 Some quirks we had to resolve where the disabling of the auto restore of chromium by altering the Default/Preference file and setting the values of exit_type to none and exited_cleanly to true after which we made the file read only by making it immutable with the chattr command.
 
-The other one is the installation of the tabcarrousel plugin which we are still looking how we can automate this configuration with ansible.
+![stack]( ../../images/compute-sticks/stack.jpeg)
