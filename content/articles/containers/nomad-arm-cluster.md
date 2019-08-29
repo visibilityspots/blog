@@ -4,7 +4,7 @@ Date:        2019-08-28 21:00
 Slug:        nomad-arm-cluster
 Tags:        nomad, arm, cluster, consul, raspberry, pi, thin, client, thinclient, docker, home, lab, homelab
 Status:      published
-Modified:    2018-08-28
+Modified:    2019-08-28
 
 as I already mentioned a few times before I have some hands on experiences with [nomad](https://nomadproject.io). A couple of weeks ago I wrote about a [local development](https://visibilityspots.org/nomad-local-development.html) setup based on nomad.
 
