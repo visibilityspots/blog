@@ -6,7 +6,7 @@ Tags: 	     openstack, rdo, kilo, static, ip, dhcp, cloud-init, config, drive, c
 Status:	     published
 Modified:    2016-09-05
 
-last couple of days I have been fighting with the way an static ip is configured on an openstack virtual centos 6 instance. In our specific use case we ditched as many network openstack services as possible as I [previously](https://visibilityspots.org/openstack-layer2.html) described.
+last couple of days I have been fighting with the way an static ip is configured on an openstack virtual centos 6 instance. In our specific use case we ditched as many network openstack services as possible as I [previously]({filename}openstack-layer2.md) described.
 
 We want to have the instances running in our current network spaces of the R&D department. In this department until some days ago we didn't had any DHCP server running. But a few weeks back we added an extra remote network space into our platform where we configured a remote compute-node.
 

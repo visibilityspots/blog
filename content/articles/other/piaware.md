@@ -2,7 +2,7 @@ Title:       Piaware on a nomad cluster
 Author:      Jan
 Date:        2020-01-31 19:00
 Slug:        piaware
-Tags:        piaware, flightaware, dump1090, ADB-B, nomad, docker, flight, radar, 24, flightradar24, DVB-T
+Tags:        piaware, flightaware, dump1090, ADB-B, nomad, docker, flight, radar, 24, flightradar24, DVB-T, readsb, radarbox, planefinder, adsbexchange
 Modified:    2020-01-31
 Status:      published
 
@@ -10,7 +10,7 @@ A couple of years ago I stumbled on the [flightaware](https://flightaware.com/) 
 
 As this really triggered me to start monitoring planes above our head I bought myself such a device, hooked it up to a raspberry pi zero, installed the piaware software and started grabbing the messages and pushing the compiled positions through flightaware.
 
-Through time I managed to upgrade my home lab towards a [nomad cluster](https://visibilityspots.org/nomad-arm-cluster.html). So I migrated my piaware setup to a nomad node and wrote a [nomad job file](http://www.visibilityspots.com/documents/piaware/nomad.hcl) to run the docker image.
+Through time I managed to upgrade my home lab towards a [nomad cluster](../nomad-arm-cluster.html). So I migrated my piaware setup to a nomad node and wrote a [nomad job file](http://www.visibilityspots.com/documents/piaware/nomad.hcl) to run the docker image.
 
 This was a great achievement in my cluster setup regarding the software. For the hardware I initially used a cheap [DVB-T](https://shop.pimoroni.com/products/dvb-t-dongle-ideal-for-ads-b-real-time-plane-tracking) dongle but I wanted to get more planes and positions so I invested into better gear.
 

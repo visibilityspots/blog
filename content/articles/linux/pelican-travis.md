@@ -6,7 +6,7 @@ Tags: 	     pelican, travis, ci, travis-ci, s3, github, pages, static
 Status:      published
 Modified:    2017-06-01
 
-many years ago I created my own webpage, it all started with pure, HTML evolved to a wordpress and finally became a [pelican](https://blog.getpelican.com/) based setup. It got served on many different hosting providers but since a few years it's running on [S3](https://visibilityspots.org/aws-migration.html) storage and hosted through cloudfront all over the world.
+many years ago I created my own webpage, it all started with pure, HTML evolved to a wordpress and finally became a [pelican](https://blog.getpelican.com/) based setup. It got served on many different hosting providers but since a few years it's running on [S3](../aws-migration.html) storage and hosted through cloudfront all over the world.
 
 It's a very fast setup, and once the site has been deployed and every little service has been configured and implemented the only thing I need to do is writing content in [markdown](https://daringfireball.net/projects/markdown/) without having to consider how to deploy or how it will look.
 

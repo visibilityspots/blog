@@ -6,7 +6,7 @@ Tags:        docker, compose, docker-compose, pi-hole, pihole, cloudflared, prox
 Status:      published
 Modified:    2019-02-18
 
-a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](https://visibilityspots.org/raspberry-pi.html) setup.
+a few months ago I configured a thin client as my home server to replace the previous [raspberry pi](../raspberry-pi.html) setup.
 
 During that migration I moved over all native services within docker containers. One of those services being a [pi-hole](https://pi-hole.net) setup to block ad serving domains on dns level and to have a dns cache within our LAN to gain a bit of speed.
 

@@ -8,10 +8,10 @@ Modified:    2016-04-21
 
 Some of you may already have notices others just stumbled on this post through a search engine, I have set up an openstack private cloud at one of our projects:
 
-* [vlan flat-neutron provider network](https://visibilityspots.org/vlan-flat-neutron-provider.html)
-* [layer2](https://visibilityspots.org/openstack-layer2.html)
+* [vlan flat-neutron provider network]({filename}openstack-neutron.md)
+* [layer2]({filename}openstack-layer2.md)
 
-We have noticed that the benefits of having a private cloud is spreading through the different teams within the organization and therefore the interest into this flexibility is growing. Since this wasn't the original [use case](https://visibilityspots.org/vlan-flat-neutron-provider.html) we are encountering some design issues right now.
+We have noticed that the benefits of having a private cloud is spreading through the different teams within the organization and therefore the interest into this flexibility is growing. Since this wasn't the original [use case]({filename}openstack-neutron.md) we are encountering some design issues right now.
 
 For the original instances the default [overcommit](http://docs.openstack.org/openstack-ops/content/compute_nodes.html#overcommit) ratios are fine. But the request for new machines with other goals are like interfering with those original instances running in the same default [availability zone](http://docs.openstack.org/openstack-ops/content/scaling.html#az_s3).
 

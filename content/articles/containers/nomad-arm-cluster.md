@@ -6,7 +6,7 @@ Tags:        nomad, arm, cluster, consul, raspberry, pi, thin, client, thinclien
 Status:      published
 Modified:    2019-08-28
 
-as I already mentioned a few times before I have some hands on experiences with [nomad](https://nomadproject.io). A couple of weeks ago I wrote about a [local development](https://visibilityspots.org/nomad-local-development.html) setup based on nomad.
+as I already mentioned a few times before I have some hands on experiences with [nomad](https://nomadproject.io). A couple of weeks ago I wrote about a [local development](../nomad-local-development.html) setup based on nomad.
 
 Since quite some time I do have a thinclient which is running some docker containers through a docker-compose file I use for personal stuff at home. But this thinclient is suffering from all the containers I'm trying to spin up. While over thinking this issue I did realize I have quite some raspberry pi's laying around and figured I could maybe set up a cluster for those containers.
 
