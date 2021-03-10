@@ -1,0 +1,370 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - cloud</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/cloud.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2017-03-23T19:00:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Openstack Kilo change MTU till the VM it's tap interface</title><link href="https://visibilityspots.github.io/blog/openstack-mtu.html" rel="alternate"></link><published>2017-03-23T19:00:00+01:00</published><updated>2017-03-23T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2017-03-23:/blog/openstack-mtu.html</id><summary type="html">&lt;p&gt;Recently I was been asked to increase the MTU on the deployed openstack cluster at one of our customers. Since the beginning of my touch on openstack networking has been the hardest part to get my head around. In the first place because openstack does some nifty things on the networking path. But also cause for the use case at the customer a lot of customization has been done to get it implemented in their infrastructure.&lt;/p&gt;
+&lt;p&gt;Hence the shiver when the MTU question was been made..&lt;/p&gt;
+&lt;p&gt;Nevertheless together with a colleague who likes a challenge and has a profound knowledge …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Recently I was been asked to increase the MTU on the deployed openstack cluster at one of our customers. Since the beginning of my touch on openstack networking has been the hardest part to get my head around. In the first place because openstack does some nifty things on the networking path. But also cause for the use case at the customer a lot of customization has been done to get it implemented in their infrastructure.&lt;/p&gt;
+&lt;p&gt;Hence the shiver when the MTU question was been made..&lt;/p&gt;
+&lt;p&gt;Nevertheless together with a colleague who likes a challenge and has a profound knowledge in this area we dived into it. Starting at the external device over all the hardware network switches we came to the openstack cluster, until now nothing got in our way of increasing the MTU size. On the most of the network gear (combination of HP and Cisco) the MTU was already high enough.&lt;/p&gt;
+&lt;p&gt;But now we came to the compute nodes of our openstack cluster. We have an RDO based kilo release running with one all-in-one controller and a dozen compute nodes. We isolated the compute node where the test instance was running on and went for our dearest friend Mr google for some advise and found a very informational &lt;a href="https://www.openstack.org/assets/presentation-media/the-notorious-mtu.pdf"&gt;pdf&lt;/a&gt; document about this topic.&lt;/p&gt;
+&lt;p&gt;After some try and error we got to the current situation where the ovs bridge has been configured with this increased MTU size together with the NIC interface of the compute node itself. This has been achieved by changing following parameters.&lt;/p&gt;
+&lt;p&gt;To change the MTU size on the ovs bridge we need veth interfaces as described in the configuration file of the plugin.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini&lt;/span&gt;
+&lt;span class="nv"&gt;use_veth_interconnection&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; True
+&lt;span class="nv"&gt;veth_mtu&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="m"&gt;8000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;By restarting the neutron component on the compute node the ovs bridge got reconfigured with veth interfaces and an increased MTU size within seconds and no noticeable down time which was very convenient.&lt;/p&gt;
+&lt;p&gt;So there is only one step to achieve our goal of sending big packets over the whole chain, the tap interface of the VM on that OVS bridge.&lt;/p&gt;
+&lt;p&gt;We manually adjusted the tap interfaces by executing an ovs-vsctl command.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="m"&gt;8000&lt;/span&gt; dev PORTID
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Unfortunately until today we didn't find a fix where a new VM gets a network connection on the OVS bridge with this increased MTU size automatically.&lt;/p&gt;
+&lt;p&gt;We tried several configurations but no luck.&lt;/p&gt;
+&lt;p&gt;As a temporary workaround we &lt;a href="http://serverfault.com/questions/680635/mtu-on-open-vswitch-bridge-port"&gt;found&lt;/a&gt; a loop which reconfigures the MTU sizes for all available ports on an OVS bridge.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; i in &lt;span class="k"&gt;$(&lt;/span&gt;ovs-vsctl list ports &amp;lt;BRIDGENAME&amp;gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;do&lt;/span&gt; ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="m"&gt;9000&lt;/span&gt; dev &lt;span class="nv"&gt;$i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;ip a show &amp;lt;BRIDGENAME&amp;gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The unsuccesfull changes;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# /etc/neutron/neutron.conf&lt;/span&gt;
+&lt;span class="nv"&gt;advertise_mtu&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; True
+
+&lt;span class="c1"&gt;# /etc/nova/nova.conf&lt;/span&gt;
+&lt;span class="nv"&gt;network_device_mtu&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="m"&gt;8000&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;So if you did found a solution on this part, please en light us!! :)&lt;/p&gt;</content><category term="cloud"></category><category term="openstack"></category><category term="mtu"></category><category term="kilo"></category><category term="neutron"></category><category term="nova"></category><category term="config"></category><category term="ovs"></category></entry><entry><title>S3stat</title><link href="https://visibilityspots.github.io/blog/s3stat.html" rel="alternate"></link><published>2016-10-26T19:00:00+02:00</published><updated>2016-10-26T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2016-10-26:/blog/s3stat.html</id><summary type="html">&lt;p&gt;Some weeks ago an article on &lt;a href="https://news.ycombinator.com/item?id=12634447"&gt;hacker news&lt;/a&gt; got my interest. From time to time I really get an healthy dose of jealousy when people found an idea which could make them buy a tesla. My terms of someone who make a lot of money ;)&lt;/p&gt;
+&lt;p&gt;This one is so brilliant in it's simplicity that I really was flabbergasted and made me wonder why I never came up with the idea. It generates nice reports of the usage of your site which is hosted by aws. Based on the logs of the S3 bucket or the cloudfront domain you setted up …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Some weeks ago an article on &lt;a href="https://news.ycombinator.com/item?id=12634447"&gt;hacker news&lt;/a&gt; got my interest. From time to time I really get an healthy dose of jealousy when people found an idea which could make them buy a tesla. My terms of someone who make a lot of money ;)&lt;/p&gt;
+&lt;p&gt;This one is so brilliant in it's simplicity that I really was flabbergasted and made me wonder why I never came up with the idea. It generates nice reports of the usage of your site which is hosted by aws. Based on the logs of the S3 bucket or the cloudfront domain you setted up.&lt;/p&gt;
+&lt;p&gt;As I &lt;a href="../aws-migration.html"&gt;blogged&lt;/a&gt; about a few months ago I migrated my blog as static content onto an S3 bucket and serve it through the CDN of amazon to the world for a really cheap price. I manage my blog with &lt;a href="http://blog.getpelican.com"&gt;pelican&lt;/a&gt; which makes a beautiful static website based on markdown files. One of the features is the &lt;a href="http://docs.getpelican.com/en/latest/settings.html?highlight=analytics#themes"&gt;google analytics&lt;/a&gt; component which sends data through the browser of the visitor. Which can be blocked off course through some inventive add blocking features of the used browser.&lt;/p&gt;
+&lt;p&gt;So I was trilled when logging creating an account on &lt;a href="https://s3stat.com"&gt;s3stat&lt;/a&gt; to see what my data is all about in their visual reports. I started by adding my S3 buckets which obviously didn't have logging enabled. I disabled them back in the days when migrating since I didn't saw a use case for them at that moment. This feature can easily be enabled using the separate aws account I created by following their how to guide.&lt;/p&gt;
+&lt;p&gt;It took a while before the first data got through their website but after a day or two I had some nice and simple reports about the usage of my S3 buckets. One of my blog and one of my custom &lt;a href="https://atlas.hashicorp.com/visibilityspots"&gt;vagrant boxes&lt;/a&gt;. Besides the delay of about one day I could see what I needed to see.&lt;/p&gt;
+&lt;p&gt;In comparison with google analytics they offer some more details especially the referral pages are quite interesting to me which is like the only feature I miss in S3stat, they do show your referral pages, but every single page of the website itself is also seen as a referral page. Which kinda creates a lot of pages and it's hard to find the relevant information of external pages.. Google analytics isn't live data neither and since s3stat can't be blocked by some browser plugins they offer more accurate data about your content usage. Another nice feature are the costs, they give you an idea which of the requests is costing you money. Which could be interesting to see if you could adopt your website so it can be cheaper to host it at AWS..&lt;/p&gt;
+&lt;p&gt;It took some time to get the cloudfront instances coupled, the interface did found the instances but it froze when I selected on of the cloudfront distributions. After a week or two I finally managed to select them and get them coupled through s3stat. My best guess is that the success of the default setting took down some services. I created a support ticket for it but didn't got an answer so far. Guess they are very busy to keep the service up and running.&lt;/p&gt;
+&lt;p&gt;Since it's working fine now I don't bother about it :) I do have now nice statistics of my blog which is really great and I love it. The only reason I still connect to google analytics are the detailed information about referral websites..&lt;/p&gt;
+&lt;p&gt;One of the sad parts is the pricing. For my blog it would take about $ 10 each month. Since I only pay $ 2 dollar on average to host it that isn't something I'm willing to pay for those statistics. But I stumbled on their &lt;a href="https://www.s3stat.com/web-stats/cheap-bastard-plan"&gt;cheap bastard plan&lt;/a&gt; which is the mean reason I wrote a blog post about it.&lt;/p&gt;
+&lt;p&gt;And because of my empathy with their simplicity :)&lt;/p&gt;
+&lt;p&gt;I only had trouble the first time I wrote a new article after I setted up s3stat. I'm using &lt;a href="http://s3tools.org/s3cmd"&gt;s3cmd&lt;/a&gt; to upload new pages to the S3 bucket. And the sync command was deleting the log directory which includes all log entries.. So I had to add the exclude parameter to my s3cmd sync command;&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;--exclude 'log/*'&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;This was a huge mistake from my end. Luckily the files aren't that critical I only lost a few days of them since so nothing to bother about in the end..&lt;/p&gt;</content><category term="cloud"></category><category term="s3stat"></category><category term="aws"></category><category term="analytics"></category><category term="statistics"></category><category term="web"></category><category term="refers"></category><category term="s3"></category><category term="cdn"></category><category term="cloudfront"></category></entry><entry><title>AWS migration</title><link href="https://visibilityspots.github.io/blog/aws-migration.html" rel="alternate"></link><published>2016-09-18T21:00:00+02:00</published><updated>2017-03-17T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2016-09-18:/blog/aws-migration.html</id><summary type="html">&lt;p&gt;About a year ago I attended the &lt;a href="http://aws.amazon.com/events/awsome-day/benelux/belgium/"&gt;AWSome Day&lt;/a&gt; at &lt;a href="http://lamot-mechelen.be"&gt;Mechelen&lt;/a&gt;. Back then I wrote a first draft article about it, but it got out of my sight unfortunately. I reviewed it and decided to publish it anyway.&lt;/p&gt;
+&lt;p&gt;The event was based on their essentials course and took use through the different AWS core services (compute, storage, database and network).&lt;/p&gt;
+&lt;p&gt;I do know it has nothing to see with open-source. But it is a part of that ultimate cloud based setup I believe in which exists in one central place from where you can manage all your virtual machines independent …&lt;/p&gt;</summary><content type="html">&lt;p&gt;About a year ago I attended the &lt;a href="http://aws.amazon.com/events/awsome-day/benelux/belgium/"&gt;AWSome Day&lt;/a&gt; at &lt;a href="http://lamot-mechelen.be"&gt;Mechelen&lt;/a&gt;. Back then I wrote a first draft article about it, but it got out of my sight unfortunately. I reviewed it and decided to publish it anyway.&lt;/p&gt;
+&lt;p&gt;The event was based on their essentials course and took use through the different AWS core services (compute, storage, database and network).&lt;/p&gt;
+&lt;p&gt;I do know it has nothing to see with open-source. But it is a part of that ultimate cloud based setup I believe in which exists in one central place from where you can manage all your virtual machines independent of which stack/service it uses.&lt;/p&gt;
+&lt;p&gt;In that ultimate setup the public cloud is important to me too. And when you look at public clouds, amazon can't just be ignored in my opinion. That should give you the flexibility to extend your infrastructure when needed, add the ability to benchmark applications between different virtualization / storage resources and make managing them easier without having to open up way too many management consoles.&lt;/p&gt;
+&lt;h1&gt;The course&lt;/h1&gt;
+&lt;p&gt;the course itself was intended for both technical as management background profiles. The goal of it was merely to highlight the different products and what you can technically achieve with them as well as how they could be combined.&lt;/p&gt;
+&lt;h2&gt;introduction&lt;/h2&gt;
+&lt;p&gt;Starting with an introduction on the different AWS services and the console going over the many different options, unfortunately the live demos where postponed since the speaker forgot his charger.&lt;/p&gt;
+&lt;h2&gt;storage&lt;/h2&gt;
+&lt;p&gt;After the introduction the different storage services provided by AWS where enlighted, focusing on the &lt;a href="http://aws.amazon.com/s3/details/"&gt;S3&lt;/a&gt; and &lt;a href="http://aws.amazon.com/ebs/details/"&gt;EBS&lt;/a&gt; instances. Where clearly told the first one is an object storage system and the second one can be used to deploy filesystems on it.&lt;/p&gt;
+&lt;h2&gt;console demo&lt;/h2&gt;
+&lt;p&gt;The speaker also pulled my attention by mentioning you could serve a static website on an S3 instance. Since you only buy for what you use this has been the trigger for me to start looking into migrating my current blog to an amazon hosted one. Which I'll describe further on in this post.&lt;/p&gt;
+&lt;p&gt;Once he got his charger back the speaker showed us the aws management console and the different options and features you could use. During the demo he also pointed to the &lt;a href="http://aws.amazon.com/whitepapers/aws-security-best-practices/"&gt;security best practices&lt;/a&gt; like having MFA enabled, not using your root account and such..&lt;/p&gt;
+&lt;p&gt;So I went buy myself an &lt;a href="http://onlinenoram.gemalto.com/"&gt;ezio display card&lt;/a&gt; to enhance my geeky nerd state.&lt;/p&gt;
+&lt;h2&gt;compute services and networking&lt;/h2&gt;
+&lt;p&gt;Next topic of the day concerned the different services of computing instances and networking. Starting with the &lt;a href="http://aws.amazon.com/ec2/details/"&gt;EC2&lt;/a&gt; by explaining their different tastes and flavors depending on what you want to achieve.&lt;/p&gt;
+&lt;p&gt;Also a tip of the speaker was to benchmark the application you want to provision on different types of instances. It only costs you the amount of time running the benchmark tests. But in the end you should have found the right instance for what you are trying to achieve at a reasonable price in the long term!&lt;/p&gt;
+&lt;h2&gt;databases&lt;/h2&gt;
+&lt;p&gt;two types of databases are briefly touched first the &lt;a href="https://aws.amazon.com/rds/"&gt;RDS&lt;/a&gt; one which is the more classic alternative amazon provides.&lt;/p&gt;
+&lt;p&gt;And the &lt;a href="https://aws.amazon.com/dynamodb/"&gt;dynamodb&lt;/a&gt; which is like the nosql database managed cloud service.&lt;/p&gt;
+&lt;p&gt;And when this all is what you were looking for you could start perhaps your own amazon based &lt;a href="http://aws.amazon.com/vpc/details/"&gt;Virtual Private Cloud&lt;/a&gt;&lt;/p&gt;
+&lt;h1&gt;open guides&lt;/h1&gt;
+&lt;p&gt;I stumbled onto &lt;a href="https://github.com/open-guides/og-aws"&gt;open guides&lt;/a&gt; for aws which is a collection of very useful information and references for every aws service combined with how-to guides and such. Very useful when playing around with the AWS services and need information about one of them!&lt;/p&gt;
+&lt;h1&gt;dynamic DNS&lt;/h1&gt;
+&lt;p&gt;It is even possible to get rid of all the free dyndns services you are using and use the route53 API to update your DNS names for certain appliances. By following the guide of &lt;a href="https://willwarren.com/2014/07/03/roll-dynamic-dns-service-using-amazon-route53/"&gt;Will Warren&lt;/a&gt; I now have my own domain name used for dynamic DNS names.&lt;/p&gt;
+&lt;h1&gt;Static blog&lt;/h1&gt;
+&lt;p&gt;During the presentation the speaker mentioned you could host a static website on an amazon S3 instance. A couple of years ago I migrated my blog to a &lt;a href="http://getpelican.com"&gt;pelican&lt;/a&gt; based one. This tool allows you to write your articles in markdown and convert those into a static html based instance. Since I don't need interactivity for my blog it's the perfect solution to me. The only aspect I need to take into account is to write the actual content. So I don't have to focus about the other stuff like layout and such.&lt;/p&gt;
+&lt;p&gt;I used to host my website on a traditional hosting service called &lt;a href="http://one.com"&gt;one.com&lt;/a&gt;. Costs me about 30 EUR a year for some web space and a domain name. Since it felt like a great exercise to get to know the different AWS services I decided to host my blog on those technologies as a proof of concept to start with.&lt;/p&gt;
+&lt;p&gt;I followed the &lt;a href="http://docs.aws.amazon.com/AmazonS3/latest/dev/website-hosting-custom-domain-walkthrough.html"&gt;tutorial&lt;/a&gt; from the aws documentation to get it up and running.&lt;/p&gt;
+&lt;p&gt;Using the cloudfront functionality the content of my static blog from the s3 instance will be populated through the different edge locations of the &lt;a href="http://aws.amazon.com/cloudfront/details"&gt;CloudFront Global Edge Network&lt;/a&gt;. By linking my new domain name visibilityspots.org which is a &lt;a href="http://aws.amazon.com/route53/details/"&gt;Route 53&lt;/a&gt; instance to the cloudfront instance, the end users requests are automatically routed to the nearest edge location for high performance delivery of your content.&lt;/p&gt;
+&lt;p&gt;This makes my blog super fast on any continent for a rather cheap price!&lt;/p&gt;
+&lt;p&gt;I once read an article about the https encryption on the internet. The author believed in a world where only encrypted web traffic should exist so nobody has to care about anymore if their data is encrypted on the web. My blog doesn't has any use case where I really need this encryption. But once again it's a great exercise to set it up to get a feeling how this stuff actually works.&lt;/p&gt;
+&lt;p&gt;So I went for a &lt;a href="https://www.startssl.com/"&gt;start ssl&lt;/a&gt; domain ssl certificate which costs me nothing but a monthly reactivation mail. This certificate I uploaded to my aws account, as described by &lt;a href="https://bryce.fisher-fleig.org/blog/setting-up-ssl-on-aws-cloudfront-and-s3"&gt;Bryce Fisher&lt;/a&gt; so I could start using it to serve my blog with the world through an encrypted line.&lt;/p&gt;
+&lt;p&gt;In the meantime &lt;a href="https://letsencrypt.org/"&gt;letsencrypt&lt;/a&gt; was founded and I switched my start ssl certificate to a letsencrypt one. Using the &lt;a href="https://github.com/dlapiduz/letsencrypt-s3front"&gt;letsencrypt-s3front&lt;/a&gt; tool from &lt;a href="https://github.com/dlapiduz"&gt;Diego Lapiduz&lt;/a&gt; this got really easy, and I even got it automated through my &lt;a href="../raspberry-pi.html"&gt;pi&lt;/a&gt; so every x months the certificate is renewed and I get a notification through &lt;a href="http://ntfy.readthedocs.io/en/latest/"&gt;ntfy&lt;/a&gt; on telegram about it as soon as it's done.&lt;/p&gt;
+&lt;h2&gt;Price&lt;/h2&gt;
+&lt;p&gt;I have my blog served by AWS about more then a year now and it costs me about $ 1.5 every month. With the annual fee of $ 12 for the domain name it costs me about the same as before at one.com. Only now my blog is supersonic fast and available through amazons cloudfront service.&lt;/p&gt;
+&lt;h2&gt;Benchmarks&lt;/h2&gt;
+&lt;p&gt;I did a test using the &lt;a href="https://www.joedog.org/siege-home/"&gt;siege&lt;/a&gt; software on 4 different platforms where I do host my blog. The one.com hosting which is serving the visibilityspots.com domain, the github pages one, the s3 instance directly and the cloudfront cached visibilityspots.org domain.&lt;/p&gt;
+&lt;p&gt;I did expected the one.com domain would be ending at the bottom of the performance tests. Which did indeed turns out as I thought. Rather unexpected was the platform of github scoring the highest on the test. I could have directed my DNS to the github pages but over the time I experienced some down time of github from time to time. It's not that I could save a lot of money by using github so I decided to keep AWS cloudfront as my primary hosting partner.&lt;/p&gt;
+&lt;p&gt;I decided to execute the benchmarks once again after more than one year and as you can see the results are a lot better compared to a year ago. And my decision to stick with AWS has payed of as you can see they are a lot faster than github those days.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# siege -b -t5M http://visibilityspots.github.io/blog/&lt;/span&gt;
+Date &lt;span class="p"&gt;&amp;amp;&lt;/span&gt; Time,         Trans,  Elap Time,  Data Trans,  Resp T,  Trans R,  Thrghput,    Concur,      OKAY,  Fail
+&lt;span class="m"&gt;2015&lt;/span&gt;-06-03 &lt;span class="m"&gt;22&lt;/span&gt;:35:02, &lt;span class="m"&gt;2794&lt;/span&gt;,   &lt;span class="m"&gt;299&lt;/span&gt;.46,     &lt;span class="m"&gt;47&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.11,    &lt;span class="m"&gt;9&lt;/span&gt;.33,     &lt;span class="m"&gt;0&lt;/span&gt;.16,        &lt;span class="m"&gt;1&lt;/span&gt;.00,        &lt;span class="m"&gt;2794&lt;/span&gt;,  &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="m"&gt;2016&lt;/span&gt;-09-18 &lt;span class="m"&gt;19&lt;/span&gt;:31:23, &lt;span class="m"&gt;14293&lt;/span&gt;,  &lt;span class="m"&gt;299&lt;/span&gt;.94,     &lt;span class="m"&gt;24&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.41,    &lt;span class="m"&gt;47&lt;/span&gt;.65,    &lt;span class="m"&gt;0&lt;/span&gt;.08,        &lt;span class="m"&gt;19&lt;/span&gt;.39,       &lt;span class="m"&gt;14293&lt;/span&gt;, &lt;span class="m"&gt;1&lt;/span&gt;
+
+&lt;span class="c1"&gt;# siege -b -t5M http://visibilityspots.org&lt;/span&gt;
+&lt;span class="m"&gt;2015&lt;/span&gt;-06-03 &lt;span class="m"&gt;22&lt;/span&gt;:40:45, &lt;span class="m"&gt;2642&lt;/span&gt;,   &lt;span class="m"&gt;299&lt;/span&gt;.14,     &lt;span class="m"&gt;44&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.11,    &lt;span class="m"&gt;8&lt;/span&gt;.83,     &lt;span class="m"&gt;0&lt;/span&gt;.15,        &lt;span class="m"&gt;1&lt;/span&gt;.00,        &lt;span class="m"&gt;2642&lt;/span&gt;,  &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="m"&gt;2016&lt;/span&gt;-09-18 &lt;span class="m"&gt;19&lt;/span&gt;:38:46, &lt;span class="m"&gt;16613&lt;/span&gt;,  &lt;span class="m"&gt;299&lt;/span&gt;.90,     &lt;span class="m"&gt;79&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.44,    &lt;span class="m"&gt;55&lt;/span&gt;.40,    &lt;span class="m"&gt;0&lt;/span&gt;.26,        &lt;span class="m"&gt;24&lt;/span&gt;.44,       &lt;span class="m"&gt;16614&lt;/span&gt;, &lt;span class="m"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# siege -b -t5M http://visibilityspots.org.s3-website-eu-west-1.amazonaws.com/&lt;/span&gt;
+&lt;span class="m"&gt;2015&lt;/span&gt;-06-03 &lt;span class="m"&gt;22&lt;/span&gt;:52:32, &lt;span class="m"&gt;1686&lt;/span&gt;,   &lt;span class="m"&gt;299&lt;/span&gt;.03,     &lt;span class="m"&gt;28&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.18,    &lt;span class="m"&gt;5&lt;/span&gt;.64,     &lt;span class="m"&gt;0&lt;/span&gt;.09,        &lt;span class="m"&gt;1&lt;/span&gt;.00,        &lt;span class="m"&gt;1686&lt;/span&gt;,  &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;span class="m"&gt;2016&lt;/span&gt;-09-18 &lt;span class="m"&gt;19&lt;/span&gt;:45:07, &lt;span class="m"&gt;14063&lt;/span&gt;,  &lt;span class="m"&gt;299&lt;/span&gt;.40,     &lt;span class="m"&gt;73&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.53,    &lt;span class="m"&gt;46&lt;/span&gt;.97,    &lt;span class="m"&gt;0&lt;/span&gt;.24,        &lt;span class="m"&gt;24&lt;/span&gt;.66,       &lt;span class="m"&gt;14063&lt;/span&gt;, &lt;span class="m"&gt;0&lt;/span&gt;
+
+&lt;span class="c1"&gt;# siege -b -t5M http://visibilityspots.com&lt;/span&gt;
+&lt;span class="m"&gt;2015&lt;/span&gt;-06-03 &lt;span class="m"&gt;22&lt;/span&gt;:27:47, &lt;span class="m"&gt;1617&lt;/span&gt;,   &lt;span class="m"&gt;299&lt;/span&gt;.56,     &lt;span class="m"&gt;27&lt;/span&gt;,          &lt;span class="m"&gt;0&lt;/span&gt;.19,    &lt;span class="m"&gt;5&lt;/span&gt;.40,     &lt;span class="m"&gt;0&lt;/span&gt;.09,        &lt;span class="m"&gt;1&lt;/span&gt;.00,        &lt;span class="m"&gt;1617&lt;/span&gt;,  &lt;span class="m"&gt;0&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Since the results of all those actions where rather satisfying I decided to migrate all the services I had at one.com to AWS. By using a second domain I could play around without interrupting my existing services. Once each one of them was running I redirected the DNS records to the .org ones.&lt;/p&gt;
+&lt;p&gt;A static blog on S3, a mail service, &lt;a href="http://www.openwebanalytics.com/"&gt;OWA&lt;/a&gt; instance, my little roomba project and an &lt;a href="https://owncloud.org"&gt;owncloud&lt;/a&gt; S3 storage were running on amazon. I still had a VPS running in the field serving an owncloud instance which I used for my calendars (caldav) and address books (carddav) syncing with my laptop &lt;a href="https://vdirsyncer.pimutils.org/en/stable/"&gt;vdirsyncer&lt;/a&gt; and my android phone &lt;a href="https://davdroid.bitfire.at/"&gt;davdroid&lt;/a&gt; and sharing pictures with the family.&lt;/p&gt;
+&lt;p&gt;Since the performance of the photo page was rather unsatisfying, and storage became an issue I bought myself a Synology &lt;a href="https://www.synology.com/en-us/support/download/DS214play"&gt;DS214play&lt;/a&gt; NAS so I migrated all my services to my own little cloud storage running at home. Right now only my blog is served on AWS and all other services are running on my NAS. I don't rely on the public cloud anymore for any of my services.&lt;/p&gt;
+&lt;p&gt;Only an offsite backup of some of my encrypted data containers is synced once in a while through &lt;a href="https://aws.amazon.com/glacier/"&gt;glacier&lt;/a&gt;. Which is only used in case of geological disaster happens and both my parents and parents-in-law computes devices are destroyed together with my own (which are in sync using &lt;a href="https://syncthing.net/"&gt;syncthing&lt;/a&gt; and my off site backup disk at work got destroyed. Which really sounds paranoia now I write about it :)&lt;/p&gt;
+&lt;p&gt;I moved all this because of some privacy matters I have regarding all the public cloud services provides.&lt;/p&gt;
+&lt;p&gt;And until today that combination really worked out very well. I don't loose a lot of time in maintaining the different platforms but I can focus on using and configuring new services like home automation using home-assistant, a wemos sensor framework, and many more. &lt;/p&gt;
+&lt;p&gt;Which I will blog about in the future.&lt;/p&gt;</content><category term="cloud"></category><category term="aws"></category><category term="awsome"></category><category term="awesome. cloud"></category><category term="amazon"></category><category term="migration"></category><category term="pelican"></category><category term="rds"></category></entry><entry><title>Openstack static ip</title><link href="https://visibilityspots.github.io/blog/openstack-static-ip.html" rel="alternate"></link><published>2016-09-05T19:00:00+02:00</published><updated>2016-09-05T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2016-09-05:/blog/openstack-static-ip.html</id><summary type="html">&lt;p&gt;last couple of days I have been fighting with the way an static ip is configured on an openstack virtual centos 6 instance. In our specific use case we ditched as many network openstack services as possible as I &lt;a href="https://visibilityspots.github.io/blog/openstack-layer2.html"&gt;previously&lt;/a&gt; described.&lt;/p&gt;
+&lt;p&gt;We want to have the instances running in our current network spaces of the R&amp;amp;D department. In this department until some days ago we didn't had any DHCP server running. But a few weeks back we added an extra remote network space into our platform where we configured a remote compute-node.&lt;/p&gt;
+&lt;p&gt;This is where the issues started popping …&lt;/p&gt;</summary><content type="html">&lt;p&gt;last couple of days I have been fighting with the way an static ip is configured on an openstack virtual centos 6 instance. In our specific use case we ditched as many network openstack services as possible as I &lt;a href="https://visibilityspots.github.io/blog/openstack-layer2.html"&gt;previously&lt;/a&gt; described.&lt;/p&gt;
+&lt;p&gt;We want to have the instances running in our current network spaces of the R&amp;amp;D department. In this department until some days ago we didn't had any DHCP server running. But a few weeks back we added an extra remote network space into our platform where we configured a remote compute-node.&lt;/p&gt;
+&lt;p&gt;This is where the issues started popping up.&lt;/p&gt;
+&lt;p&gt;In openstack when you spin up an instance with a fixed ip, it will basicly create a neutron port for it, attach it to the vm's NIC interface who will get the ip through DHCP. This makes sense since you want to have your basic images as abstract as possible. But since we disabled a lot of the neutron/openstack network logic our vm got an ip address served by an external dhcp service. Which obviously wasn't what we where looking for.&lt;/p&gt;
+&lt;p&gt;So we digged in the documentation of cloud-init, openstack and network interfaces. Not much has been documented, or at least we couldn't find it easily about the metadata served by a so called configuration drive.&lt;/p&gt;
+&lt;p&gt;I figured the metadata is attached through either a /dev/vdb disk or a /dev/sr0 cd-rom drive. In the ec2 metadata the local-ip is indicating the static ip address assigned to the created port. After some looking around the possibilities we decided to write a little script which will fetch this information, rewrite the interface configuration and restart the network service to get the static up and running.&lt;/p&gt;
+&lt;p&gt;The script is located in /usr/local/bin/reconfigure-static-ip-eth0&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+
+
+&lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;lsblk -l &lt;span class="p"&gt;|&lt;/span&gt; grep -q sr0&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        mount /dev/sr0 /mnt
+&lt;span class="k"&gt;elif&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;lsblk -l &lt;span class="p"&gt;|&lt;/span&gt; grep -q vdb&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;then&lt;/span&gt;
+        mount /dev/vdb /mnt
+&lt;span class="k"&gt;else&lt;/span&gt;
+        &lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;Mountpoint of metadata not found&amp;quot;&lt;/span&gt;
+        &lt;span class="nb"&gt;exit&lt;/span&gt; &lt;span class="m"&gt;1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="k"&gt;fi&lt;/span&gt;
+
+
+splitip &lt;span class="o"&gt;()&lt;/span&gt; &lt;span class="o"&gt;{&lt;/span&gt;
+    &lt;span class="nb"&gt;local&lt;/span&gt; IFS
+    &lt;span class="nv"&gt;IFS&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;.
+    &lt;span class="nb"&gt;set&lt;/span&gt; -- &lt;span class="nv"&gt;$*&lt;/span&gt;
+    &lt;span class="nv"&gt;GATEWAY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;$GATEWAY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;.&amp;quot;&lt;/span&gt;&lt;span class="nv"&gt;$@&lt;/span&gt;
+&lt;span class="o"&gt;}&lt;/span&gt;
+
+
+&lt;span class="nv"&gt;STATIC_IP&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;grep -ri local-ipv4 /mnt/ &lt;span class="p"&gt;|&lt;/span&gt; tr &lt;span class="s1"&gt;&amp;#39;,&amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;\n&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; head &lt;span class="p"&gt;|&lt;/span&gt; grep local-ip &lt;span class="p"&gt;|&lt;/span&gt; awk -F &lt;span class="s1"&gt;&amp;#39; &amp;#39;&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;{print $2}&amp;#39;&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; tr -d &lt;span class="s1"&gt;&amp;#39;&amp;quot;&amp;#39;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;
+&lt;span class="nv"&gt;GATEWAY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="nv"&gt;$STATIC_IP&lt;/span&gt; &lt;span class="p"&gt;|&lt;/span&gt; cut -d&lt;span class="s2"&gt;&amp;quot;.&amp;quot;&lt;/span&gt; -f1-3&lt;span class="sb"&gt;`&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;.1&amp;quot;&lt;/span&gt;
+
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;VLAN=no&amp;quot;&lt;/span&gt; &amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;NOZEROCONF=yes&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;NETMASK=255.255.255.0&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;BOOTPROTO=static&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;USERCTL=no&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;IPADDR=&lt;/span&gt;&lt;span class="nv"&gt;$STATIC_IP&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;ONBOOT=yes&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;GATEWAY=&lt;/span&gt;&lt;span class="nv"&gt;$GATEWAY&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+&lt;span class="nb"&gt;echo&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;DEVICE=eth0&amp;quot;&lt;/span&gt; &amp;gt;&amp;gt; /etc/sysconfig/network-scripts/ifcfg-eth0
+
+cat /etc/sysconfig/network-scripts/ifcfg-eth0
+
+/etc/init.d/network restart
+
+umount /mnt
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;By calling this script through rc.local (/etc/rc.local) it will reconfigure the network interface right after all services are started. In our use case the instance is only used as a hop through different separated network environments so no services are relying on the network interface.&lt;/p&gt;
+&lt;p&gt;During our little search we couldn't believe we are the only ones hitting against this issue, I do hope others will read this post and comment with more clean ways to do so but this did solved it for us in a rather clean and fast way to go further with the development of the actual products behind those hop through nodes.&lt;/p&gt;</content><category term="cloud"></category><category term="openstack"></category><category term="rdo"></category><category term="kilo"></category><category term="static"></category><category term="ip"></category><category term="dhcp"></category><category term="cloud-init"></category><category term="config"></category><category term="drive"></category><category term="centos"></category></entry><entry><title>Openstack live-migration</title><link href="https://visibilityspots.github.io/blog/openstack-live-migration.html" rel="alternate"></link><published>2016-04-21T19:00:00+02:00</published><updated>2016-04-21T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2016-04-21:/blog/openstack-live-migration.html</id><summary type="html">&lt;p&gt;Some of you may already have notices others just stumbled on this post through a search engine, I have set up an openstack private cloud at one of our projects:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html"&gt;vlan flat-neutron provider network&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://visibilityspots.github.io/blog/openstack-layer2.html"&gt;layer2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We have noticed that the benefits of having a private cloud is spreading through the different teams within the organization and therefore the interest into this flexibility is growing. Since this wasn't the original &lt;a href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html"&gt;use case&lt;/a&gt; we are encountering some design issues right now.&lt;/p&gt;
+&lt;p&gt;For the original instances the default &lt;a href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#overcommit"&gt;overcommit&lt;/a&gt; ratios are fine. But the request for new machines with other goals are like …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Some of you may already have notices others just stumbled on this post through a search engine, I have set up an openstack private cloud at one of our projects:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html"&gt;vlan flat-neutron provider network&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href="https://visibilityspots.github.io/blog/openstack-layer2.html"&gt;layer2&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;We have noticed that the benefits of having a private cloud is spreading through the different teams within the organization and therefore the interest into this flexibility is growing. Since this wasn't the original &lt;a href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html"&gt;use case&lt;/a&gt; we are encountering some design issues right now.&lt;/p&gt;
+&lt;p&gt;For the original instances the default &lt;a href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#overcommit"&gt;overcommit&lt;/a&gt; ratios are fine. But the request for new machines with other goals are like interfering with those original instances running in the same default &lt;a href="http://docs.openstack.org/openstack-ops/content/scaling.html#az_s3"&gt;availability zone&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;So we are looking to configure some &lt;a href="http://docs.openstack.org/openstack-ops/content/scaling.html#ha_s3"&gt;aggregate zones&lt;/a&gt; to keep this under control. As soon as we figure out a workable solution I will write about it in a new blog post.&lt;/p&gt;
+&lt;p&gt;But in the discussions to come to a solution one remark was , couldn't openstack tackle the issues of having an hypervisor with a growing load and memory issues itself by migrating instances to another hypervisors? Which is like a valuable argument to me. So before even looking into such a solution the feature of live migration should work..&lt;/p&gt;
+&lt;p&gt;Since we aren't using shared storage for our cloud this could be tricky. So I went to the web to inform myself about the different options.&lt;/p&gt;
+&lt;p&gt;I came across some very interesting reads, like the one of &lt;a href="https://thornelabs.net/2014/06/14/do-not-use-shared-storage-for-openstack-instances.html"&gt;Thornelabs&lt;/a&gt; why you shouldn't use shared storage for example. Which has some valuable disadvantages of it besides the benefits. In our use case the benefits aren't outweighing against disadvantages. But as I have noticed in the whole openstack story there are options for almost every cloud use case and therefore the logical complexity of it. So for many amongst you shared storage could be a solution.&lt;/p&gt;
+&lt;p&gt;Another rather interesting one about live migration as a &lt;a href="https://www.blueboxcloud.com/insight/blog-article/live-migration-is-a-perk-not-a-panacea"&gt;perk not a panacea&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;One of the &lt;a href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#instance_storage"&gt;options&lt;/a&gt; is &lt;a href="http://docs.openstack.org/openstack-ops/content/compute_nodes.html#on_compute_node_storage_nonshared"&gt;non shared&lt;/a&gt; storage, the default of the RDO packstack installer, based on LVM. On our setup we are using this default.&lt;/p&gt;
+&lt;p&gt;This has the consequence we can only use the live migration about with the kvm block storage &lt;a href="http://www.sebastien-han.fr/blog/2012/07/12/openstack-block-migration/"&gt;migration&lt;/a&gt; which isn't really &lt;a href="http://osdir.com/ml/openstack-cloud-computing/2012-08/msg00293.html"&gt;supported&lt;/a&gt; by the upstream developers and will probably phased out in the future for something more reliable.&lt;/p&gt;
+&lt;p&gt;We configured &lt;a href="http://docs.openstack.org/user-guide/cli_config_drive.html"&gt;config drives&lt;/a&gt; as the default to get the metadata served to cloud-init at boot time for an instance. The default drive format (iso9660) has a bug in libvirt of copying a read-only disk. To tackle this one we configured the vfat format on all hypervisors.&lt;/p&gt;
+&lt;p&gt;Unfortunately this still doesn't solve our issue with it. Apparently when you use the live migrate option openstack &lt;a href="https://bugs.launchpad.net/nova/+bug/1214943"&gt;doesn't&lt;/a&gt; take the overcommit ratio into account. Since our cloud is already overcommitted we don't have enough resources according to the live migration precheck to move instances around..&lt;/p&gt;
+&lt;p&gt;The proposed fix isn't released yet in the RDO kilo nova packages and patching a system isn't something I like to do in a semi-production environment.&lt;/p&gt;
+&lt;p&gt;So until today live migration isn't something we have tackled yet on our cloud. If you have solved this on your kilo RDO release cloud already feel free to enlighten me about it!&lt;/p&gt;</content><category term="cloud"></category><category term="openstack"></category><category term="live"></category><category term="migration"></category><category term="kilo"></category><category term="kvm"></category><category term="block"></category><category term="config"></category><category term="drive"></category><category term="vfat"></category></entry><entry><title>Openstack layer2</title><link href="https://visibilityspots.github.io/blog/openstack-layer2.html" rel="alternate"></link><published>2016-02-26T20:30:00+01:00</published><updated>2016-04-21T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2016-02-26:/blog/openstack-layer2.html</id><summary type="html">&lt;p&gt;A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.&lt;/p&gt;
+&lt;p&gt;We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)&lt;/p&gt;
+&lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.&lt;/p&gt;
+&lt;p&gt;We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)&lt;/p&gt;
+&lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the packages puppet&lt;em&gt; and hiera&lt;/em&gt; from the epel repository&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/yum.repos.d/epel.repo +9&lt;/span&gt;
+&lt;span class="err"&gt;exclude=hiera*,puppet&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once launched some rather irritating behavior seemed to be the default timeout of horizon (openstack-dashboard) of 30 minutes. It's a development cloud after all and people didn't wanted to re login all the time. To change the default timeout we added a SESSION_TIMEOUT parameter to the local_settings file and restarted apache&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dashboard&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local_settings&lt;/span&gt;
+&lt;span class="n"&gt;SESSION_TIMEOUT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;28800&lt;/span&gt;
+
+&lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;restart&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;After which we reconfigured the expiration time of the keystone token and restarted the keystone service&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
+&lt;span class="n"&gt;expiration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;28800&lt;/span&gt;
+
+&lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;restart&lt;/span&gt; &lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Another rather tiny issue was the access to the console through the web interface. It couldn't connect through the instance when running on another compute node.&lt;/p&gt;
+&lt;p&gt;After some research it seemed to by DNS. In the development setup no DNS has been configured for the different compute nodes. We tackled it by the proxy client setting in nova.conf on every compute node&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova/conf&lt;/span&gt;
+&lt;span class="err"&gt;vncserver_proxyclient_address=actual.ip.of.the.server&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;During maintenance we had to reboot a compute-node, after this reboot the instances living on the compute node where not started and came up in shutdown state.&lt;/p&gt;
+&lt;p&gt;It seemed to be the default behavior of openstack, but as always there is a configuration parameter for it to force the instances to start after a reboot.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova.conf&lt;/span&gt;
+&lt;span class="err"&gt;resume_guests_state_on_host_boot=true&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;The default behavior of the kilo RDO deployed cloud to pass data through cloud-init to the instance is by serving the file through a separate network at boot time.&lt;/p&gt;
+&lt;p&gt;We however found it more efficient to serve this file through the filesystem, the so called &lt;a href="http://docs.openstack.org/user-guide/cli_config_drive.html"&gt;config_drive&lt;/a&gt; option.&lt;/p&gt;
+&lt;p&gt;It can be forced through the nova config file&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova.conf&lt;/span&gt;
+&lt;span class="err"&gt;force_config_drive=True&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Also be aware with the lock_passwd feature with passing users through cloud init in openstack due to a &lt;a href="https://bugs.launchpad.net/cloud-init/+bug/1521554"&gt;bug&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;So now the minor issues are tackled let's switch to the major and more impacting ones.&lt;/p&gt;
+&lt;p&gt;We digged into the behavior of the network during the proof of concept phase. And hell that's a big challenge! By default openstack neutron creates a linux bridge and an open vswitch bridge.&lt;/p&gt;
+&lt;p&gt;The linux bridge is used to translate the security groups into iptables configured to the linux bridge interfaces.&lt;/p&gt;
+&lt;p&gt;In our use case we wanted to keep the networking setup as simple as possible. Mainly cause a lot of the instance will be used for testing purposes including network traffic and performance.&lt;/p&gt;
+&lt;p&gt;Since it's only used for internal usage into the R&amp;amp;D department on the we decided to disable the security groups and therefore to ditch the linux bridge out of the linux cluster.&lt;/p&gt;
+&lt;p&gt;Another reason to disable the security groups was the fact that by using the nova interface-attach command of a network without a subnet configured (layer2) only the default security group was applied to this extra interface.&lt;/p&gt;
+&lt;p&gt;I filled out a &lt;a href="https://bugs.launchpad.net/neutron/+bug/1512645"&gt;bug&lt;/a&gt; for this, but it seems we are abusing a bug (attaching networks without subnet configured to an instance) as a feature.&lt;/p&gt;
+&lt;p&gt;Openstack really doesn't like you to take over control of the layer3 networking part after all. But in our use case we really needed to take over this control to keep our instances as abstract and dynamic as possible.&lt;/p&gt;
+&lt;p&gt;We only need layer2 connectivity when adding an instance to a specific VLAN based network, an ip address is provided by another DHCP server on this VLAN network. So we don't want openstack to provide DHCP addresses.&lt;/p&gt;
+&lt;p&gt;By using the nova interface-attach command and the bug/feature of having networks without subnets configured attached we achieved to meet this goal of layer2 connectivity.&lt;/p&gt;
+&lt;p&gt;So to disable the linux bridge you'll need to &lt;a href="https://gist.github.com/djoreilly/db9c2d32a473c6643551"&gt;disable&lt;/a&gt; the security groups&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
+&lt;span class="n"&gt;security_group_api&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nova&lt;/span&gt;
+&lt;span class="n"&gt;firewall_driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;virt&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NoopFirewallDriver&lt;/span&gt;
+
+&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ml2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ml2_conf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ini&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;only&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;enable_security_group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;False&lt;/span&gt;
+
+&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openvswitch&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+&lt;span class="n"&gt;firewall_driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NoopFirewallDriver&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Last but not least some configuration parameters got changed through without we noticed probably by some misconfigured settings in &lt;a href="https://wiki.openstack.org/wiki/Packstack"&gt;packstack&lt;/a&gt;. To keep this under control we made the configuration files immutable so they could only be modified by manual changes.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;chattr +i /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)&lt;/span&gt;
+&lt;span class="err"&gt;chattr +i /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini&lt;/span&gt;
+&lt;span class="err"&gt;chattr +i /etc/nova/nova.conf&lt;/span&gt;
+&lt;span class="err"&gt;chattr +i /etc/neutron/policy.json&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Those are about the main issues worth mentioning we went through. By sharing those I hope to help others in their quest to tame the openstack cluster. If any question arise feel free to comment or contact me about them!&lt;/p&gt;</content><category term="cloud"></category><category term="openstack"></category><category term="layer2"></category><category term="security"></category><category term="groups"></category><category term="linux"></category><category term="bridge"></category><category term="ovs"></category><category term="open"></category><category term="vswitch"></category><category term="dhcp"></category><category term="kilo"></category><category term="rdo"></category></entry><entry><title>Openstack vlan based flat neutron network provider</title><link href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html" rel="alternate"></link><published>2015-09-29T19:00:00+02:00</published><updated>2015-10-02T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2015-09-29:/blog/vlan-flat-neutron-provider.html</id><summary type="html">&lt;p&gt;at one of my projects I was been asked to set up a private cloud for a validation platform. The whole idea behind this proof of concept is based on the flexibility to spin up and down certain instances providing some specific functionality so tests banks can be ran against them.&lt;/p&gt;
+&lt;p&gt;As soon as the tests are finished the machines could be terminated. Those instances should be configured using some configuration management software, like &lt;a href="https://puppetlabs.com/puppet/puppet-open-source"&gt;puppet&lt;/a&gt;. That way the instances are rebuildable and could be treated as cattle.&lt;/p&gt;
+&lt;p&gt;On the other hand, it takes about 20 minutes to build up an …&lt;/p&gt;</summary><content type="html">&lt;p&gt;at one of my projects I was been asked to set up a private cloud for a validation platform. The whole idea behind this proof of concept is based on the flexibility to spin up and down certain instances providing some specific functionality so tests banks can be ran against them.&lt;/p&gt;
+&lt;p&gt;As soon as the tests are finished the machines could be terminated. Those instances should be configured using some configuration management software, like &lt;a href="https://puppetlabs.com/puppet/puppet-open-source"&gt;puppet&lt;/a&gt;. That way the instances are rebuildable and could be treated as cattle.&lt;/p&gt;
+&lt;p&gt;On the other hand, it takes about 20 minutes to build up an instance from scratch, centos minimal with a puppet run to install and configure the whole needed stack. So we looked for a workable way to spin up instances really quick without the waiting time of 20 minutes every time.&lt;/p&gt;
+&lt;p&gt;We found a workable solution with &lt;a href="https://packer.io"&gt;packer&lt;/a&gt;. By configuring a template which describes a series of steps needed to be executed to get a fully working instance based on a centos minimal cloud instance, we could provide an easy and reusable way to build our artifacts.&lt;/p&gt;
+&lt;p&gt;When running the packer command an openstack instance is launched based on a &lt;a href="http://cloud.centos.org/centos/"&gt;centos cloud&lt;/a&gt; image. Packer will use rsync to upload some needed data directories, in our case a puppet environment. Once this step has been done a local puppet apply will be performed based on the previously uploaded puppet environment. As soon as this puppet run has been successfully executed an image will be created an immediately be uploaded to your openstack instance.&lt;/p&gt;
+&lt;p&gt;By using &lt;a href="https://vagrantup.com"&gt;vagrant&lt;/a&gt; you could easily write your puppet code first and test it against a local vm based on &lt;a href="https://virtualbox.org"&gt;virtualbox&lt;/a&gt; or &lt;a href="https://github.com/fgrehm/vagrant-lxc"&gt;lxc&lt;/a&gt; containers. Once you know your puppet manifests are working on a local vm you could test it on an openstack instance using the &lt;a href="https://github.com/ggiamarchi/vagrant-openstack-provider"&gt;vagrant-openstack&lt;/a&gt; provider. That way you could filter out some unforeseen issues without the need of running packer over and over again.&lt;/p&gt;
+&lt;p&gt;When your vagrant-openstack based instance is deployed fine packer is used to build an image of your specific device.&lt;/p&gt;
+&lt;p&gt;By spinning up an instance based on this crafted image you could gain like about 18 minutes every time you launch one since it takes about less than 2 minutes to get it up and running fully functional!&lt;/p&gt;
+&lt;h1&gt;Openstack&lt;/h1&gt;
+&lt;p&gt;We used the RDO &lt;a href="https://www.rdoproject.org/Quickstart"&gt;all-in-one&lt;/a&gt; installer to get an openstack up and running on one physical machine rather quickly (15-30 minutes for the initial services).&lt;/p&gt;
+&lt;p&gt;To set openstack up without the demo data:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# packstack --allinone --provision-demo=n&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;This openstack instance is based on &lt;a href="https://www.centos.org/download/"&gt;CentOS 7 minimal&lt;/a&gt; since it's a requirement of the used openstack release &lt;a href="https://wiki.openstack.org/wiki/ReleaseNotes/Kilo"&gt;kilo&lt;/a&gt;.&lt;/p&gt;
+&lt;h2&gt;networking&lt;/h2&gt;
+&lt;p&gt;in our case we wanted some different networking setup as from the default one with natting. Instead we wanted a &lt;a href="https://trickycloud.wordpress.com/2013/11/12/setting-up-a-flat-network-with-neutron/"&gt;flat&lt;/a&gt; network provider so our instances have an ip within the same range as our development network. That way the natting could be kicked out of the setup to exclude some possible networking performance.&lt;/p&gt;
+&lt;p&gt;Beside this flat network we do use vlan's too, so the openstack instance should be able to route over those vlan's too. We found a similar setup on the &lt;a href="http://www.s3it.uzh.ch/blog/openstack-neutron-vlan/"&gt;blog&lt;/a&gt; of the University of Zurich. But it lacked an underlying physical network configuration example on the all-in-one node itself.&lt;/p&gt;
+&lt;p&gt;On opencloudblog a clear &lt;a href="http://www.opencloudblog.com/?p=460"&gt;article&lt;/a&gt; helped in trying to understand the network philosophy used to get it working.&lt;/p&gt;
+&lt;h3&gt;manual network configuration&lt;/h3&gt;
+&lt;p&gt;creating the vlan bridge which is used by openstack to communicate with the physical vlan based networking switch:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ovs-vsctl add-br br-vlan
+ovs-vsctl add-port br-vlan eth0
+vconfig add br-vlan &lt;span class="m"&gt;100&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;configuring an ip from the development range to an interface on the node so we have access to it:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ip link &lt;span class="nb"&gt;set&lt;/span&gt; br-vlan up
+ip link &lt;span class="nb"&gt;set&lt;/span&gt; br-vlan.100 up
+ip address add dev br-vlan.100 &lt;span class="m"&gt;192&lt;/span&gt;.168.0.100 netmask &lt;span class="m"&gt;255&lt;/span&gt;.255.255.0
+ip route add default via &lt;span class="m"&gt;192&lt;/span&gt;.168.0.1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;configuring openstack ml2 plugin with our vlan setup:&lt;/p&gt;
+&lt;p&gt;/etc/neutron/neutron.conf&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;core_plugin&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt;neutron.plugins.ml2.plugin.Ml2Plugin
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Configuring the actual vlan's:&lt;/p&gt;
+&lt;p&gt;/etc/neutron/plugins/ml2/ml2_conf.ini&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;type_drivers&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; vxlan,gre,vlan
+&lt;span class="nv"&gt;network_vlan_ranges&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; vlan100:100:100
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Creating the mapping between the vlan and the actual physical interface:&lt;/p&gt;
+&lt;p&gt;/etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;bridge_mappings&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; vlan100:br-vlan
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;to get the metadata service usable on this flat network:&lt;/p&gt;
+&lt;p&gt;/etc/neutron/dhcp-agent.ini&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;enable_isolated_metadata&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; True
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;restarting neutron-dhcp-agent&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# openstack-service status neutron-dhcp-agent&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Configuring the openstack networks on the all-in-one machine:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# source keystonerc_admin&lt;/span&gt;
+&lt;span class="err"&gt;# neutron subnet-list&lt;/span&gt;
+&lt;span class="err"&gt;# neutron subnet-delete ID&lt;/span&gt;
+&lt;span class="err"&gt;# neutron net-list&lt;/span&gt;
+&lt;span class="err"&gt;# neutron net-delete ID&lt;/span&gt;
+&lt;span class="err"&gt;# neutron net-create vlan100 --shared --provider:network_type vlan --provider:segmentation_id 100 --provider:physical_network vlan100 --router:external&lt;/span&gt;
+&lt;span class="err"&gt;# neutron subnet-create --name vlan100 --gateway 192.168.0.1 --allocation-pool start=192.168.0.150,end=192.168.0.200 --enable-dhcp --dns-nameserver 192.168.0.1 vlan100 192.168.0.0/24&lt;/span&gt;
+&lt;span class="err"&gt;# neutron subnet-update --host-route destination=169.254.169.254/32,nexthop=192.168.0.151 vlan100&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;We do have a working setup right now if everything went well and you should be able to &lt;a href="https://www.rdoproject.org/Running_an_instance"&gt;launch&lt;/a&gt; an instance. To test ICMP traffic do not forget to enable a security group which allows this kind of traffic. Otherwise you couldn't use ping to test traffic.&lt;/p&gt;
+&lt;p&gt;Some useful commands:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;ovs-vsctl show &lt;span class="c1"&gt;#shows the openvswitch configuration&lt;/span&gt;
+ovs-ofctl dump-flows br-int &lt;span class="c1"&gt;#shows the flows to map an internal project tag to an actual vlan id&lt;/span&gt;
+brctl show &lt;span class="c1"&gt;#shows the linux bridge&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;h3&gt;persistent network configuration&lt;/h3&gt;
+&lt;p&gt;To keep your networking up and running after a reboot you should configure you bridges natively on the all-in-one instance:&lt;/p&gt;
+&lt;p&gt;/etc/sysconfig/network-scripts/ifcfg-eth0&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;DEVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;eth0&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;ONBOOT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yes
+&lt;span class="nv"&gt;OVS_BRIDGE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;br-vlan
+&lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;OVSPort
+&lt;span class="nv"&gt;DEVICETYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ovs&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;/etc/sysconfig/network-scripts/ifcfg-br-vlan&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;DEVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;br-vlan
+&lt;span class="nv"&gt;BOOTPROTO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;none
+&lt;span class="nv"&gt;ONBOOT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yes
+&lt;span class="nv"&gt;TYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;OVSBridge
+&lt;span class="nv"&gt;DEVICETYPE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;ovs&amp;quot;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;/etc/sysconfig/network-scripts/ifcfg-br-vlan.100&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;BOOTPROTO&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;none&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;DEVICE&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;br-vlan.100&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;ONBOOT&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;yes&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;IPADDR&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;192.168.0.100&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;PREFIX&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;24&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;GATEWAY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;192.168.0.1&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;DNS1&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;192.168.0.1&amp;quot;&lt;/span&gt;
+&lt;span class="nv"&gt;VLAN&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yes
+&lt;span class="nv"&gt;NOZEROCONF&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;yes
+&lt;span class="nv"&gt;USERCTL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;no
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Be sure to use the OVSBridge type and ovs DEVICETYPES otherwise it will not work..&lt;/p&gt;
+&lt;p&gt;Something we have on our todo is the &lt;a href="http://docs.openstack.org/user-guide/cli_config_drive.html"&gt;configuration drive&lt;/a&gt; setup. When using a configuration drive the metadata dhcp service could also be skipped and therefore possibly the whole openvswitch configuration could be passed by only using a provider network with a &lt;a href="http://docs.openstack.org/networking-guide/deploy_scenario4b.html"&gt;linux bridge&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;&lt;a href="http://serverspec.org/"&gt;serverspec&lt;/a&gt; were also written so the functionality of the puppet managed services are tested easily over and over to be sure the code is actually doing as it supposed to do.&lt;/p&gt;</content><category term="cloud"></category><category term="vlan"></category><category term="flat"></category><category term="neutron"></category><category term="provider"></category><category term="network"></category><category term="openstack"></category><category term="openvswitch"></category><category term="ovs"></category></entry></feed>

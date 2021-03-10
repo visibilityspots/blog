@@ -1,0 +1,51 @@
+use_xft yes
+xftfont Liberation Sans:size=8
+override_utf8_locale yes
+
+text_buffer_size 2048
+update_interval 1
+total_run_times 0
+double_buffer yes
+no_buffers yes
+net_avg_samples 1
+cpu_avg_samples 1
+
+own_window_class Conky
+own_window yes
+own_window_colour 2C2B29
+own_window_type override
+own_window_transparent yes
+own_window_hints undecorated,below,skip_taskbar,skip_pager
+
+default_color 929292
+draw_borders no
+border_width 1
+border_inner_margin 10
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+
+color0 996B5C
+color1 996B5C
+color2 E6E6E6
+
+alignment bottom_right
+gap_x 25
+gap_y 50
+minimum_size 182 0
+maximum_width 182
+
+imlib_cache_size 0
+
+TEXT
+${voffset 4}${font Liberation Sans:style=Bold:size=8}NIEUWS $stippled_hr${font}
+${color1}${rss http://feeds.feedburner.com/dso-snelnieuws 10 item_titles 5}${color}
+${voffset 4}${font Liberation Sans:style=Bold:size=8}ICT $stippled_hr${font}
+${voffset 4}${color2}${font Liberation Sans:style=Bold:size=8}Tweakers:${font}${color}
+${color1}${rss http://feeds.feedburner.com/tweakers/nieuws 10 item_titles 2}${color}
+${voffset 4}${color2}${font Liberation Sans:style=Bold:size=8}Ubuntu:${font}${color}
+${color1}${rss http://www.ubuntu.com/rss.xml 10 item_titles 2}${color}
+${voffset 4}${font Liberation Sans:style=Bold:size=8}KULEUVEN $stippled_hr${font}
+
+${voffset 4}${font Liberation Sans:style=Bold:size=8}LANDFILL $stippled_hr${font}
+

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - php</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/php.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2009-12-30T11:27:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Showing birthdays using php</title><link href="https://visibilityspots.github.io/blog/birthday-script.html" rel="alternate"></link><published>2009-12-30T11:27:00+01:00</published><updated>2009-12-30T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2009-12-30:/blog/birthday-script.html</id><summary type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
+&lt;p&gt;Something like &amp;quot;We wish XXX a happy # anniversary!'&lt;/p&gt;
+&lt;p&gt;To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.&lt;/p&gt;
+&lt;p&gt;database connection (db_connectPear.php)&lt;/p&gt;
+&lt;pre class="code php literal-block"&gt;
+&lt;span class="x"&gt;&amp;lt; ?php
+$dsn = array(
+ 'phptype' =&amp;gt; 'mysql',
+ 'username' =&amp;gt; 'DBUSERNAME' …&lt;/span&gt;&lt;/pre&gt;</summary><content type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
+&lt;p&gt;Something like &amp;quot;We wish XXX a happy # anniversary!'&lt;/p&gt;
+&lt;p&gt;To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.&lt;/p&gt;
+&lt;p&gt;database connection (db_connectPear.php)&lt;/p&gt;
+&lt;pre class="code php literal-block"&gt;
+&lt;span class="x"&gt;&amp;lt; ?php
+$dsn = array(
+ 'phptype' =&amp;gt; 'mysql',
+ 'username' =&amp;gt; 'DBUSERNAME',
+ 'password' =&amp;gt; 'DBPASSWORD',
+ 'hostspec' =&amp;gt; 'localhost',
+ 'database' =&amp;gt; $database,
+);
+$db_object = DB::connect($dsn, TRUE);
+if(DB::isError($db_object)) {
+ die($db_object-&amp;gt;getMessage());
+}
+$db_object-&amp;gt;setFetchMode(DB_FETCHMODE_ASSOC);
+?&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+&lt;p&gt;birthday script (birthday.php)&lt;/p&gt;
+&lt;pre class="code php literal-block"&gt;
+&lt;span class="x"&gt;&amp;lt; ?php
+$database = 'DBNAME';
+require 'db_connectPear.php';
+$selectLeden = 'SELECT *, round((to_days(now())-to_days(Geboortedatum))/365) as leeftijd
+FROM `ledenlijst` WHERE '
+. ' DAYOFMONTH(Geboortedatum)=date_format(now(),\'%d\') AND '
+. ' MONTH(Geboortedatum)=date_format(now(),\'%c\') ORDER BY voornaam ASC';
+$queryLeden = mysql_query($selectLeden)or die(mysql_error());
+
+$selectStam = 'SELECT *, round((to_days(now())-to_days(Geboortedatum))/365) as leeftijd
+FROM `stam` WHERE '
+. ' DAYOFMONTH(Geboortedatum)=date_format(now(),\'%d\') AND '
+. ' MONTH(Geboortedatum)=date_format(now(),\'%c\') ORDER BY voornaam ASC';
+$queryStam = mysql_query($selectStam)or die(mysql_error());
+
+if (mysql_num_rows($queryLeden) == 0) {
+if (mysql_num_rows($queryStam) == 0) {
+} else {
+
+echo &amp;quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Wij wensen&amp;quot;;
+while($list = mysql_fetch_object($queryStam)){
+$naam = $list-&amp;gt;voornaam.&amp;quot; &amp;quot;.$list-&amp;gt;achternaam;
+echo (&amp;quot;$naam, &amp;quot;);
+if ($list-&amp;gt;mailVerjaardag == 'n') {
+$tekst=&amp;quot;Beste &amp;quot;.$list-&amp;gt;voornaam.&amp;quot;\n \n Een gelukkige verjaardag, &amp;quot;.$list-&amp;gt;leeftijd .&amp;quot; jaar is niet niks, geniet van deze mooie dag. \n \n De leiding \n &amp;quot;;
+$email = $list-&amp;gt;email;
+$onderwerp=&amp;quot;Gelukkige Verjaardag!&amp;quot;;
+$headers = &amp;quot;From: Naam \r\n&amp;quot;;
+mail($email,$onderwerp,$tekst,$headers);
+$sql = &amp;quot;UPDATE stam SET mailVerjaardag = 'y' WHERE id = '$list-&amp;gt;id'&amp;quot;;
+mysql_query($sql)or die(mysql_error());
+}
+}
+echo &amp;quot;een gelukkige verjaardag!&amp;quot;;
+}
+} else {
+echo &amp;quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Wij wensen &amp;quot;;
+$setIntro = 1;
+while($list = mysql_fetch_object($queryLeden)){
+$naam = $list-&amp;gt;voornaam.&amp;quot; &amp;quot;.$list-&amp;gt;achternaam;
+echo (&amp;quot;$naam - ($list-&amp;gt;leeftijd jaar), &amp;quot;);
+if ($list-&amp;gt;mailVerjaardag == 'n') {
+$tekst=&amp;quot;Beste &amp;quot;.$list-&amp;gt;voornaam.&amp;quot;\n \n Een gelukkige verjaardag, &amp;quot;.$list-&amp;gt;leeftijd .&amp;quot; jaar is niet niks, geniet van deze mooie dag. \n \n De leiding&amp;quot;;
+$email = $list-&amp;gt;email;
+$onderwerp=&amp;quot;Gelukkige Verjaardag!&amp;quot;;
+$headers = &amp;quot;From: Naam \r\n&amp;quot;;
+mail($email,$onderwerp,$tekst,$headers);
+$sql = &amp;quot;UPDATE ledenlijst SET mailVerjaardag = 'y' WHERE ledenlijst_id = '$list-&amp;gt;ledenlijst_id'&amp;quot;;
+mysql_query($sql)or die(mysql_error());
+
+}
+}
+
+if (mysql_num_rows($queryStam) == 0) {
+} else {
+if ($setIntro != 1){
+echo &amp;quot;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp;&amp;nbsp; Wij wensen &amp;quot;;
+}
+
+while($list = mysql_fetch_object($queryStam)){
+$naam = $list-&amp;gt;voornaam.&amp;quot; &amp;quot;.$list-&amp;gt;achternaam;
+echo (&amp;quot;$naam, &amp;quot;);
+if ($list-&amp;gt;mailVerjaardag == 'n') {
+$tekst=&amp;quot;Beste &amp;quot;.$list-&amp;gt;voornaam.&amp;quot;\n \n Een gelukkige verjaardag, &amp;quot;.$list-&amp;gt;leeftijd .&amp;quot; jaar is niet niks, geniet van deze mooie dag. \n \n De leiding&amp;quot;;
+$email = $list-&amp;gt;email;
+$onderwerp=&amp;quot;Gelukkige Verjaardag!&amp;quot;;
+$headers = &amp;quot;From: Naam \r\n&amp;quot;;
+mail($email,$onderwerp,$tekst,$headers);
+$sql = &amp;quot;UPDATE stam SET mailVerjaardag = 'y' WHERE id = '$list-&amp;gt;id'&amp;quot;;
+mysql_query($sql)or die(mysql_error());
+}
+}
+}
+echo &amp;quot;een gelukkige verjaardag!&amp;quot;;
+}
+?&amp;gt;&lt;/span&gt;
+&lt;/pre&gt;
+</content><category term="php"></category><category term="MySQL"></category><category term="php"></category><category term="scouts"></category><category term="script"></category><category term="birthdays"></category></entry></feed>

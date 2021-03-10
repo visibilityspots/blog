@@ -1,0 +1,95 @@
+use_xft yes
+xftfont Liberation Sans:size=8
+override_utf8_locale yes
+
+text_buffer_size 2048
+update_interval 1
+total_run_times 0
+double_buffer yes
+no_buffers yes
+net_avg_samples 1
+cpu_avg_samples 1
+
+own_window_class Conky
+own_window yes
+own_window_colour 2C2B29
+own_window_type override
+own_window_transparent no
+own_window_hints undecorated,below,skip_taskbar,skip_pager
+
+default_color 929292
+draw_borders yes
+border_width 1
+border_inner_margin 10
+draw_graph_borders yes
+draw_outline no
+draw_shades no
+
+color0 996B5C
+color1 996B5C
+color2 E6E6E6
+
+alignment bottom_left
+gap_x 25
+gap_y 50
+minimum_size 182 0
+maximum_width 182
+
+imlib_cache_size 0
+
+TEXT
+${font Liberation Sans:style=Bold:size=8}${color1}${exec lsb_release -d}${color}${font}
+${font Liberation Sans:style=Bold:size=8}${color1}${exec lsb_release -c}${color}${font}
+${color0}${voffset 6}${font OpenLogos:size=19}u${font}${color}${goto 38}${voffset -14}Kernel:  ${alignr}${color2}${kernel}${color}
+${goto 38}Uptime: ${alignr}${color2}${uptime}${color}
+${goto 38}Updates: ${alignr}${font Liberation Sans:style=Bold:size=8}${color1}${execi 360 aptitude search "~U" | wc -l | tail}${color}${font} ${color2}Packages${color}
+${goto 38}Desktop: ${alignr}${color2}${desktop_name}${color}
+
+${font Liberation Sans:style=Bold:size=8}HARDWARE $stippled_hr${font}
+${offset 1}${color0}${font Poky:size=16}P${font}${offset -19}${voffset 9}${cpubar cpu0 4,18}${color}${voffset -15}${goto 38}CPU1: ${font Liberation Sans:style=Bold:size=8}${color1}${cpu cpu1}%${font} ${alignr}${font Liberation Sans:style=Bold:size=8}${color1}${execi 30 sensors | grep 'Core 0' | cut -c15-16}°C${color}${font}  ${color2}${cpugraph cpu1 8,50 996B5C 996B5C -t}${color}
+${goto 38}CPU2: ${font Liberation Sans:style=Bold:size=8}${color1}${cpu cpu2}%${font} ${alignr}${font Liberation Sans:style=Bold:size=8}${color1}${execi 30 sensors | grep 'Core 1' | cut -c15-16}°C${color}${font}  ${color2}${cpugraph cpu2 8,50 996B5C 996B5C -t}${color}
+${color0}${font Poky:size=16}M${font}${color}${goto 38}${voffset -7}RAM: ${font Liberation Sans:style=Bold:size=8}${color1}$memperc%${color}${font}${alignr}${color2}${memgraph 8,80 996B5C 996B5C -t}${color}
+${offset 1}${voffset 2}${color2}${membar 4,18}${color}${goto 38}${voffset -2}F: ${color2}${memeasyfree}${color} U: ${color2}${mem}${color}
+${color}${voffset -2}Buffers: ${color2}$buffers${color1}${alignr}${color}Cached: ${color2}$cached${color}
+${voffset 2}${color0}${font Poky:size=14}s${font}${color}${voffset -8}${goto 38}SWAP: ${font Liberation Sans:style=Bold:size=8}${color1}${swapperc}%${color}${font}
+${voffset 4}${offset 1}${color2}${swapbar 4,18}${color}${voffset -4}${goto 38}F: ${color2}$swapmax${color} U: ${color2}$swap${color}
+
+${font Liberation Sans:style=Bold:size=8}PROCESSES $stippled_hr${font}
+${voffset 2}${color0}${font Poky:size=15}a${font}${color}${alignr 13}CPU${alignr}RAM${color}
+${voffset -1}${goto 46}${color2}${top name 1}${color}${font Liberation Sans:style=Bold:size=8}${color1} ${goto 127}${top cpu 1}${alignr }${top mem 1}${color}${font}
+${voffset -1}${goto 46}${color2}${top name 2}${color}${font Liberation Sans:style=Bold:size=8}${color1} ${goto 127}${top cpu 2}${alignr }${top mem 2}${color}${font}
+${voffset -1}${goto 46}${color2}${top name 3}${color}${font Liberation Sans:style=Bold:size=8}${color1} ${goto 127}${top cpu 3}${alignr }${top mem 3}${color}${font}
+${if_existing /proc/net/route wlan0}
+${voffset 4}${font Liberation Sans:style=Bold:size=8}NETWORK $stippled_hr${font}
+
+${voffset -13}${color0}${font VariShapes Solid:size=14}q${font}${color}${goto 38}${voffset -6}Up: ${font Liberation Sans:style=Bold:size=8}${color1}${upspeed wlan0}${color}${font} ${alignr}${color2}${upspeedgraph wlan0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totalup wlan0}${color}
+${voffset -2}${color0}${font VariShapes Solid:size=14}Q${font}${color}${goto 38}${voffset -6}Down: ${font Liberation Sans:style=Bold:size=8}${color1}${downspeed wlan0}${color}${font} ${alignr}${color2}${downspeedgraph wlan0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totaldown wlan0}${color}
+
+${font Liberation Sans:style=Bold:size=8}${wireless_essid wlan0}${alignr}${color1}${wireless_bitrate wlan0}${font}${color}
+${wireless_mode wlan0}
+${voffset -2}${color0}${font Poky:size=14}Y${font}${color}${goto 38} ${voffset -2}Signal: ${font Liberation Sans:style=Bold:size=8}${color1}${wireless_link_qual wlan0}%${color}${font} ${alignr}${color2}${wireless_link_bar 8,60 wlan0}${color}
+${voffset 4}${color0}${font Poky:size=13}w${font}${color}${goto 38}${voffset -8}Local IP: ${alignr}${color2}${addr wlan0}${color}
+${goto 38}Public IP: ${alignr}${color2}${execi 10800 ~/.conky/ip.sh}${color}
+${goto 38}Gateway: ${alignr}${color2}$gw_ip${color}
+${alignr}${color2}${wireless_ap wlan0}${color}
+${else}${if_existing /proc/net/route eth0}
+${voffset 4}${font Liberation Sans:style=Bold:size=8}NETWORK $stippled_hr${font}
+${voffset -13}${color0}${font VariShapes Solid:size=14}q${font}${color}${goto 38}${voffset -6}Up: ${font Liberation Sans:style=Bold:size=8}${color1}${upspeed eth0}${color}${font} ${alignr}${color2}${upspeedgraph eth0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totalup eth0}${color}
+${voffset -2}${color0}${font VariShapes Solid:size=14}Q${font}${color}${goto 38}${voffset -6}Down: ${font Liberation Sans:style=Bold:size=8}${color1}${downspeed eth0}${color}${font} ${alignr}${color2}${downspeedgraph eth0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totaldown eth0}${color}
+${voffset -2}${color0}${font Poky:size=13}w${font}${color}${goto 38}${voffset -4}Local IP: ${alignr}${color2}${addr eth0}${color}
+${goto 38}Public IP: ${alignr}${color2}${execi 10800 ~/.conky/ip.sh}${color}
+${goto 38}Gateway: ${alignr}${color2}$gw_ip${color}
+${endif}${else}${if_existing /proc/net/route ppp0}
+${voffset -13}${color0}${font VariShapes Solid:size=14}q${font}${color}${goto 38}${voffset -6}Up: ${font Liberation Sans:style=Bold:size=8}${color1}${upspeed ppp0}${color}${font} ${alignr}${color2}${upspeedgraph ppp0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totalup ppp0}${color}
+${voffset -2}${color0}${font VariShapes Solid:size=14}Q${font}${color}${goto 38}${voffset -6}Down: ${font Liberation Sans:style=Bold:size=8}${color1}${downspeed ppp0}${color}${font} ${alignr}${color2}${downspeedgraph ppp0 8,60 996B5C 996B5C}${color}
+${goto 38}Total: ${color2}${totaldown ppp0}${color}
+${voffset -2}${color0}${font Poky:size=13}w${font}${color}${goto 38}${voffset -4}Local IP: ${alignr}${color2}${addr ppp0}${color}
+${endif}${else}${voffset 4}${color0}${font PizzaDude Bullets:size=12}4${font}${color}${goto 38}Network Unavailable${endif}${endif}
+${voffset 4}${font Liberation Sans:style=Bold:size=8}HARD DISK $stippled_hr${font}
+${execpi 30 ~/.conky/conkyHD1.py}
+#${voffset 4}${font Liberation Sans:style=Bold:size=8}TESTING $stippled_hr${font}

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - apple</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/apple.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2011-01-27T22:47:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Apple remote (A1156) - MacBook Pro 3.1 &amp; Ubuntu 10.04</title><link href="https://visibilityspots.github.io/blog/apple-linux-remote.html" rel="alternate"></link><published>2011-01-27T22:47:00+01:00</published><updated>2011-01-27T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2011-01-27:/blog/apple-linux-remote.html</id><summary type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
+&lt;p&gt;It's quite easy once you know how.&lt;/p&gt;
+&lt;p&gt;Installation of the lirc library:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo apt-get install lirc
+&lt;/pre&gt;
+&lt;p&gt;Adapting the configuration files (make sure to backup them first!):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo cp /old/file /new/file.bak
+&lt;/pre&gt;
+&lt;p&gt;/etc/lirc/hardware.conf&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb/hiddev0&amp;quot; REMOTE_SOCKET=&amp;quot;&amp;quot; REMOTE_LIRCD_CONF …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
+&lt;p&gt;It's quite easy once you know how.&lt;/p&gt;
+&lt;p&gt;Installation of the lirc library:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo apt-get install lirc
+&lt;/pre&gt;
+&lt;p&gt;Adapting the configuration files (make sure to backup them first!):&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ sudo cp /old/file /new/file.bak
+&lt;/pre&gt;
+&lt;p&gt;/etc/lirc/hardware.conf&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb/hiddev0&amp;quot; REMOTE_SOCKET=&amp;quot;&amp;quot; REMOTE_LIRCD_CONF=&amp;quot;&amp;quot; REMOTE_LIRCD_ARGS=&amp;quot;--uinput&amp;quot;
+
+#Chosen IR Transmitter
+ TRANSMITTER=&amp;quot;None&amp;quot;
+ TRANSMITTER\_MODULES=&amp;quot;&amp;quot;
+ TRANSMITTER\_DRIVER=&amp;quot;&amp;quot;
+ TRANSMITTER\_DEVICE=&amp;quot;&amp;quot;
+ TRANSMITTER\_SOCKET=&amp;quot;&amp;quot;
+ TRANSMITTER\_LIRCD\_CONF=&amp;quot;&amp;quot;
+ TRANSMITTER\_LIRCD\_ARGS=&amp;quot;&amp;quot;
+
+#Enable lircd
+ START\_LIRCD=true
+
+#Don't start lircmd even if there seems to be a good config file
+ #START\_LIRCMD=&amp;quot;false&amp;quot;
+
+#Try to load appropriate kernel modules
+ LOAD\_MODULES=&amp;quot;true&amp;quot;
+
+# Default configuration files for your hardware if any
+ LIRCMD\_CONF=&amp;quot;&amp;quot;
+
+#Forcing noninteractive reconfiguration
+ #If lirc is to be reconfigured by an external application
+ #that doesn't have a debconf frontend available, the noninteractive
+ frontend can be invoked and set to parse REMOTE and TRANSMITTER
+ #It will then populate all other variables without any user input
+ #If you would like to configure lirc via standard methods, be sure
+ #to leave this set to &amp;quot;false&amp;quot;
+ FORCE\_NONINTERACTIVE\_RECONFIGURATION=&amp;quot;false&amp;quot;
+ START\_LIRCMD=&amp;quot;&amp;quot;
+
+# Remote settings required by gnome-lirc-properties
+ REMOTE\_MODEL=&amp;quot;A1156&amp;quot;
+ REMOTE\_VENDOR=&amp;quot;Apple&amp;quot;
+
+# Receiver settings required by gnome-lirc-properties
+ RECEIVER\_MODEL=&amp;quot;Built-in\\ IR\\ Receiver\\ \\(0x8242\\)&amp;quot;
+ RECEIVER\_VENDOR=&amp;quot;Apple&amp;quot;
+
+**/etc/lirc/lircd.conf**
+
+``# This configuration has been automatically generated # by the GNOME LIRC Properties control panel. # # Feel free to add any custom remotes to the configuration # via additional include directives or below the existing # include directives from your selected remote and/or # transmitter. #``
+
+# Configuration selected with GNOME LIRC Properties
+ # include
+
+begin remote
+ name AppleRemote
+ bits 8
+ eps 30
+ aeps 100
+ one 0 0
+ zero 0 0
+ pre\_data\_bits 24
+ pre\_data 0x87EE81
+ gap 211982
+ toggle\_bit\_mask 0x0
+ ignore\_mask 0x0000ff01
+ begin codes
+ KEY\_VOLUMEUP 0x0B
+ KEY\_VOLUMEDOWN 0x0D
+ KEY\_PREVIOUSSONG 0x08
+ KEY\_NEXTSONG 0x07
+ KEY\_PLAYPAUSE 0x04
+ KEY\_MENU 0x02
+ end codes
+ end remote
+&lt;/pre&gt;
+&lt;p&gt;/etc/modules&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+# /etc/modules: kernel modules to load at boot time. # # This file contains the names of kernel modules that should be loaded # at boot time, one per line. Lines beginning with &amp;quot;#&amp;quot; are ignored.
+
+lp
+ usbhid
+ applesmc
+&lt;/pre&gt;
+&lt;p&gt;/etc/modprobe.d/blacklist&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+blacklist applesmc blacklist usbhid
+&lt;/pre&gt;
+&lt;p&gt;Restart the lirc daemon after adopted the configuration:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ /etc/init.d/lirc restart
+&lt;/pre&gt;
+&lt;p&gt;To see if the daemon successfully started and is using the right driver:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+$ ps aux | grep lirc
+&lt;/pre&gt;
+&lt;p&gt;If everything went well you should be able to use the remote without any hassle and you could use the apple hardware user experience on a linux distribution!&lt;/p&gt;
+</content><category term="apple"></category><category term="apple"></category><category term="linux"></category><category term="ubuntu"></category><category term="infrared"></category><category term="remote"></category><category term="lirc"></category><category term="hardware"></category></entry></feed>

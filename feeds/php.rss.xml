@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"><channel><title>visibilityspots - php</title><link>https://visibilityspots.github.io/blog/</link><description>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</description><lastBuildDate>Wed, 30 Dec 2009 11:27:00 +0100</lastBuildDate><item><title>Showing birthdays using php</title><link>https://visibilityspots.github.io/blog/birthday-script.html</link><description>&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
+&lt;p&gt;Something like &amp;quot;We wish XXX a happy # anniversary!'&lt;/p&gt;
+&lt;p&gt;To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.&lt;/p&gt;
+&lt;p&gt;database connection (db_connectPear.php)&lt;/p&gt;
+&lt;pre class="code php literal-block"&gt;
+&lt;span class="x"&gt;&amp;lt; ?php
+$dsn = array(
+ 'phptype' =&amp;gt; 'mysql',
+ 'username' =&amp;gt; 'DBUSERNAME' …&lt;/span&gt;&lt;/pre&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Jan</dc:creator><pubDate>Wed, 30 Dec 2009 11:27:00 +0100</pubDate><guid isPermaLink="false">tag:visibilityspots.github.io,2009-12-30:/blog/birthday-script.html</guid><category>php</category><category>MySQL</category><category>php</category><category>scouts</category><category>script</category><category>birthdays</category></item></channel></rss>
