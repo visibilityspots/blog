@@ -8,7 +8,7 @@ Modified:    2015-10-10
 
 We at [Inuits](https://inuits.eu) are using vagrant for a lot of use cases, neither you are a developer or a sysadmin you for sure will walk into it. Me, myself I do use it merely to automate the many different use cases asked by various projects. It took some time to get myself organized with this pretty nifty piece of software.
 
-In the beginning I used it with the default virtualization provider [virtualbox](https://virtualbox.org) later on I switched to [lxc]({filename}/vagrant-setup.html) containers instead. By using those containers I already gained on performance. Spinning up and down new containers to test if an application is deployed fully automatically got 2 times as fast as when using vm's.
+In the beginning I used it with the default virtualization provider [virtualbox](https://virtualbox.org) later on I switched to [lxc]({filename}../linux/vagrant-setup.md) containers instead. By using those containers I already gained on performance. Spinning up and down new containers to test if an application is deployed fully automatically got 2 times as fast as when using vm's.
 
 But what I struggled with the most where the many different projects. Each time a new piece of software needed to be automated I copied over the puppet base I used the previous time. Which lead to outdated setups for older projects, many duplicate code over and over again. When updating base modules for both the puppet agent as the puppetmaster previous projects got forgotten..
 
