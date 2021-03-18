@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - linux</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/linux.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2020-03-09T19:00:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Httpd semaphores</title><link href="https://visibilityspots.github.io/blog/httpd-semaphores.html" rel="alternate"></link><published>2020-03-09T19:00:00+01:00</published><updated>2020-03-09T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2020-03-09:/blog/httpd-semaphores.html</id><summary type="html">&lt;p&gt;Recently we encountered some strange issues with httpd on some of our CentOS 7 machines during my current project.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - linux</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/linux.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2020-03-18T00:00:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Httpd semaphores</title><link href="https://visibilityspots.github.io/blog/httpd-semaphores.html" rel="alternate"></link><published>2020-03-09T19:00:00+01:00</published><updated>2020-03-09T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2020-03-09:/blog/httpd-semaphores.html</id><summary type="html">&lt;p&gt;Recently we encountered some strange issues with httpd on some of our CentOS 7 machines during my current project.&lt;/p&gt;
 &lt;p&gt;Through our pipeline we restart httpd several times which sometimes leads to this error:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nl"&gt;Apache&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;28&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="k"&gt;No&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;space&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nf"&gt;left&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;on&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -211,42 +211,77 @@ $ sudo dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&
 &lt;li&gt;&lt;a href="https://www.cyberciti.biz/faq/update-lenovo-bios-from-linux-usb-stick-pen/"&gt;https://www.cyberciti.biz/faq/update-lenovo-bios-from-linux-usb-stick-pen/&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://wiki.archlinux.org/index.php/Flashing_BIOS_from_Linux"&gt;https://wiki.archlinux.org/index.php/Flashing_BIOS_from_Linux&lt;/a&gt;&lt;/li&gt;
 &lt;li&gt;&lt;a href="https://workaround.org/article/updating-the-bios-on-lenovo-laptops-from-linux-using-a-usb-flash-stick/"&gt;https://workaround.org/article/updating-the-bios-on-lenovo-laptops-from-linux-using-a-usb-flash-stick/&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;</content><category term="linux"></category><category term="linux"></category><category term="archlinux"></category><category term="bios"></category><category term="BIOS"></category><category term="upgrade"></category><category term="lenovo"></category></entry><entry><title>Archlinux ARM pi zero cups network print server</title><link href="https://visibilityspots.github.io/blog/print-server.html" rel="alternate"></link><published>2018-12-26T19:00:00+01:00</published><updated>2019-02-05T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2018-12-26:/blog/print-server.html</id><summary type="html">&lt;p&gt;Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.&lt;/p&gt;
+&lt;/ul&gt;</content><category term="linux"></category><category term="linux"></category><category term="archlinux"></category><category term="bios"></category><category term="BIOS"></category><category term="upgrade"></category><category term="lenovo"></category></entry><entry><title>Archlinux ARM pi zero cups network print server</title><link href="https://visibilityspots.github.io/blog/print-server.html" rel="alternate"></link><published>2018-12-26T19:00:00+01:00</published><updated>2020-03-18T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2018-12-26:/blog/print-server.html</id><summary type="html">&lt;h1&gt;PRINTING&lt;/h1&gt;
+&lt;p&gt;Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.&lt;/p&gt;
 &lt;p&gt;From both my wife and daughter, especially during the holidays where the wife want to use it to print out tickets and the daughter want to print out color plates..&lt;/p&gt;
-&lt;p&gt;So during one of the evenings I pulled myself together and installed &lt;a href="https://archlinuxarm.org/"&gt;ArchLinux ARM&lt;/a&gt; on a …&lt;/p&gt;</summary><content type="html">&lt;p&gt;Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.&lt;/p&gt;
+&lt;p&gt;So during one of the evenings I pulled myself together and installed &lt;a href="https://archlinuxarm.org/"&gt;ArchLinux ARM&lt;/a&gt; on …&lt;/p&gt;</summary><content type="html">&lt;h1&gt;PRINTING&lt;/h1&gt;
+&lt;p&gt;Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.&lt;/p&gt;
 &lt;p&gt;From both my wife and daughter, especially during the holidays where the wife want to use it to print out tickets and the daughter want to print out color plates..&lt;/p&gt;
 &lt;p&gt;So during one of the evenings I pulled myself together and installed &lt;a href="https://archlinuxarm.org/"&gt;ArchLinux ARM&lt;/a&gt; on a pi zero w and went through the following configuration.&lt;/p&gt;
 &lt;p&gt;First off all install and configure cups on the pi zero following the &lt;a href="https://wiki.archlinux.org/index.php/CUPS"&gt;Arch wiki&lt;/a&gt;&lt;/p&gt;
-&lt;p&gt;Do not configure any printer yet, install cups and start/enable the cups-browsed.service.&lt;/p&gt;
+&lt;p&gt;Do not configure any printer yet, only install cups. When following the guide you can also set cups to be &lt;a href="https://wiki.archlinux.org/index.php/CUPS/Printer_sharing#Remote_administration"&gt;available&lt;/a&gt; on our local network through the browser on port 631;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# vim /etc/cups/cupsd.conf&lt;/span&gt;
+&lt;span class="err"&gt;# Only listen for connections from the local machine.&lt;/span&gt;
+&lt;span class="err"&gt;#Listen localhost:631&lt;/span&gt;
+&lt;span class="err"&gt;Port 631&lt;/span&gt;
+&lt;span class="err"&gt;Listen /run/cups/cups.sock&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# Restrict access to the server...
+&lt;span class="nt"&gt;&amp;lt;Location&lt;/span&gt; &lt;span class="nt"&gt;/&amp;gt;&lt;/span&gt;
+  Order allow,deny
+  Allow from @LOCAL
+&lt;span class="nt"&gt;&amp;lt;/Location&amp;gt;&lt;/span&gt;
+
+# Restrict access to the admin pages...
+&lt;span class="nt"&gt;&amp;lt;Location&lt;/span&gt; &lt;span class="err"&gt;/admin&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  Order allow,deny
+  Allow from @LOCAL
+&lt;span class="nt"&gt;&amp;lt;/Location&amp;gt;&lt;/span&gt;
+
+# Restrict access to configuration files...
+&lt;span class="nt"&gt;&amp;lt;Location&lt;/span&gt; &lt;span class="err"&gt;/admin/conf&lt;/span&gt;&lt;span class="nt"&gt;&amp;gt;&lt;/span&gt;
+  AuthType Default
+  Require user @SYSTEM
+  Order allow,deny
+  Allow from @LOCAL
+&lt;span class="nt"&gt;&amp;lt;/Location&amp;gt;&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
+&lt;p&gt;Once that's done you can start the cups service and enable it to start at boot;&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# systemctl start cups.service&lt;/span&gt;
+&lt;span class="err"&gt;# systemctl enable cups.service&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;p&gt;Next we will configure the USB connected printers as raw on the pi.&lt;/p&gt;
 &lt;p&gt;first get your printer USB handle&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@print-server]# lpinfo -v | grep usb:&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# lpinfo -v | grep usb:&lt;/span&gt;
 &lt;span class="err"&gt;direct usb://Samsung/CLP-310%20Series?serial=################&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;add a new printer with the found USB handle&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@print-server]# lpadmin -p Visibilityspots-LaserJet -v usb://Samsung/CLP-310%20Series?serial=##################&lt;/span&gt;
-&lt;span class="err"&gt;[root@print-server]# lpstat -p Visibilityspots-LaserJet -l&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# lpadmin -p Visibilityspots-LaserJet -v usb://Samsung/CLP-310%20Series?serial=##################&lt;/span&gt;
+&lt;span class="err"&gt;# lpstat -p Visibilityspots-LaserJet -l&lt;/span&gt;
 &lt;span class="err"&gt;printer Visibilityspots-LaserJet disabled since Mon Dec 24 20:51:24 2018 -&lt;/span&gt;
 &lt;span class="err"&gt;    reason unknown&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;enable the printer&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@print-server]# cupsenable Visibilityspots-LaserJet&lt;/span&gt;
-&lt;span class="err"&gt;[root@print-server]# lpstat -p Visibilityspots-LaserJet -l&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# cupsenable Visibilityspots-LaserJet&lt;/span&gt;
+&lt;span class="err"&gt;# lpstat -p Visibilityspots-LaserJet -l&lt;/span&gt;
 &lt;span class="err"&gt;printer Visibilityspots-LaserJet is idle.  enabled since Mon Dec 24 20:51:54 2018&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;make the printer accept jobs&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@print-server]# cupsaccept Visibilityspots-LaserJet&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# cupsaccept Visibilityspots-LaserJet&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We do have a server now which can accept print jobs.&lt;/p&gt;
 &lt;p&gt;But before sending print request we need to configure our clients too. Since we configured a raw printer we need to install the printer drivers on the clients. Depending on you distribution you need to install some specific packages for the specific print drivers for your printer.&lt;/p&gt;
-&lt;p&gt;I on my ArchLinux I had to install the packages samsung-drivers for my samsung printer and hp-lib for the hp one.&lt;/p&gt;
-&lt;p&gt;To get the printers configured I just used the cups web interface on my machine and used the URI http://IP-ADDRESS-PRINT-SERVER-ON-A-PI:631/printers/Visibilityspots-DeskJet in combination with the driver for the specific model.&lt;/p&gt;
+&lt;p&gt;I on my ArchLinux I had to install the packages samsung-drivers for my samsung printer and hplib for the hp one.&lt;/p&gt;
+&lt;p&gt;To get the printers configured I just used the cups web interface on my machine and used the URI &lt;em&gt;http://IP-ADDRESS-PRINT-SERVER-ON-A-PI:631/printers/Visibilityspots-DeskJet&lt;/em&gt; in combination with the driver for the specific model.&lt;/p&gt;
 &lt;p&gt;After that I could easily print the common know print test page which magically printer the tux!!&lt;/p&gt;
-&lt;p&gt;SCAN&lt;/p&gt;
+&lt;h1&gt;SCAN&lt;/h1&gt;
 &lt;p&gt;Besides printing I also wanted to enable the scan option on one of the dives over the network.&lt;/p&gt;
 &lt;p&gt;This was rather easy as being described on the &lt;a href="https://wiki.archlinux.org/index.php/Sane#Sharing_your_scanner_over_a_network"&gt;ArchWiki&lt;/a&gt; after I installed both sane and hp-lib on the print-server too.&lt;/p&gt;
 &lt;p&gt;Do not forget to enable the saned.socket systemd service on your print-server!&lt;/p&gt;
@@ -254,7 +289,7 @@ $ sudo dd &lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;And now I'm able to put something in the scanner bed and execute a custom scan function I wrote in my zsh config&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;scan test-image&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;$ scan test-image
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;zsh config:&lt;/p&gt;

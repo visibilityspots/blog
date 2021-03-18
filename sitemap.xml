@@ -5,35 +5,35 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/</loc>
-<lastmod>2021-03-18T20:15:35-00:00</lastmod>
+<lastmod>2021-03-18T20:34:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/archives.html</loc>
-<lastmod>2021-03-18T20:15:35-00:00</lastmod>
+<lastmod>2021-03-18T20:34:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tags.html</loc>
-<lastmod>2021-03-18T20:15:35-00:00</lastmod>
+<lastmod>2021-03-18T20:34:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/categories.html</loc>
-<lastmod>2021-03-18T20:15:35-00:00</lastmod>
+<lastmod>2021-03-18T20:34:31-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/pages/contact.html</loc>
-<lastmod>2021-03-18T20:15:35-00:00</lastmod>
+<lastmod>2021-03-18T20:34:31-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -124,7 +124,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/print-server.html</loc>
-<lastmod>2019-02-05T00:00:00+01:00</lastmod>
+<lastmod>2020-03-18T00:00:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -635,7 +635,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/category/linux.html</loc>
-<lastmod>2020-03-09T19:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -873,7 +873,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/arm.html</loc>
-<lastmod>2019-08-28T21:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -901,7 +901,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/pi.html</loc>
-<lastmod>2019-08-28T21:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -950,7 +950,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/archlinux.html</loc>
-<lastmod>2019-08-28T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -1055,77 +1055,77 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/cups.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/zero.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/w.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/print.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/server.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/sane.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/scan.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/remote.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/scanimage.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/hp.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/samsung.html</loc>
-<lastmod>2019-02-05T00:00:00+00:18</lastmod>
+<lastmod>2020-03-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
