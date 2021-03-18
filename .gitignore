@@ -3,3 +3,5 @@ cache/
 output/
 *.pid
 content/drafts
+.secrets
+*act*
