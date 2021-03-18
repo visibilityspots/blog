@@ -72,14 +72,15 @@
                 <article class="post-entry">
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/print-server.html" rel="bookmark"><h1>Archlinux ARM pi zero cups network print server</h1></a>
-<div><p>takes 0 minutes to read</p></div>                        <time class="post-time" datetime="2018-12-26T19:00:00+01:00" pubdate>
-                            last modified at Wed 18 March 2020
+<div><p>takes 1 minute to read</p></div>                        <time class="post-time" datetime="2018-12-26T19:00:00+01:00" pubdate>
+                            last modified at Thu 18 March 2021
                         </time>
                     </header>
                     <section class="post-content">
-                        <h1>PRINTING</h1>
-<p>Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.</p>
-<p>From both my wife and daughter, especially during the holidays where the wife want to use it to print out tickets and the daughter want to print out color plates..</p>
+                        <h2>Printing</h2>
+<p>Probably like many amongst us the time of the Christmas holidays is perfect to get some IT related stuff back on track. I used to have a print server setup which got broken over time and I didn't found the energy to invest time into fixing it. But the pressure became higher and higher.
+111
+From both my wife and daughter, especially during the holidays where the wife want to use it to print out tickets and the daughter want to print out color plates..</p>
 <p>So during one of the evenings I pulled myself together and installed <a href="https://archlinuxarm.org/">ArchLinux ARM</a> on a pi zero w and went through the following configuration.</p>
 <p>First off all install and configure cups on the pi zero following the <a href="https://wiki.archlinux.org/index.php/CUPS">Arch wiki</a></p>
 <p>Do not configure any printer yet, only install cups. When following the guide you can also set cups to be <a href="https://wiki.archlinux.org/index.php/CUPS/Printer_sharing#Remote_administration">available</a> on our local network through the browser on port 631;</p>
@@ -144,7 +145,7 @@
 <p>I on my ArchLinux I had to install the packages samsung-drivers for my samsung printer and hplib for the hp one.</p>
 <p>To get the printers configured I just used the cups web interface on my machine and used the URI <em>http://IP-ADDRESS-PRINT-SERVER-ON-A-PI:631/printers/Visibilityspots-DeskJet</em> in combination with the driver for the specific model.</p>
 <p>After that I could easily print the common know print test page which magically printer the tux!!</p>
-<h1>SCAN</h1>
+<h2>Scan</h2>
 <p>Besides printing I also wanted to enable the scan option on one of the dives over the network.</p>
 <p>This was rather easy as being described on the <a href="https://wiki.archlinux.org/index.php/Sane#Sharing_your_scanner_over_a_network">ArchWiki</a> after I installed both sane and hp-lib on the print-server too.</p>
 <p>Do not forget to enable the saned.socket systemd service on your print-server!</p>
