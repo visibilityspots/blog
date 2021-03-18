@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots - networking</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/networking.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2012-04-03T14:36:00+02:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Cisco HWIC 3G configuration to 2G</title><link href="https://visibilityspots.github.io/blog/cisco-3g.html" rel="alternate"></link><published>2012-04-03T14:36:00+02:00</published><updated>2012-04-03T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2012-04-03:/blog/cisco-3g.html</id><summary type="html">&lt;p&gt;In some cisco routing devices you have the possibility to extend the features with a HWIC 3G card so mobile connectivity is added to your network infrastructure. This can be interesting for a mobile fail-over connection.&lt;/p&gt;
+&lt;p&gt;But as we all now, the mobile reception isn't always that good. To see the signal strength on your cisco device you can use:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+show cellular 0/0/0 connection
+&lt;/pre&gt;
+&lt;p&gt;depending on which slot you plugged the HWIC card into. If the measured value is beneath the -100 dBm then you have sufficient signal to setup a 3G ( CDMA - WCDMA) connection on.&lt;/p&gt;
+&lt;p&gt;If that's …&lt;/p&gt;</summary><content type="html">&lt;p&gt;In some cisco routing devices you have the possibility to extend the features with a HWIC 3G card so mobile connectivity is added to your network infrastructure. This can be interesting for a mobile fail-over connection.&lt;/p&gt;
+&lt;p&gt;But as we all now, the mobile reception isn't always that good. To see the signal strength on your cisco device you can use:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+show cellular 0/0/0 connection
+&lt;/pre&gt;
+&lt;p&gt;depending on which slot you plugged the HWIC card into. If the measured value is beneath the -100 dBm then you have sufficient signal to setup a 3G ( CDMA - WCDMA) connection on.&lt;/p&gt;
+&lt;p&gt;If that's not the case or the values of different measurements are very different you should consider to downgrade too a 2G connection because else your 3G connection will be very wonky!&lt;/p&gt;
+&lt;p&gt;The default setup would mostly be auto-band. This means that if there is a little chance to connection over 3G your device will try to connect to this 3G connection. If the 3G signals gets lost it REconnects to 2G and therefore connectivity interruption will take place.&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cellular 0/0/0 gsm band auto-band
+&lt;/pre&gt;
+&lt;p&gt;So if your 3G signals isn't strong enough it's a good idea to force your device to connect only on 2G. This can easily be done by:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+cellular 0/0/0 gsm band gsm-all-bands
+&lt;/pre&gt;
+&lt;p&gt;That way your wonky 3G connection will became a stable 2G connection!&lt;/p&gt;
+</content><category term="networking"></category><category term="2G"></category><category term="3G"></category><category term="auto-band"></category><category term="band"></category><category term="cellular"></category><category term="cisco"></category><category term="gsm"></category><category term="gsm-all-bands"></category><category term="Mobile"></category><category term="router"></category></entry><entry><title>BGP announcing default route</title><link href="https://visibilityspots.github.io/blog/bgp-default-route.html" rel="alternate"></link><published>2012-03-31T13:07:00+02:00</published><updated>2012-03-31T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2012-03-31:/blog/bgp-default-route.html</id><summary type="html">&lt;div class="section" id="advertising-default-route-with-bgp"&gt;
+&lt;h2&gt;Advertising default route with BGP&lt;/h2&gt;
+&lt;p&gt;If you want to announce the default route which is statically routed then you have to add following commands to the working BGP configuration:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
+router bgp 65001
+network 0.0.0.0
+default-information originate
+&lt;/pre&gt;
+&lt;p&gt;when you then clear the ip bgp routing softly (so the current connecting will not be broken)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+clear ip bgp soft in
+clear ip bgp soft out
+&lt;/pre&gt;
+&lt;p&gt;you should see that the default route is will be advertised:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sh ip bgp summary
+sh ip bgp neighbors IP …&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;div class="section" id="advertising-default-route-with-bgp"&gt;
+&lt;h2&gt;Advertising default route with BGP&lt;/h2&gt;
+&lt;p&gt;If you want to announce the default route which is statically routed then you have to add following commands to the working BGP configuration:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+ip route 0.0.0.0 0.0.0.0 192.168.1.1
+router bgp 65001
+network 0.0.0.0
+default-information originate
+&lt;/pre&gt;
+&lt;p&gt;when you then clear the ip bgp routing softly (so the current connecting will not be broken)&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+clear ip bgp soft in
+clear ip bgp soft out
+&lt;/pre&gt;
+&lt;p&gt;you should see that the default route is will be advertised:&lt;/p&gt;
+&lt;pre class="literal-block"&gt;
+sh ip bgp summary
+sh ip bgp neighbors IP.ADDRESS advertised-routes
+&lt;/pre&gt;
+&lt;/div&gt;
+</content><category term="networking"></category><category term="bgp"></category><category term="cisco"></category><category term="default"></category><category term="networking"></category><category term="route"></category></entry></feed>
