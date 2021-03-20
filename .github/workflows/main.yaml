@@ -47,7 +47,7 @@ jobs:
       with:
         args: --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v
       env:
-        AWS_S3_BUCKET: {{ secrets.AWS_S3_BUCKET }}
+        AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         SOURCE_DIR: 'output'
 
     - name: recreate AWS cloudfront cache
