@@ -22,14 +22,13 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: us-west-1
 
-
     - name: install python requirements
       uses: BSFishy/pip-action@v1
       with:
         requirements: requirements.txt
 
-    - name: build content
-      run: make github-create
+    - name: build github content
+      run: make github-build
 
     - name: deploy content as github-page
       uses: JamesIves/github-pages-deploy-action@4.1.0
@@ -37,8 +36,19 @@ jobs:
         branch: gh-pages
         folder: output
 
-    - name: build and deploy content to AWS S3
-      run: make aws
+    - name: clean github build
+      run: make clean
+
+    - name: build AWS content
+      run: make aws-build
+
+    - name: deploy content to AWS S3 bucket
+      uses: jakejarvis/s3-sync-action@master
+      with:
+        args: --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v
+      env:
+        AWS_S3_BUCKET: {{ secrets.AWS_S3_BUCKET }}
+        SOURCE_DIR: 'output'
 
     - name: recreate AWS cloudfront cache
       run: |
