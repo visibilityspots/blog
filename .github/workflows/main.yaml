@@ -45,7 +45,7 @@ jobs:
     - name: deploy content to AWS S3 bucket
       uses: jakejarvis/s3-sync-action@master
       with:
-        args: --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v
+        args: --exclude 'log/*' --exclude 'status.html' --acl-public --follow-symlinks --delete
       env:
         AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         SOURCE_DIR: 'output'
