@@ -1,0 +1,41 @@
+name: visibilityspots.org CI
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  AWS:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: 'recursive'
+
+    - name: configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ secrets.AWS_REGION }}
+
+    - name: install python requirements
+      uses: BSFishy/pip-action@v1
+      with:
+        requirements: requirements.txt
+
+    - name: build AWS based content
+      run: pelican content/ -o output/ -s aws_publish.py
+
+    - name: deploy AWS content to S3
+      run: aws s3 sync --delete --acl public-read ouput/ s3://${{ secrets.AWS_S3_BUCKET }}/
+
+    - name: invalidate AWS cloudfront cache
+      run: |
+        aws configure set preview.cloudfront true
+        aws cloudfront create-invalidation --distribution-id ${{ secrets.AWS_CLOUDFRONT_DISTRIBUTION_ID }} --paths "/*"
+
+
