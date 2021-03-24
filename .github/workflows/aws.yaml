@@ -15,8 +15,6 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: cache submodules
-
     - name: configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
