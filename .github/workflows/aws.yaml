@@ -15,6 +15,8 @@ jobs:
       with:
         submodules: 'recursive'
 
+    - name: cache submodules
+
     - name: configure AWS credentials
       uses: aws-actions/configure-aws-credentials@v1
       with:
@@ -28,7 +30,8 @@ jobs:
         requirements: requirements.txt
 
     - name: build AWS based content
-      run: pelican content/ -o output/ -s aws_publish.py
+#      run: pelican content/ -o output/ -s aws_publish.py
+      run: make aws-build
 
     - name: deploy AWS content to S3
       run: aws s3 sync --delete --acl public-read ouput/ s3://${{ secrets.AWS_S3_BUCKET }}/
