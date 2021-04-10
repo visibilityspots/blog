@@ -83,17 +83,17 @@
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[entryPoints]&lt;/span&gt;
   &lt;span class="k"&gt;[entryPoints.http]&lt;/span&gt;
     &lt;span class="na"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;:80&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;  [entryPoints.https]&lt;/span&gt;
-&lt;span class="s"&gt;    address = &amp;quot;:443&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;[entryPoints.https]&lt;/span&gt;
+    &lt;span class="na"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;:443&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;traefik&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-      &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;traefik&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;group &amp;quot;traefik&amp;quot; {
+    service {
+      name = &amp;quot;traefik&amp;quot;
 
-      &lt;span class="n"&gt;tags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.enable=true&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.http.middlewares.http2https.redirectscheme.scheme=https&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+      tags = [
+        &amp;quot;traefik.enable=true&amp;quot;,
+        &amp;quot;traefik.http.middlewares.http2https.redirectscheme.scheme=https&amp;quot;,
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;As a start I configured every service separately to redirect its http traffic towards https. But I found out by reading through some issues in the community from an &lt;a href="https://community.traefik.io/t/router-not-showing-up-using-consul-nomad/8770"&gt;answer&lt;/a&gt; by Kugel that this could also achieved by setting a global redirect;&lt;/p&gt;
@@ -113,26 +113,26 @@
 &lt;p&gt;Also when you want to use a &lt;a href="https://doc.traefik.io/traefik/https/acme/#wildcard-domains"&gt;wildcard&lt;/a&gt; certificate you'll have to use the &lt;a href="https://doc.traefik.io/traefik/https/acme/#dnschallenge"&gt;DNS-01&lt;/a&gt; challenge. I looked into this wildcard domain since I hit the rate limitations quite fast. I asked certificates for every sub domain using my routers and forgot to mount the acme.json file. So I went to the internet, found a &lt;a href="https://computerz.solutions/traefik-ssl-wildcard-letsencrypt/"&gt;solution&lt;/a&gt; for using a wildcard certificate for different services and fixed the acme.json mount.&lt;/p&gt;
 &lt;p&gt;Since I already got my domains configured in AWS I added a CNAME record for all my sub domains to point to the internal ip of the traefik instance which I pinned to a specific nomad client using metadata.&lt;/p&gt;
 &lt;p&gt;Luckily there is a &lt;a href="https://doc.traefik.io/traefik/https/acme/#providers"&gt;route53&lt;/a&gt; provider, which only needs some &lt;a href="https://go-acme.github.io/lego/dns/route53/"&gt;configuration&lt;/a&gt; in the AWS backend such as the IAM policy and a user from which you grab the ID's and keys to configure as environment variables towards the traefik container;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    &lt;span class="n"&gt;task&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;traefik&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    task &amp;quot;traefik&amp;quot; {
 
-      &lt;span class="n"&gt;driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;docker&amp;quot;&lt;/span&gt;
+      driver = &amp;quot;docker&amp;quot;
 
-      &lt;span class="n"&gt;env&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-        &lt;span class="n"&gt;AWS_ACCESS_KEY_ID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
-        &lt;span class="n"&gt;AWS_SECRET_ACCESS_KEY&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
-        &lt;span class="n"&gt;AWS_HOSTED_ZONE_ID&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;&amp;quot;&lt;/span&gt;
-        &lt;span class="n"&gt;AWS_REGION&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;eu-west-1&amp;quot;&lt;/span&gt;
-      &lt;span class="err"&gt;}&lt;/span&gt;
+      env {
+        AWS_ACCESS_KEY_ID = &amp;quot;&amp;quot;
+        AWS_SECRET_ACCESS_KEY = &amp;quot;&amp;quot;
+        AWS_HOSTED_ZONE_ID = &amp;quot;&amp;quot;
+        AWS_REGION = &amp;quot;eu-west-1&amp;quot;
+      }
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Once the AWS part is done you can configure the certificateResolver part in the traefik.toml static configuration mark the commented caServer to use the staging environment of letsencrypt first before putting it into production to not hit the rate limit too soon ;);&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[certificatesResolvers.letsencrypt.acme]&lt;/span&gt;
   &lt;span class="na"&gt;email&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;letsencrypt@example.org&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;  storage = &amp;quot;/etc/traefik/acme/acme.json&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;  #  caServer = &amp;quot;https://acme-staging-v02.api.letsencrypt.org/directory&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;  [certificatesResolvers.letsencrypt.acme.dnsChallenge]&lt;/span&gt;
-&lt;span class="s"&gt;    provider = &amp;quot;route53&amp;quot;&lt;/span&gt;
-&lt;span class="s"&gt;    delaybeforecheck = &amp;quot;0&amp;quot;&lt;/span&gt;
+  &lt;span class="na"&gt;storage&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/etc/traefik/acme/acme.json&amp;quot;&lt;/span&gt;
+  &lt;span class="c1"&gt;#  caServer = &amp;quot;https://acme-staging-v02.api.letsencrypt.org/directory&amp;quot;&lt;/span&gt;
+  &lt;span class="k"&gt;[certificatesResolvers.letsencrypt.acme.dnsChallenge]&lt;/span&gt;
+    &lt;span class="na"&gt;provider&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;route53&amp;quot;&lt;/span&gt;
+    &lt;span class="na"&gt;delaybeforecheck&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;0&amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and last but not least you'll have to reconfigure the traefik consul tags so the tls will be used;&lt;/p&gt;
@@ -152,17 +152,17 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Additional services on their turn can be configured in way they only have to enable tls and therefore falling back towards the wildcard certificate;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  &lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;helloworld&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-      &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;helloworld&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  group &amp;quot;helloworld&amp;quot; {
+    service {
+      name = &amp;quot;helloworld&amp;quot;
 
-      &lt;span class="n"&gt;tags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.enable=true&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.http.routers.helloworld-secure.rule=Host(`helloworld.example.org`)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.http.routers.helloworld-secure.entrypoints=https&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.http.routers.helloworld-secure.tls=true&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.http.routers.helloworld-secure.middlewares=default-auth&amp;quot;&lt;/span&gt;
-      &lt;span class="p"&gt;]&lt;/span&gt;
+      tags = [
+        &amp;quot;traefik.enable=true&amp;quot;,
+        &amp;quot;traefik.http.routers.helloworld-secure.rule=Host(`helloworld.example.org`)&amp;quot;,
+        &amp;quot;traefik.http.routers.helloworld-secure.entrypoints=https&amp;quot;,
+        &amp;quot;traefik.http.routers.helloworld-secure.tls=true&amp;quot;,
+        &amp;quot;traefik.http.routers.helloworld-secure.middlewares=default-auth&amp;quot;
+      ]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So now letsencrypt only requests a wildcard for my domain with *.example.org as an alternative and all my services are using that wildcard. That way I could keep the letsencrypt communication to a bare minimum for my setup.&lt;/p&gt;
@@ -172,22 +172,22 @@
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and a TCP &lt;a href="https://doc.traefik.io/traefik/routing/routers/#configuring-udp-routers"&gt;router&lt;/a&gt; using tags in the &lt;a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html"&gt;pihole&lt;/a&gt; nomad job;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  &lt;span class="k"&gt;group&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;pihole&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-      &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;pihole&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  group &amp;quot;pihole&amp;quot; {
+    service {
+      name = &amp;quot;pihole&amp;quot;
 
-      &lt;span class="n"&gt;tags&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.enable=true&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;traefik.udp.routers.pihole-dns.entrypoints=dns&amp;quot;&lt;/span&gt;
-      &lt;span class="p"&gt;]&lt;/span&gt;
+      tags = [
+        &amp;quot;traefik.enable=true&amp;quot;,
+        &amp;quot;traefik.udp.routers.pihole-dns.entrypoints=dns&amp;quot;
+      ]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;That way I don't have to pin the pihole containers anymore to a specific node, traefik will proxy the DNS traffic towards the pihole service dynamically which is again a little step up in my humble home lab :)&lt;/p&gt;
 &lt;p&gt;And as finishing touch I also have configured the nomad service on every node with some &lt;a href="https://www.nomadproject.io/docs/configuration/consul#tags"&gt;consul tags&lt;/a&gt; by doing so I'm able to configure a router using tags in the traefik job;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;        &amp;quot;traefik.http.routers.nomad-ui.rule=Host(`nomad.example.org`)&amp;quot;,&lt;/span&gt;
-&lt;span class="err"&gt;        &amp;quot;traefik.http.routers.nomad-ui.service=nomad-client@consulcatalog&amp;quot;,&lt;/span&gt;
-&lt;span class="err"&gt;        &amp;quot;traefik.http.routers.nomad-ui.entrypoints=https&amp;quot;,&lt;/span&gt;
-&lt;span class="err"&gt;        &amp;quot;traefik.http.routers.nomad-ui.tls=true&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;traefik.http.routers.nomad-ui.rule=Host(`nomad.example.org`)&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;traefik.http.routers.nomad-ui.service=nomad-client@consulcatalog&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;traefik.http.routers.nomad-ui.entrypoints=https&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;traefik.http.routers.nomad-ui.tls=true&amp;quot;&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;nomad.example.org will now be redirected to the nomad dashboard through one of the different clients. Since it's a cluster I will always get the same state and don't have to bother which client to access :)&lt;/p&gt;
@@ -220,70 +220,70 @@ $ sudo chown -R consul: /opt/consul
 
 &lt;p&gt;next step on the list is the actual configuration of the consul service for a server functionality&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;/etc/consul.d/config.json&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;acl_default_policy&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;allow&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;addresses&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;dns&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;grpc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;http&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;https&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;
-    &lt;span class="err"&gt;}&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;advertise_addr&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;IP.ADDRESS.OF.THIS.NODE&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;advertise_addr_wan&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;IP.ADDRESS.OF.THIS.NODE&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;{
+    &amp;quot;acl_default_policy&amp;quot;: &amp;quot;allow&amp;quot;,
+    &amp;quot;addresses&amp;quot;: {
+        &amp;quot;dns&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+        &amp;quot;grpc&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+        &amp;quot;http&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
+        &amp;quot;https&amp;quot;: &amp;quot;0.0.0.0&amp;quot;
+    },
+    &amp;quot;advertise_addr&amp;quot;: &amp;quot;IP.ADDRESS.OF.THIS.NODE&amp;quot;,
+    &amp;quot;advertise_addr_wan&amp;quot;: &amp;quot;IP.ADDRESS.OF.THIS.NODE&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;bind_addr&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;bind_addr&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;bootstrap&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;bootstrap_expect&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;3&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;bootstrap&amp;quot;: true,
+    &amp;quot;bootstrap_expect&amp;quot;: &amp;quot;3&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;client_addr&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;0.0.0.0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;client_addr&amp;quot;: &amp;quot;0.0.0.0&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;data_dir&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;/opt/consul&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;datacenter&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;NAME_DC&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;disable_update_check&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;domain&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;consul&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;data_dir&amp;quot;: &amp;quot;/opt/consul&amp;quot;,
+    &amp;quot;datacenter&amp;quot;: &amp;quot;NAME_DC&amp;quot;,
+    &amp;quot;disable_update_check&amp;quot;: false,
+    &amp;quot;domain&amp;quot;: &amp;quot;consul&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;enable_script_checks&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;false&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;enable_syslog&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;encrypt&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;ENCRYPTION_KEY&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;log_level&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;node_name&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;NODE NAME&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;enable_script_checks&amp;quot;: false,
+    &amp;quot;enable_syslog&amp;quot;: true,
+    &amp;quot;encrypt&amp;quot;: &amp;quot;ENCRYPTION_KEY&amp;quot;,
+    &amp;quot;log_level&amp;quot;: &amp;quot;INFO&amp;quot;,
+    &amp;quot;node_name&amp;quot;: &amp;quot;NODE NAME&amp;quot;,
 
-    &lt;span class="ss"&gt;&amp;quot;performance&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;leave_drain_time&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;5s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;raft_multiplier&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;rpc_hold_timeout&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;7s&amp;quot;&lt;/span&gt;
-    &lt;span class="err"&gt;}&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;performance&amp;quot;: {
+        &amp;quot;leave_drain_time&amp;quot;: &amp;quot;5s&amp;quot;,
+        &amp;quot;raft_multiplier&amp;quot;: 1,
+        &amp;quot;rpc_hold_timeout&amp;quot;: &amp;quot;7s&amp;quot;
+    },
 
-    &lt;span class="ss"&gt;&amp;quot;ports&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;dns&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8600&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;http&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8500&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;server&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;8300&lt;/span&gt;
-    &lt;span class="err"&gt;}&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
+    &amp;quot;ports&amp;quot;: {
+        &amp;quot;dns&amp;quot;: 8600,
+        &amp;quot;http&amp;quot;: 8500,
+        &amp;quot;server&amp;quot;: 8300
+    },
 
-    &lt;span class="ss"&gt;&amp;quot;raft_protocol&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;retry_interval&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;30s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;retry_interval_wan&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;30s&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;retry_join&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;CONSUL_SERVER_IPS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;CONSUL_SERVER_IPS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-        &lt;span class="ss"&gt;&amp;quot;CONSUL_SERVER_IPS&amp;quot;&lt;/span&gt;
-    &lt;span class="p"&gt;],&lt;/span&gt;
+    &amp;quot;raft_protocol&amp;quot;: 3,
+    &amp;quot;retry_interval&amp;quot;: &amp;quot;30s&amp;quot;,
+    &amp;quot;retry_interval_wan&amp;quot;: &amp;quot;30s&amp;quot;,
+    &amp;quot;retry_join&amp;quot;: [
+        &amp;quot;CONSUL_SERVER_IPS&amp;quot;,
+        &amp;quot;CONSUL_SERVER_IPS&amp;quot;,
+        &amp;quot;CONSUL_SERVER_IPS&amp;quot;
+    ],
 
-    &lt;span class="ss"&gt;&amp;quot;retry_max&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;retry_max_wan&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;server&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;syslog_facility&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;local0&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt;
-    &lt;span class="ss"&gt;&amp;quot;ui&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+    &amp;quot;retry_max&amp;quot;: 0,
+    &amp;quot;retry_max_wan&amp;quot;: 0,
+    &amp;quot;server&amp;quot;: true,
+    &amp;quot;syslog_facility&amp;quot;: &amp;quot;local0&amp;quot;,
+    &amp;quot;ui&amp;quot;: true
+}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This configuration is based on a 3 server node setup, when adding extra clients without the server role you can reuse this config but remove the line of &lt;strong&gt;bootstrap_expect&lt;/strong&gt; and change &lt;strong&gt;server&lt;/strong&gt; to false when configuring a consul client only node.&lt;/p&gt;
 &lt;p&gt;Most of the parameters to configure should be self explaining if not you can always check the &lt;a href="https://www.consul.io/docs/agent/options.html"&gt;consul documentation&lt;/a&gt; for more detailed explanations.&lt;/p&gt;
 &lt;p&gt;! The encryption key needs to be generated as explained in the &lt;a href="https://www.consul.io/docs/agent/encryption.html"&gt;agent encryption&lt;/a&gt; section.&lt;/p&gt;
 &lt;h2&gt;service&lt;/h2&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# systemctl start consul.service&lt;/span&gt;
-&lt;span class="err"&gt;# systemctl enable consul.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# systemctl start consul.service
+# systemctl enable consul.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;gui&lt;/h2&gt;
@@ -301,58 +301,58 @@ $ sudo chown -R consul: /opt/consul
 &lt;p&gt;All of them based in /etc/nomad.d/&lt;/p&gt;
 &lt;p&gt;I began with a 3 server/client node setup but added extra client only nodes afterwards.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;/etc/nomad.d/base.hcl&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;NODENAME&amp;quot;&lt;/span&gt;
-&lt;span class="n"&gt;region&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;global&amp;quot;&lt;/span&gt;
-&lt;span class="n"&gt;datacenter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;DATACENTERNAME&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;NODENAME&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;region&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;global&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;datacenter&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;DATACENTERNAME&amp;quot;&lt;/span&gt;
 
-&lt;span class="n"&gt;advertise&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;http&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;rpc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;serf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;span class="n"&gt;advertise&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;http&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;rpc&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;serf&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;IP.ADDRESS&amp;quot;&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="n"&gt;consul&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt; &lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-    &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;localhost:8500&amp;quot;&lt;/span&gt;
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;register&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="k"&gt;with&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-    &lt;span class="n"&gt;server_service_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;nomad-servers&amp;quot;&lt;/span&gt;
-    &lt;span class="n"&gt;client_service_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;nomad-clients&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;consul&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="p"&gt;#&lt;/span&gt; &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt; &lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+    &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;localhost:8500&amp;quot;&lt;/span&gt;
+    &lt;span class="p"&gt;#&lt;/span&gt; &lt;span class="n"&gt;The&lt;/span&gt; &lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;register&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="n"&gt;with&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+    &lt;span class="n"&gt;server_service_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;nomad-servers&amp;quot;&lt;/span&gt;
+    &lt;span class="n"&gt;client_service_name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;nomad-clients&amp;quot;&lt;/span&gt;
 
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Enables&lt;/span&gt; &lt;span class="n"&gt;automatically&lt;/span&gt; &lt;span class="n"&gt;registering&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-    &lt;span class="n"&gt;auto_advertise&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
+    &lt;span class="p"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Enables&lt;/span&gt; &lt;span class="n"&gt;automatically&lt;/span&gt; &lt;span class="n"&gt;registering&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;services&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+    &lt;span class="n"&gt;auto_advertise&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt;
 
-    &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Enabling&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;bootstrap&lt;/span&gt; &lt;span class="k"&gt;using&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-    &lt;span class="n"&gt;server_auto_join&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
-    &lt;span class="n"&gt;client_auto_join&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;#&lt;/span&gt; &lt;span class="n"&gt;Enabling&lt;/span&gt; &lt;span class="n"&gt;the&lt;/span&gt; &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="k"&gt;and&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;bootstrap&lt;/span&gt; &lt;span class="n"&gt;using&lt;/span&gt; &lt;span class="n"&gt;Consul&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
+    &lt;span class="n"&gt;server_auto_join&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt;
+    &lt;span class="n"&gt;client_auto_join&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="n"&gt;data_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;/opt/nomad&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;data_dir&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;/opt/nomad&amp;quot;&lt;/span&gt;
 
-&lt;span class="n"&gt;log_level&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;
-&lt;span class="n"&gt;enable_syslog&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
+&lt;span class="n"&gt;log_level&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;INFO&amp;quot;&lt;/span&gt;
+&lt;span class="n"&gt;enable_syslog&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;true&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;/etc/nomad.d/server.hcl&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;enabled&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
-    &lt;span class="n"&gt;raft_protocol&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
-    &lt;span class="n"&gt;bootstrap_expect&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;3&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;server {
+    enabled = true
+    raft_protocol = 3
+    bootstrap_expect = 3
 
-&lt;span class="err"&gt;}&lt;/span&gt;
+}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;&lt;strong&gt;/etc/nomad.d/client.hcl&lt;/strong&gt;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;client&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;enabled&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;true&lt;/span&gt;
-  &lt;span class="n"&gt;meta&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-  &lt;span class="err"&gt;}&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;client {
+  enabled = true
+  meta {
+  }
+}
 
-&lt;span class="n"&gt;plugin&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;docker&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-  &lt;span class="n"&gt;config&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-    &lt;span class="n"&gt;allow_caps&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;ALL&amp;quot;&lt;/span&gt; &lt;span class="p"&gt;]&lt;/span&gt;
-  &lt;span class="err"&gt;}&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+plugin &amp;quot;docker&amp;quot; {
+  config {
+    allow_caps = [ &amp;quot;ALL&amp;quot; ]
+  }
+}
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;service&lt;/h2&gt;
@@ -378,8 +378,8 @@ $ sudo chown -R consul: /opt/consul
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;now start and enable the nomad service so we can access the gui to see if everything works as expected.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# systemctl start nomad.service&lt;/span&gt;
-&lt;span class="err"&gt;# systemctl enable nomad.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# systemctl start nomad.service
+# systemctl enable nomad.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;gui&lt;/h2&gt;
@@ -435,10 +435,10 @@ $ docker run --rm -p &lt;span class="m"&gt;9090&lt;/span&gt;:9090 -uroot -v /tmp
 &lt;p&gt;The prometheus has been configured manually with hard coded endpoints to scrape in both situations. It works fine but somehow I would have liked prometheus to automatically recognizing the endpoints himself.&lt;/p&gt;
 &lt;p&gt;Luckily I bumped into &lt;a href="https://www.nomadproject.io"&gt;nomad&lt;/a&gt; at my current project. Nomad is a tool for managing a cluster of machines and running applications on them  which uses &lt;a href="https://www.consul.io/"&gt;consul&lt;/a&gt; as a key value store. And guess what, prometheus has an integration with consul!&lt;/p&gt;
 &lt;p&gt;Isn't that just great! By configuring prometheus to find it's endpoints in consul the only line of code is the one to point prometheus where he can find consul.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;  - job_name: &amp;#39;self&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;    consul_sd_configs:&lt;/span&gt;
-&lt;span class="err"&gt;      - server: &amp;#39;localhost:8500&amp;#39;&lt;/span&gt;
-&lt;span class="err"&gt;        services: []&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;  - job_name: &amp;#39;self&amp;#39;
+    consul_sd_configs:
+      - server: &amp;#39;localhost:8500&amp;#39;
+        services: []
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;But we went a bit further and used tags for that auto discovery. Prometheus will only fetch endpoints which are registered in consul with a certain tag. That way we hold some control in the configuration after all.&lt;/p&gt;
@@ -591,22 +591,22 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Obviously I wanted to see myself that when sniffing the network the DNS requests aren't readable so I used tcp dump to prove myself the data was sent through HTTPS&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;pi-hole# tcpdump -i eth0 udp port 53&lt;/span&gt;
-&lt;span class="c"&gt;22:39:30.837594 IP 192.168.0.3.35765 &amp;gt; piholeContainerID.domain: 36972+ [1au] A? visibilityspots.com. (60)&lt;/span&gt;
-&lt;span class="c"&gt;22:39:31.009345 IP piholeContainerID.domain &amp;gt; 192.168.0.3.35765: 36972 8/0/1 A 54.230.228.38, A 54.230.228.42, A 54.230.228.54, A 54.230.228.68, A 54.230.228.69, A 54.230.228.84, A 54.230.228.92, A 54.230.228.104 (328)&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;pi-hole# tcpdump -i eth0 udp port 53
+22:39:30.837594 IP 192.168.0.3.35765 &amp;gt; piholeContainerID.domain: 36972+ [1au] A? visibilityspots.com. (60)
+22:39:31.009345 IP piholeContainerID.domain &amp;gt; 192.168.0.3.35765: 36972 8/0/1 A 54.230.228.38, A 54.230.228.42, A 54.230.228.54, A 54.230.228.68, A 54.230.228.69, A 54.230.228.84, A 54.230.228.92, A 54.230.228.104 (328)
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;cloudflared# tcpdump -i eth0 udp port 5054&lt;/span&gt;
-&lt;span class="c"&gt;tcpdump: verbose output suppressed, use -v or -vv for full protocol decode&lt;/span&gt;
-&lt;span class="err"&gt;listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes&lt;/span&gt;
-&lt;span class="c"&gt;20:39:29.029132 IP piholeContainerID.59189 &amp;gt; cloudflaredContainerID.5054: UDP, length 40&lt;/span&gt;
-&lt;span class="c"&gt;20:39:29.069864 IP cloudflaredContainerID.5054 &amp;gt; piholeContainerID.59189: UDP, length 116&lt;/span&gt;
-&lt;span class="c"&gt;20:39:30.838803 IP piholeContainerID.28892 &amp;gt; cloudflaredContainerID.5054: UDP, length 60&lt;/span&gt;
-&lt;span class="c"&gt;20:39:31.003756 IP cloudflaredContainerID.5054 &amp;gt; piholeContainerID.28892: UDP, length 328&lt;/span&gt;
-&lt;span class="c"&gt;20:39:31.352487 IP piholeContainerID.50291 &amp;gt; cloudflaredContainerID.5054: UDP, length 31&lt;/span&gt;
-&lt;span class="c"&gt;20:39:31.364073 IP piholeContainerID.16365 &amp;gt; cloudflaredContainerID.5054: UDP, length 31&lt;/span&gt;
-&lt;span class="c"&gt;20:39:31.411227 IP cloudflaredContainerID.5054 &amp;gt; piholeContainerID.50291: UDP, length 156&lt;/span&gt;
-&lt;span class="c"&gt;20:39:31.432364 IP cloudflaredContainerID.5054 &amp;gt; piholeContainerID.16365: UDP, length 218&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;cloudflared&lt;/span&gt;# &lt;span class="nv"&gt;tcpdump&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;i&lt;/span&gt; &lt;span class="nv"&gt;eth0&lt;/span&gt; &lt;span class="nv"&gt;udp&lt;/span&gt; &lt;span class="nv"&gt;port&lt;/span&gt; &lt;span class="mi"&gt;5054&lt;/span&gt;
+&lt;span class="nv"&gt;tcpdump&lt;/span&gt;: &lt;span class="nv"&gt;verbose&lt;/span&gt; &lt;span class="nv"&gt;output&lt;/span&gt; &lt;span class="nv"&gt;suppressed&lt;/span&gt;, &lt;span class="nv"&gt;use&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;v&lt;/span&gt; &lt;span class="nv"&gt;or&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;vv&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="nv"&gt;full&lt;/span&gt; &lt;span class="nv"&gt;protocol&lt;/span&gt; &lt;span class="nv"&gt;decode&lt;/span&gt;
+&lt;span class="nv"&gt;listening&lt;/span&gt; &lt;span class="nv"&gt;on&lt;/span&gt; &lt;span class="nv"&gt;eth0&lt;/span&gt;, &lt;span class="nv"&gt;link&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;type&lt;/span&gt; &lt;span class="nv"&gt;EN10MB&lt;/span&gt; &lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="nv"&gt;Ethernet&lt;/span&gt;&lt;span class="ss"&gt;)&lt;/span&gt;, &lt;span class="nv"&gt;capture&lt;/span&gt; &lt;span class="nv"&gt;size&lt;/span&gt; &lt;span class="mi"&gt;262144&lt;/span&gt; &lt;span class="nv"&gt;bytes&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;.&lt;span class="mi"&gt;029132&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;59189&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;40&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;29&lt;/span&gt;.&lt;span class="mi"&gt;069864&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;59189&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;116&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;30&lt;/span&gt;.&lt;span class="mi"&gt;838803&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;28892&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;60&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;31&lt;/span&gt;.&lt;span class="mi"&gt;003756&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;28892&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;328&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;31&lt;/span&gt;.&lt;span class="mi"&gt;352487&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;50291&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;31&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;31&lt;/span&gt;.&lt;span class="mi"&gt;364073&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;16365&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;31&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;31&lt;/span&gt;.&lt;span class="mi"&gt;411227&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;50291&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;156&lt;/span&gt;
+&lt;span class="mi"&gt;20&lt;/span&gt;:&lt;span class="mi"&gt;39&lt;/span&gt;:&lt;span class="mi"&gt;31&lt;/span&gt;.&lt;span class="mi"&gt;432364&lt;/span&gt; &lt;span class="nv"&gt;IP&lt;/span&gt; &lt;span class="nv"&gt;cloudflaredContainerID&lt;/span&gt;.&lt;span class="mi"&gt;5054&lt;/span&gt; &lt;span class="o"&gt;&amp;gt;&lt;/span&gt; &lt;span class="nv"&gt;piholeContainerID&lt;/span&gt;.&lt;span class="mi"&gt;16365&lt;/span&gt;: &lt;span class="nv"&gt;UDP&lt;/span&gt;, &lt;span class="nv"&gt;length&lt;/span&gt; &lt;span class="mi"&gt;218&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;So by now you can configure this new DNS service on your router or dhcp daemon within your local network.&lt;/p&gt;
@@ -620,7 +620,7 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This will mount the current directory where a file named playbook.yml is placed to the /tmp directory of the docker container. By changing the container's workdir to this /tmp directory the ansible-playbook-wrapper he wrote will be executed using the mounted playbook.yml and spawning the results.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;$(pwd)&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;workdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/tmp&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;williamyeh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nl"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;centos7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;onbuild&lt;/span&gt; &lt;span class="n"&gt;ansible&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;playbook&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;wrapper&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;$&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;$(pwd)&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;workdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/tmp&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;williamyeh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nl"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;centos7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;onbuild&lt;/span&gt; &lt;span class="n"&gt;ansible&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;playbook&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;wrapper&lt;/span&gt;
 &lt;span class="n"&gt;PLAY&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Remove&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;repositories&lt;/span&gt; &lt;span class="n"&gt;when&lt;/span&gt; &lt;span class="n"&gt;being&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;offline&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;**************************************************************************************************************************************************************************************************************&lt;/span&gt;
 
 &lt;span class="n"&gt;TASK&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Gathering&lt;/span&gt; &lt;span class="n"&gt;Facts&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt; &lt;span class="o"&gt;**********************************************************************************************************************************************************************************************************************************************************&lt;/span&gt;
@@ -646,40 +646,40 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;the playbook will check for a certain file and depending on that file's existence it will remove all repositories except from a predefined list.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="x"&gt;---&lt;/span&gt;
-&lt;span class="x"&gt;- name: Remove upstream repositories when being an offline instance&lt;/span&gt;
-&lt;span class="x"&gt;  hosts: localhost&lt;/span&gt;
-&lt;span class="x"&gt;  become_user: root&lt;/span&gt;
-&lt;span class="x"&gt;  vars:&lt;/span&gt;
-&lt;span class="x"&gt;    repos_to_keep:&lt;/span&gt;
-&lt;span class="x"&gt;      - /etc/yum.repos.d/CentOS-fasttrack.repo&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;---&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Remove&lt;/span&gt; &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;repositories&lt;/span&gt; &lt;span class="n"&gt;when&lt;/span&gt; &lt;span class="n"&gt;being&lt;/span&gt; &lt;span class="n"&gt;an&lt;/span&gt; &lt;span class="n"&gt;offline&lt;/span&gt; &lt;span class="n"&gt;instance&lt;/span&gt;
+  &lt;span class="n"&gt;hosts&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;localhost&lt;/span&gt;
+  &lt;span class="n"&gt;become_user&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;root&lt;/span&gt;
+  &lt;span class="n"&gt;vars&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+    &lt;span class="n"&gt;repos_to_keep&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+      &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fasttrack&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;
 
-&lt;span class="x"&gt;  tasks:&lt;/span&gt;
+  &lt;span class="n"&gt;tasks&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
 
-&lt;span class="x"&gt;    - name: Check if system is supposed to be offline&lt;/span&gt;
-&lt;span class="x"&gt;      stat:&lt;/span&gt;
-&lt;span class="x"&gt;        path: /opt/offline&lt;/span&gt;
-&lt;span class="x"&gt;      register: offline&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Check&lt;/span&gt; &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="n"&gt;system&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;supposed&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;offline&lt;/span&gt;
+      &lt;span class="n"&gt;stat&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;opt&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;offline&lt;/span&gt;
+      &lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;offline&lt;/span&gt;
 
-&lt;span class="x"&gt;    - find:&lt;/span&gt;
-&lt;span class="x"&gt;        paths: /etc/yum.repos.d/&lt;/span&gt;
-&lt;span class="x"&gt;        patterns: &amp;quot;*.repo&amp;quot;&lt;/span&gt;
-&lt;span class="x"&gt;      register: repos&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;find&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;paths&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
+        &lt;span class="n"&gt;patterns&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;*.repo&amp;quot;&lt;/span&gt;
+      &lt;span class="n"&gt;register&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;repos&lt;/span&gt;
 
-&lt;span class="x"&gt;    - debug:&lt;/span&gt;
-&lt;span class="x"&gt;        var: repos.files&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;debug&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;files&lt;/span&gt;
 
-&lt;span class="x"&gt;    - file:&lt;/span&gt;
-&lt;span class="x"&gt;        path: &amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;item.path&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;&amp;quot;&lt;/span&gt;
-&lt;span class="x"&gt;        state: absent&lt;/span&gt;
-&lt;span class="x"&gt;      with_items: &amp;quot;&lt;/span&gt;&lt;span class="cp"&gt;{{&lt;/span&gt; &lt;span class="nv"&gt;repos.files&lt;/span&gt; &lt;span class="cp"&gt;}}&lt;/span&gt;&lt;span class="x"&gt;&amp;quot;&lt;/span&gt;
-&lt;span class="x"&gt;      when:&lt;/span&gt;
-&lt;span class="x"&gt;        - item.path not in repos_to_keep&lt;/span&gt;
-&lt;span class="x"&gt;        - offline.stat.exists&lt;/span&gt;
+    &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;file&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="n"&gt;path&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;{{ item.path }}&amp;quot;&lt;/span&gt;
+        &lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;absent&lt;/span&gt;
+      &lt;span class="n"&gt;with_items&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;{{ repos.files }}&amp;quot;&lt;/span&gt;
+      &lt;span class="n"&gt;when&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+        &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;item&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;path&lt;/span&gt; &lt;span class="ow"&gt;not&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="n"&gt;repos_to_keep&lt;/span&gt;
+        &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;offline&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;stat&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;exists&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;during development you want to keep the container online to troubleshoot. This can be done by running the container and instead of executing the ansible-playbook-wrapper just launching bash.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;$&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;$(pwd)&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;workdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/tmp&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;williamyeh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nl"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;centos7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;onbuild&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;$&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt; &lt;span class="s"&gt;&amp;quot;$(pwd)&amp;quot;&lt;/span&gt;&lt;span class="o"&gt;:/&lt;/span&gt;&lt;span class="n"&gt;tmp&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;workdir&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;&amp;quot;/tmp&amp;quot;&lt;/span&gt; &lt;span class="n"&gt;williamyeh&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nl"&gt;ansible&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="n"&gt;centos7&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;onbuild&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bash&lt;/span&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mi"&gt;@5&lt;/span&gt;&lt;span class="n"&gt;cd5cfe2d7cf&lt;/span&gt; &lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;ls&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
 &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Base&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;CR&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Debuginfo&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;fasttrack&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Media&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Sources&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;  &lt;span class="n"&gt;CentOS&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Vault&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;repo&lt;/span&gt;
 &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="mi"&gt;@5&lt;/span&gt;&lt;span class="n"&gt;cd5cfe2d7cf&lt;/span&gt; &lt;span class="n"&gt;tmp&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="n"&gt;ansible&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;playbook&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;wrapper&lt;/span&gt;
@@ -714,7 +714,7 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Since the command is rather long to memorize I created an alias for it in my &lt;a href="https://wiki.archlinux.org/index.php/Zsh"&gt;zsh&lt;/a&gt; config (~/.zshrc)&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;alias ansible-playbook-test=&amp;#39;docker run -ti --rm -v &amp;quot;$(pwd)&amp;quot;:/tmp --workdir=&amp;quot;/tmp&amp;quot; williamyeh/ansible:centos7-onbuild ansible-playbook-wrapper&amp;#39;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;alias ansible-playbook-test=&amp;#39;docker run -ti --rm -v &amp;quot;$(pwd)&amp;quot;:/tmp --workdir=&amp;quot;/tmp&amp;quot; williamyeh/ansible:centos7-onbuild ansible-playbook-wrapper&amp;#39;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="containers"></category><category term="ansible"></category><category term="docker"></category><category term="playbook"></category><category term="test"></category></entry><entry><title>Jenkins docker-pipeline</title><link href="https://visibilityspots.github.io/blog/jenkins-docker-pipeline.html" rel="alternate"></link><published>2017-10-30T19:00:00+01:00</published><updated>2017-10-30T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2017-10-30:/blog/jenkins-docker-pipeline.html</id><summary type="html">&lt;p&gt;in a previous blog post I talked about setting up a &lt;a href="https://visibilityspots.github.io/blog/dockerized-jenkins.html"&gt;dockerized jenkins master/slave setup&lt;/a&gt; and setting up a &lt;a href="https://visibilityspots.github.io/blog/nexus-oss-repository-manager.html"&gt;private docker registry using nexus&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;The next thing on the roadmap was to use this jenkins setup to actually build new docker images for specific software. Before going to the different teams and talking how they now build their software and how this could be done using this new containerized setup I setted up a new jenkins job.&lt;/p&gt;
 &lt;p&gt;This jenkins job will build a generic jenkins slave docker container which will be used by the jenkins master to build some …&lt;/p&gt;</summary><content type="html">&lt;p&gt;in a previous blog post I talked about setting up a &lt;a href="https://visibilityspots.github.io/blog/dockerized-jenkins.html"&gt;dockerized jenkins master/slave setup&lt;/a&gt; and setting up a &lt;a href="https://visibilityspots.github.io/blog/nexus-oss-repository-manager.html"&gt;private docker registry using nexus&lt;/a&gt;.&lt;/p&gt;
@@ -751,31 +751,31 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;ul&gt;
 &lt;li&gt;push the created and tested image to the registry with the latest tag and with the short commit hash&lt;/li&gt;
 &lt;/ul&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;node (&amp;#39;generic&amp;#39;) {
-  def container
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;node&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;generic&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+  &lt;span class="n"&gt;def&lt;/span&gt; &lt;span class="n"&gt;container&lt;/span&gt;
 
-  ansiColor(&amp;#39;xterm&amp;#39;) {
-    stage(&amp;#39;Clone repository&amp;#39;) {
-      checkout scm
-      shortCommit = sh(returnStdout: true, script: &amp;#39;git rev-parse --short HEAD&amp;#39;).trim()
-    }
+  &lt;span class="n"&gt;ansiColor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;xterm&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+    &lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Clone repository&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;checkout&lt;/span&gt; &lt;span class="n"&gt;scm&lt;/span&gt;
+      &lt;span class="n"&gt;shortCommit&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;sh&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;returnStdout&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="bp"&gt;true&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;git rev-parse --short HEAD&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;trim&lt;/span&gt;&lt;span class="p"&gt;()&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
 
-    stage(&amp;#39;Build image&amp;#39;) {
-      container = docker.build(&amp;#39;visibilityspots/jenkins-docker&amp;#39;)
-    }
+    &lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Build image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;container&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;build&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;visibilityspots/jenkins-docker&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
 
-    stage(&amp;#39;Test image&amp;#39;) {
-      sh &amp;#39;export GOSS_FILES_STRATEGY=cp &lt;span class="err"&gt;&amp;amp;&amp;amp;&lt;/span&gt; /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&amp;#39;
-    }
+    &lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Test image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;sh&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;export GOSS_FILES_STRATEGY=cp &amp;amp;&amp;amp; /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&amp;#39;&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
 
-    stage(&amp;#39;Push image&amp;#39;) {
-      docker.withRegistry(&amp;#39;https://nexus.repository&amp;#39;, &amp;#39;nexus-credentials-id&amp;#39;) {
-        container.push(&amp;quot;&lt;span class="cp"&gt;${&lt;/span&gt;&lt;span class="n"&gt;shortCommit&lt;/span&gt;&lt;span class="cp"&gt;}&lt;/span&gt;&amp;quot;)
-        container.push(&amp;#39;latest&amp;#39;)
-      }
-    }
-  }
-}
+    &lt;span class="n"&gt;stage&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;Push image&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+      &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;withRegistry&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;https://nexus.repository&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;&amp;#39;nexus-credentials-id&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s2"&gt;&amp;quot;${shortCommit}&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+        &lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;push&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;&amp;#39;latest&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+      &lt;span class="p"&gt;}&lt;/span&gt;
+    &lt;span class="p"&gt;}&lt;/span&gt;
+  &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h2&gt;testing the docker image&lt;/h2&gt;
@@ -783,7 +783,7 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;p&gt;When one of the defined tests fails after the image has been build using the Dockerfile, the jenkins pipeline will abort and will not push the image to the registry. To be able to run the goss test suite the software is also preinstalled on our jenkins-slave docker images.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;jenkins-docker&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Running&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;shell&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;script&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="n"&gt;export&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;GOSS_FILES_STRATEGY&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;cp&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dgoss&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;--name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&lt;/span&gt;
+&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dgoss&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;jenkins&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dgoss&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;visibilityspots&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jenkins&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Starting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Container&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;ID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;e0849245&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Sleeping&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -863,67 +863,67 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;p&gt;It will serve the web GUI when you access the proxy using a normal browser by a redirect to the nexus container on port 8081 where the management console is living. &lt;/p&gt;
 &lt;p&gt;For the docker client it will act differently, when a docker pull command is executed it will get redirected to the docker-group repository which combines both images from upstream (cached) as well as images from the private docker repository.&lt;/p&gt;
 &lt;p&gt;On the other hand when issuing a docker push command the image will get pushed towards the private repository only since group and proxy repositories aren't able to do so.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;worker_processes&lt;/span&gt; &lt;span class="nt"&gt;2&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;worker_processes&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-&lt;span class="nt"&gt;events&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="err"&gt;worker_connections&lt;/span&gt; &lt;span class="err"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;events&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;worker_connections&lt;/span&gt; &lt;span class="mi"&gt;1024&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="p"&gt;}&lt;/span&gt;
 
-&lt;span class="nt"&gt;http&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-        &lt;span class="err"&gt;error_log&lt;/span&gt; &lt;span class="err"&gt;/var/log/nginx/error.log&lt;/span&gt; &lt;span class="err"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="err"&gt;access_log&lt;/span&gt; &lt;span class="err"&gt;/dev/null&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="err"&gt;proxy_intercept_errors&lt;/span&gt; &lt;span class="err"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="err"&gt;proxy_send_timeout&lt;/span&gt; &lt;span class="err"&gt;120&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="err"&gt;proxy_read_timeout&lt;/span&gt; &lt;span class="err"&gt;300&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="n"&gt;http&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+        &lt;span class="n"&gt;error_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;log&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;log&lt;/span&gt; &lt;span class="n"&gt;warn&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;access_log&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dev&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb nb-Type"&gt;null&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;proxy_intercept_errors&lt;/span&gt; &lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;proxy_send_timeout&lt;/span&gt; &lt;span class="mi"&gt;120&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;proxy_read_timeout&lt;/span&gt; &lt;span class="mi"&gt;300&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-        &lt;span class="err"&gt;upstream&lt;/span&gt; &lt;span class="err"&gt;nexus-gui&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-                &lt;span class="err"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8081&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;gui&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8081&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="p"&gt;}&lt;/span&gt;
 
-        &lt;span class="nt"&gt;upstream&lt;/span&gt; &lt;span class="nt"&gt;docker-private&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="err"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;private&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5000&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="p"&gt;}&lt;/span&gt;
-        &lt;span class="nt"&gt;upstream&lt;/span&gt; &lt;span class="nt"&gt;docker-group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="err"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5001&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-        &lt;span class="p"&gt;}&lt;/span&gt;
-
-        &lt;span class="nt"&gt;map&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;request_method&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;redirection&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="err"&gt;default&lt;/span&gt; &lt;span class="err"&gt;&amp;quot;nexus-gui&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;&amp;quot;~GET&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;&amp;quot;docker-group&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;&amp;quot;~(HEAD|PATCH|PUT|POST|DELETE)&amp;quot;&lt;/span&gt; &lt;span class="err"&gt;&amp;quot;docker-private&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;upstream&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;group&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5001&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
         &lt;span class="p"&gt;}&lt;/span&gt;
 
-        &lt;span class="nt"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
-                &lt;span class="err"&gt;listen&lt;/span&gt; &lt;span class="err"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;listen&lt;/span&gt; &lt;span class="err"&gt;443&lt;/span&gt; &lt;span class="err"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;server_name&lt;/span&gt; &lt;span class="err"&gt;nexus.domain.org&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;ssl_certificate&lt;/span&gt; &lt;span class="err"&gt;/etc/nginx/nginx.crt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;ssl_certificate_key&lt;/span&gt; &lt;span class="err"&gt;/etc/nginx/nginx.key&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;map&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;request_method&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;redirection&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;default&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;nexus-gui&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="s2"&gt;&amp;quot;~GET&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;docker-group&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="s2"&gt;&amp;quot;~(HEAD|PATCH|PUT|POST|DELETE)&amp;quot;&lt;/span&gt; &lt;span class="s2"&gt;&amp;quot;docker-private&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
 
-                &lt;span class="err"&gt;keepalive_timeout&lt;/span&gt;  &lt;span class="err"&gt;5&lt;/span&gt; &lt;span class="err"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;proxy_buffering&lt;/span&gt;    &lt;span class="err"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+        &lt;span class="n"&gt;server&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="mi"&gt;80&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;listen&lt;/span&gt; &lt;span class="mi"&gt;443&lt;/span&gt; &lt;span class="n"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;server_name&lt;/span&gt; &lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;domain&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;ssl_certificate&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;crt&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;ssl_certificate_key&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nginx&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;key&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-                &lt;span class="err"&gt;#&lt;/span&gt; &lt;span class="err"&gt;allow&lt;/span&gt; &lt;span class="err"&gt;large&lt;/span&gt; &lt;span class="err"&gt;uploads&lt;/span&gt;
-                &lt;span class="err"&gt;client_max_body_size&lt;/span&gt; &lt;span class="err"&gt;1G&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;keepalive_timeout&lt;/span&gt;  &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="n"&gt;proxy_buffering&lt;/span&gt;    &lt;span class="n"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 
-                &lt;span class="err"&gt;location&lt;/span&gt; &lt;span class="err"&gt;/&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-                        &lt;span class="err"&gt;if&lt;/span&gt; &lt;span class="err"&gt;($http_user_agent&lt;/span&gt; &lt;span class="err"&gt;~&lt;/span&gt; &lt;span class="err"&gt;docker&lt;/span&gt; &lt;span class="err"&gt;)&lt;/span&gt; &lt;span class="err"&gt;{&lt;/span&gt;
-                                &lt;span class="err"&gt;proxy_pass&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;redirection&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="c1"&gt;# allow large uploads&lt;/span&gt;
+                &lt;span class="n"&gt;client_max_body_size&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="n"&gt;G&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+                &lt;span class="n"&gt;location&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                        &lt;span class="k"&gt;if&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;http_user_agent&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="p"&gt;{&lt;/span&gt;
+                                &lt;span class="n"&gt;proxy_pass&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//$&lt;/span&gt;&lt;span class="n"&gt;redirection&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
                         &lt;span class="p"&gt;}&lt;/span&gt;
-                        &lt;span class="nt"&gt;proxy_pass&lt;/span&gt; &lt;span class="nt"&gt;http&lt;/span&gt;&lt;span class="o"&gt;://&lt;/span&gt;&lt;span class="nt"&gt;nexus-gui&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-                        &lt;span class="nt"&gt;proxy_set_header&lt;/span&gt; &lt;span class="nt"&gt;Host&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;host&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-                        &lt;span class="nt"&gt;proxy_set_header&lt;/span&gt; &lt;span class="nt"&gt;X-Real-IP&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;remote_addr&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-                        &lt;span class="nt"&gt;proxy_set_header&lt;/span&gt; &lt;span class="nt"&gt;X-Forwarded-For&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="nt"&gt;proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class="o"&gt;;&lt;/span&gt;
-                &lt;span class="err"&gt;}&lt;/span&gt;
-        &lt;span class="err"&gt;}&lt;/span&gt;
-&lt;span class="err"&gt;}&lt;/span&gt;
+                        &lt;span class="n"&gt;proxy_pass&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;gui&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="n"&gt;Host&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;host&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Real&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;remote_addr&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                        &lt;span class="n"&gt;proxy_set_header&lt;/span&gt; &lt;span class="n"&gt;X&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;Forwarded&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;For&lt;/span&gt; &lt;span class="o"&gt;$&lt;/span&gt;&lt;span class="n"&gt;proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+                &lt;span class="p"&gt;}&lt;/span&gt;
+        &lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="p"&gt;}&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Unfortunately when using a self signed key pair the client will not connect properly to the repository. You'll need to use &lt;a href="https://letsencrypt.org"&gt;letsencrypt&lt;/a&gt; or another party to get a valid certificate from;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@dockernode ~]# docker login nexus.domain.org&lt;/span&gt;
-&lt;span class="c"&gt;Username: test&lt;/span&gt;
-&lt;span class="c"&gt;Password:&lt;/span&gt;
-&lt;span class="err"&gt;Error response from daemon: Get https://nexus.domain.org/v2/: x509: certificate signed by unknown authority&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@dockernode ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;login&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;domain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;Error&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;response&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;from&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;daemon&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;Get&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;domain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;v2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;x509&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;certificate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;signed&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;by&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;unknown&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;authority&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;letsencrypt setup&lt;/h4&gt;
@@ -931,19 +931,19 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;h4&gt;self signed certificates&lt;/h4&gt;
 &lt;p&gt;in the meanwhile to gain some time we'll stick with the self generated scripts and use the insecure-registry workaround on the docker nodes, jenkins build servers and my local client. When heading for production we'll generate certificates with letsencrypt and I'll update this post.&lt;/p&gt;
 &lt;h5&gt;centos 7 docker node daemon configuration&lt;/h5&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@dockernode ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;vim&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="nf"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;--insecure-registry=nexus.domain.org&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;dockernode&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# vim /etc/systemd/system/docker.service.d/docker.conf&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;insecure&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;registry&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;domain&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;
 
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@dockernode ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;systemctl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;daemon&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;reload&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@dockernode ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;systemctl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;restart&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;dockernode&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# systemctl daemon-reload&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root&lt;/span&gt;&lt;span class="err"&gt;@&lt;/span&gt;&lt;span class="n"&gt;dockernode&lt;/span&gt; &lt;span class="o"&gt;~&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;&lt;span class="c1"&gt;# systemctl restart docker.service&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;[root@dockernode ~]# docker login nexus.domain.org&lt;/span&gt;
-&lt;span class="c"&gt;Username: test&lt;/span&gt;
-&lt;span class="c"&gt;Password:&lt;/span&gt;
-&lt;span class="err"&gt;Login Succeeded&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;root@dockernode ~&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;login&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;nexus&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;domain&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Username&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;test&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nl"&gt;Password&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;Login&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Succeeded&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h5&gt;archlinux client configuration&lt;/h5&gt;
@@ -970,40 +970,40 @@ Login Succeeded
 &lt;p&gt;For the docker host a CentOS 7 server has been provisioned and prepared to run the docker daemon …&lt;/p&gt;</summary><content type="html">&lt;p&gt;started at a new customer we were looking for a more flexible way of having jenkins spinning up slaves on the fly. This in a way a slave is only started and consuming resources when a specific job is running. That way those resources could be used more efficient.&lt;/p&gt;
 &lt;p&gt;Also the fact that developers could take control over their build servers by managing the Dockerfiles themselves is a great advantage too. But that's for a later phase. Let's start at the beginning.&lt;/p&gt;
 &lt;p&gt;For the docker host a CentOS 7 server has been provisioned and prepared to run the docker daemon. Starting with updating the OS, removing unnecessary services and implementing NTP.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;upgrade&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# yum upgrade -y
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt; &lt;span class="k"&gt;postfix&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="n"&gt;disable&lt;/span&gt; &lt;span class="k"&gt;postfix&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="k"&gt;postfix&lt;/span&gt;
+# systemctl stop postfix
+# systemctl disable postfix
+# yum remove postfix
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="n"&gt;stop&lt;/span&gt; &lt;span class="n"&gt;chronyd&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;remove&lt;/span&gt; &lt;span class="n"&gt;chrony&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt;
+# systemctl stop chronyd
+# yum remove chrony -y
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;reboot&lt;/span&gt;
+# reboot
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;ntp&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;start&lt;/span&gt; &lt;span class="n"&gt;ntpd&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="n"&gt;enable&lt;/span&gt; &lt;span class="n"&gt;ntpd&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;ntpdate&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="nb"&gt;date&lt;/span&gt;
+# yum install ntp
+# systemctl start ntpd
+# systemctl enable ntpd
+# ntpdate
+# date
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Once the system has been prepared we can start with the installation of the docker daemon using the upstream &lt;a href="https://www.docker.com/community-edition"&gt;docker community edition&lt;/a&gt; repository&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;utils&lt;/span&gt; &lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;mapper&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;persistent&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;data&lt;/span&gt; &lt;span class="n"&gt;lvm2&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;config&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;manager&lt;/span&gt; &lt;span class="c1"&gt;--add-repo https://download.docker.com/linux/centos/docker-ce.repo&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# yum install -y yum-utils device-mapper-persistent-data lvm2&lt;/span&gt;
+&lt;span class="c1"&gt;# yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo&lt;/span&gt;
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;clean&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;makecache&lt;/span&gt; &lt;span class="n"&gt;fast&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ce&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;start&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="n"&gt;enable&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;
+&lt;span class="c1"&gt;# yum clean all&lt;/span&gt;
+&lt;span class="c1"&gt;# yum makecache fast&lt;/span&gt;
+&lt;span class="c1"&gt;# yum install docker-ce&lt;/span&gt;
+&lt;span class="c1"&gt;# systemctl start docker&lt;/span&gt;
+&lt;span class="c1"&gt;# systemctl enable docker&lt;/span&gt;
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;run&lt;/span&gt; &lt;span class="n"&gt;hello&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;world&lt;/span&gt;
-&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="k"&gt;from&lt;/span&gt; &lt;span class="n"&gt;Docker&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
-&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;shows&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;installation&lt;/span&gt; &lt;span class="n"&gt;appears&lt;/span&gt; &lt;span class="k"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;working&lt;/span&gt; &lt;span class="n"&gt;correctly&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt;
+&lt;span class="c1"&gt;# docker run hello-world&lt;/span&gt;
+&lt;span class="n"&gt;Hello&lt;/span&gt; &lt;span class="n"&gt;from&lt;/span&gt; &lt;span class="n"&gt;Docker&lt;/span&gt;&lt;span class="o"&gt;!&lt;/span&gt;
+&lt;span class="n"&gt;This&lt;/span&gt; &lt;span class="n"&gt;message&lt;/span&gt; &lt;span class="n"&gt;shows&lt;/span&gt; &lt;span class="n"&gt;that&lt;/span&gt; &lt;span class="n"&gt;your&lt;/span&gt; &lt;span class="n"&gt;installation&lt;/span&gt; &lt;span class="n"&gt;appears&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;be&lt;/span&gt; &lt;span class="n"&gt;working&lt;/span&gt; &lt;span class="n"&gt;correctly&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt; &lt;span class="n"&gt;info&lt;/span&gt;
+&lt;span class="c1"&gt;# docker info&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;we do now have a basic docker daemon running on a CentOS 7 machine. The next thing to do is to start a jenkins master docker container. Before doing so some decisions need to be made.&lt;/p&gt;
@@ -1011,65 +1011,65 @@ Login Succeeded
 &lt;p&gt;Since the pipeline plugin will be used, all job configurations are residing in Jenkinsfiles. The needed plugins can be passed through the docker run command later on so that's covered as well.&lt;/p&gt;
 &lt;p&gt;When the setup is ready for production we could look which directories are needed to be persistent and decide to mount only those needed. But for starters we go for a full mount of the jenkins home directory.&lt;/p&gt;
 &lt;p&gt;Therefore we need to create a jenkins user on the docker host which is the owner of the local directory which will be used afterwards to mount onto the jenkins master docker container.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# mkdir /opt/jenkins&lt;/span&gt;
-&lt;span class="err"&gt;# chown -R 1000: /opt/jenkins&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# mkdir /opt/jenkins
+# chown -R 1000: /opt/jenkins
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;before we can start using this very same docker host through our jenkins instance we need to open up the API port of our docker daemon. This can be configured in the systemd entity of the docker daemon:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;mkdir&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;cat&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="nf"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;systemctl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;daemon&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;reload&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;systemctl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;restart&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;systemctl&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;status&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Application&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Container&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Engine&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Loaded&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;loaded&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;vendor&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;preset&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;disabled&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="k"&gt;Drop&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="ow"&gt;In&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Active&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;active&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;since&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Thu&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;07&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;43&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;22&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;CEST&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;weeks&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;days&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ago&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Docs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;docs&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="n"&gt;Main&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;PID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5858&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Memory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;4.2&lt;/span&gt;&lt;span class="n"&gt;G&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;CGroup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;system&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slice&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;|-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5858&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="err"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="nf"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="o"&gt;|-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;5866&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;///&lt;/span&gt;&lt;span class="nf"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;libcontainerd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;--metrics-interval=0 --start-timeout 2m --state-dir /var/run/docker/libcontainerd/containerd --shim docker-containerd-shim --runtime docker-runc&lt;/span&gt;
-&lt;span class="p"&gt;...&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# mkdir -p /etc/systemd/system/docker.service.d/&lt;/span&gt;
+&lt;span class="c1"&gt;# cat /etc/systemd/system/docker.service.d/docker.conf&lt;/span&gt;
+&lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="n"&gt;Service&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;
+&lt;span class="n"&gt;ExecStart&lt;/span&gt;&lt;span class="o"&gt;=/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;
+&lt;span class="c1"&gt;# systemctl daemon-reload&lt;/span&gt;
+&lt;span class="c1"&gt;# systemctl restart docker.service&lt;/span&gt;
+&lt;span class="c1"&gt;# systemctl status docker.service&lt;/span&gt;
+&lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;Docker&lt;/span&gt; &lt;span class="n"&gt;Application&lt;/span&gt; &lt;span class="n"&gt;Container&lt;/span&gt; &lt;span class="n"&gt;Engine&lt;/span&gt;
+&lt;span class="n"&gt;Loaded&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;loaded&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;lib&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;enabled&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="n"&gt;vendor&lt;/span&gt; &lt;span class="n"&gt;preset&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;disabled&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;Drop&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;In&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;systemd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;d&lt;/span&gt;
+&lt;span class="o"&gt;-&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
+&lt;span class="n"&gt;Active&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;active&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;running&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;since&lt;/span&gt; &lt;span class="n"&gt;Thu&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;07&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;20&lt;/span&gt; &lt;span class="mi"&gt;13&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;43&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;22&lt;/span&gt; &lt;span class="n"&gt;CEST&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt; &lt;span class="n"&gt;weeks&lt;/span&gt; &lt;span class="mi"&gt;5&lt;/span&gt; &lt;span class="n"&gt;days&lt;/span&gt; &lt;span class="n"&gt;ago&lt;/span&gt;
+&lt;span class="n"&gt;Docs&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;docs&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;com&lt;/span&gt;
+&lt;span class="n"&gt;Main&lt;/span&gt; &lt;span class="n"&gt;PID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;5858&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="n"&gt;Memory&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mf"&gt;4.2&lt;/span&gt;&lt;span class="n"&gt;G&lt;/span&gt;
+&lt;span class="n"&gt;CGroup&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;system&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;slice&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;
+&lt;span class="o"&gt;|-&lt;/span&gt; &lt;span class="mi"&gt;5858&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;dockerd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;H&lt;/span&gt; &lt;span class="n"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt;
+&lt;span class="o"&gt;|-&lt;/span&gt; &lt;span class="mi"&gt;5866&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;l&lt;/span&gt; &lt;span class="n"&gt;unix&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;///&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;libcontainerd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;sock&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;metrics&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;interval&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;start&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;timeout&lt;/span&gt; &lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="n"&gt;m&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;state&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dir&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="k"&gt;var&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;libcontainerd&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;shim&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;containerd&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;shim&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;runtime&lt;/span&gt; &lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;runc&lt;/span&gt;
+&lt;span class="o"&gt;...&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;we now have the API listening to tcp port 2375 but the port is still filtered by our firewall. To configure the firewall add the port to the appropriate zone and interface. Also the range 32000-34000 which is used by jenkins to access the slaves through ssh is needed to be accessible:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="c1"&gt;--permanent --add-port=2375/tcp&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="c1"&gt;--permanent --zone=trusted --change-interface=docker0&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="c1"&gt;--permanent --zone=trusted --add-port=2375/tcp&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="c1"&gt;--permanent --zone=public --add-port=32000-34000/tcp&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cmd&lt;/span&gt; &lt;span class="c1"&gt;--reload&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# firewall-cmd --permanent --add-port=2375/tcp&lt;/span&gt;
+&lt;span class="c1"&gt;# firewall-cmd --permanent --zone=trusted --change-interface=docker0&lt;/span&gt;
+&lt;span class="c1"&gt;# firewall-cmd --permanent --zone=trusted --add-port=2375/tcp&lt;/span&gt;
+&lt;span class="c1"&gt;# firewall-cmd --permanent --zone=public --add-port=32000-34000/tcp&lt;/span&gt;
+&lt;span class="c1"&gt;# firewall-cmd --reload&lt;/span&gt;
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;nmap&lt;/span&gt;
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;nmap&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;p&lt;/span&gt; &lt;span class="mi"&gt;2375&lt;/span&gt; &lt;span class="n"&gt;ip&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;of&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="k"&gt;host&lt;/span&gt;
+&lt;span class="c1"&gt;# yum install -y nmap&lt;/span&gt;
+&lt;span class="c1"&gt;# nmap -p 2375 ip.of.docker.host&lt;/span&gt;
 
-&lt;span class="n"&gt;Starting&lt;/span&gt; &lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="mi"&gt;6&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;40&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;nmap&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="k"&gt;at&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;08&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;09&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt; &lt;span class="n"&gt;CEST&lt;/span&gt;
-&lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="n"&gt;scan&lt;/span&gt; &lt;span class="n"&gt;report&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;11&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;17&lt;/span&gt;
-&lt;span class="k"&gt;Host&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;up&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1500&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;latency&lt;/span&gt;&lt;span class="p"&gt;).&lt;/span&gt;
-&lt;span class="n"&gt;PORT&lt;/span&gt;     &lt;span class="k"&gt;STATE&lt;/span&gt; &lt;span class="n"&gt;SERVICE&lt;/span&gt;
-&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tcp&lt;/span&gt; &lt;span class="k"&gt;open&lt;/span&gt;  &lt;span class="k"&gt;unknown&lt;/span&gt;
+&lt;span class="n"&gt;Starting&lt;/span&gt; &lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="mf"&gt;6.40&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;nmap&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt; &lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;at&lt;/span&gt; &lt;span class="mi"&gt;2017&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;08&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;09&lt;/span&gt; &lt;span class="mi"&gt;10&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;29&lt;/span&gt; &lt;span class="n"&gt;CEST&lt;/span&gt;
+&lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="n"&gt;scan&lt;/span&gt; &lt;span class="n"&gt;report&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="mf"&gt;10.11&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="mf"&gt;1.17&lt;/span&gt;
+&lt;span class="n"&gt;Host&lt;/span&gt; &lt;span class="k"&gt;is&lt;/span&gt; &lt;span class="n"&gt;up&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1500&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt; &lt;span class="n"&gt;latency&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="n"&gt;PORT&lt;/span&gt;     &lt;span class="n"&gt;STATE&lt;/span&gt; &lt;span class="n"&gt;SERVICE&lt;/span&gt;
+&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tcp&lt;/span&gt; &lt;span class="n"&gt;open&lt;/span&gt;  &lt;span class="n"&gt;unknown&lt;/span&gt;
 
-&lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="k"&gt;host&lt;/span&gt; &lt;span class="n"&gt;up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;scanned&lt;/span&gt; &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="mi"&gt;05&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;
+&lt;span class="n"&gt;Nmap&lt;/span&gt; &lt;span class="n"&gt;done&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;IP&lt;/span&gt; &lt;span class="n"&gt;address&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="n"&gt;host&lt;/span&gt; &lt;span class="n"&gt;up&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt; &lt;span class="n"&gt;scanned&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="mf"&gt;0.05&lt;/span&gt; &lt;span class="n"&gt;seconds&lt;/span&gt;
 
-&lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="n"&gt;curl&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;X&lt;/span&gt; &lt;span class="k"&gt;GET&lt;/span&gt; &lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;2375&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;images&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;json&lt;/span&gt;
+&lt;span class="c1"&gt;# curl -X GET http://localhost:2375/images/json&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and we are off to go, a docker container can be started using the &lt;a href="https://hub.docker.com/r/jenkins/jenkins/"&gt;official upstream image&lt;/a&gt; from jenkins. They also did a great job on &lt;a href="https://github.com/jenkinsci/docker/blob/master/README.md"&gt;documentation&lt;/a&gt; about those docker images. We went for the lts release because this setup will be the production one in the future.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# docker run -d -p 8080:8080 -v /opt/jenkins/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/jenkins:lts&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# docker run -d -p 8080:8080 -v /opt/jenkins/:/var/jenkins_home -v /var/run/docker.sock:/var/run/docker.sock jenkinsci/jenkins:lts&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;as you can see we passed through the &lt;a href="https://jpetazzo.github.io/2015/09/03/do-not-use-docker-in-docker-for-ci/"&gt;docker unix socket&lt;/a&gt; from the host to the jenkins container by doing so we are now able to instruct actions on the docker host from within our jenkins instance.&lt;/p&gt;
 &lt;p&gt;on your docker host a jenkins container is running and accessible through the docker host's ip address on port 8080 which is forwarded to the jenkins master docker container. To have access to the container himself or follow the logs:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# docker ps&lt;/span&gt;
-&lt;span class="err"&gt;CONTAINER ID        IMAGE                   COMMAND                  CREATED             STATUS              PORTS                               NAMES&lt;/span&gt;
-&lt;span class="err"&gt;d28838216442        jenkinsci/jenkins:lts   &amp;quot;/bin/tini -- /usr...&amp;quot;   19 hours ago        Up 19 hours         0.0.0.0:8080-&amp;gt;8080/tcp, 50000/tcp   determined_bartik&lt;/span&gt;
-&lt;span class="err"&gt;# docker exec -i -t --user root d28838216442 /bin/bash&lt;/span&gt;
-&lt;span class="err"&gt;# docker logs -f d28838216442&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="cp"&gt;# docker ps&lt;/span&gt;
+&lt;span class="n"&gt;CONTAINER&lt;/span&gt; &lt;span class="n"&gt;ID&lt;/span&gt;        &lt;span class="n"&gt;IMAGE&lt;/span&gt;                   &lt;span class="n"&gt;COMMAND&lt;/span&gt;                  &lt;span class="n"&gt;CREATED&lt;/span&gt;             &lt;span class="n"&gt;STATUS&lt;/span&gt;              &lt;span class="n"&gt;PORTS&lt;/span&gt;                               &lt;span class="n"&gt;NAMES&lt;/span&gt;
+&lt;span class="n"&gt;d28838216442&lt;/span&gt;        &lt;span class="n"&gt;jenkinsci&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;jenkins&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="n"&gt;lts&lt;/span&gt;   &lt;span class="s"&gt;&amp;quot;/bin/tini -- /usr...&amp;quot;&lt;/span&gt;   &lt;span class="mi"&gt;19&lt;/span&gt; &lt;span class="n"&gt;hours&lt;/span&gt; &lt;span class="n"&gt;ago&lt;/span&gt;        &lt;span class="n"&gt;Up&lt;/span&gt; &lt;span class="mi"&gt;19&lt;/span&gt; &lt;span class="n"&gt;hours&lt;/span&gt;         &lt;span class="mf"&gt;0.0.0.0&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;8080&lt;/span&gt;&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="mi"&gt;8080&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tcp&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mi"&gt;50000&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;tcp&lt;/span&gt;   &lt;span class="n"&gt;determined_bartik&lt;/span&gt;
+&lt;span class="cp"&gt;# docker exec -i -t --user root d28838216442 /bin/bash&lt;/span&gt;
+&lt;span class="cp"&gt;# docker logs -f d28838216442&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;the plugin needed to communicate with our docker host is the &lt;a href="https://wiki.jenkins.io/display/JENKINS/Docker+Plugin"&gt;docker plugin&lt;/a&gt; following the configuration as described in their documentation we created a docker cloud which will be used to execute builds with a specified label only. This is very handy because we can now create different docker images for every piece of software with other dependencies.&lt;/p&gt;
@@ -1174,12 +1174,12 @@ Login Succeeded
 &lt;h2&gt;custom jenkins master image&lt;/h2&gt;
 &lt;p&gt;to get the docker plugin working nicely the docker daemon needs to be installed on the jenkins instance too. Therefor I created a new &lt;a href="https://hub.docker.com/r/visibilityspots/jenkins-docker/"&gt;jenkins-docker&lt;/a&gt; docker image which is based on the upstream jenkins:lts image but adds the docker daemon and staticly configure the docker GID to prevent mismatches between the docker socket mounted on the container from the host.&lt;/p&gt;
 &lt;p&gt;to have the daemon mounted from the host in the jenkins containers, both master as slave should be able to execute docker commands over the socket the docker group need to have the same GID on all containers and 'physical' machines. Since we statically changed this GID already on the containers we also need to map this GID on the physical machine:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# groupmod -g 900 docker&lt;/span&gt;
-&lt;span class="err"&gt;# systemctl restart docker.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# groupmod -g 900 docker
+# systemctl restart docker.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The container is started with some extra parameters like the java_opts one for the allocation of RAM memory for the jenkins daemon.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# docker run -d -p 8080:8080 -v /opt/jenkins/:/var/jenkins_home -e JAVA_OPTS=&amp;quot;-Xmx6144m&amp;quot; -v /var/run/docker.sock:/var/run/docker.sock visibilityspots/jenkins-docker:latest&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# docker run -d -p 8080:8080 -v /opt/jenkins/:/var/jenkins_home -e JAVA_OPTS=&amp;quot;-Xmx6144m&amp;quot; -v /var/run/docker.sock:/var/run/docker.sock visibilityspots/jenkins-docker:latest&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</content><category term="containers"></category><category term="docker"></category><category term="jenkins"></category><category term="master"></category><category term="slave"></category><category term="centos"></category><category term="7"></category></entry><entry><title>Docker openstackclient-kilo container</title><link href="https://visibilityspots.github.io/blog/docker-openstackclient-kilo.html" rel="alternate"></link><published>2017-05-29T21:00:00+02:00</published><updated>2017-08-23T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2017-05-29:/blog/docker-openstackclient-kilo.html</id><summary type="html">&lt;p&gt;A couple of years ago I deployed an openstack cluster based on &lt;a href="https://www.rdoproject.org/"&gt;RDO&lt;/a&gt;. Back in the days we implemented the &lt;a href="https://www.openstack.org/software/kilo/"&gt;kilo&lt;/a&gt; release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.&lt;/p&gt;
 &lt;p&gt;To manage that cloud I use the clients I installed on my local machine, from nova to cinder they all have different packages available for many different platforms. Only …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A couple of years ago I deployed an openstack cluster based on &lt;a href="https://www.rdoproject.org/"&gt;RDO&lt;/a&gt;. Back in the days we implemented the &lt;a href="https://www.openstack.org/software/kilo/"&gt;kilo&lt;/a&gt; release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.&lt;/p&gt;
 &lt;p&gt;To manage that cloud I use the clients I installed on my local machine, from nova to cinder they all have different packages available for many different platforms. Only a couple of weeks ago I noticed the new shiny versions shipping with &lt;a href="https://www.archlinux.org/"&gt;Archlinux&lt;/a&gt; aren't working anymore with our setup.&lt;/p&gt;
@@ -1188,30 +1188,30 @@ Login Succeeded
 &lt;h2&gt;docker build&lt;/h2&gt;
 &lt;p&gt;The whole setup relies on one &lt;a href="https://github.com/visibilityspots/dockerfile-openstackclient-kilo/blob/master/Dockerfile"&gt;Dockerfile&lt;/a&gt;. Since I rely on centos in almost every server environment I'm working on I decided to use the centos:7 &lt;a href="https://hub.docker.com/_/centos/"&gt;official&lt;/a&gt; docker image.&lt;/p&gt;
 &lt;p&gt;After some try and error I came to this setup:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;FROM&lt;/span&gt; &lt;span class="n"&gt;centos&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;7&lt;/span&gt;
-&lt;span class="n"&gt;RUN&lt;/span&gt; &lt;span class="k"&gt;set&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;x&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;upgrade&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-        &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;bash&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="k"&gt;completion&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;https&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;fedorapeople&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;org&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;repos&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;EOL&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kilo&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;rdo&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;release&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kilo&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="mi"&gt;2&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;noarch&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;rpm&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;novaclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ceilometerclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;cinderclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;glanceclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;heatclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ironicclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;keystoneclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;manilaclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;novaclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;openstackclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;saharaclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;troveclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;install&lt;/span&gt; &lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;y&lt;/span&gt; &lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;zaqarclient&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;yum&lt;/span&gt; &lt;span class="n"&gt;clean&lt;/span&gt; &lt;span class="k"&gt;all&lt;/span&gt; &lt;span class="err"&gt;\&lt;/span&gt;
-    &lt;span class="o"&gt;&amp;amp;&amp;amp;&lt;/span&gt; &lt;span class="n"&gt;useradd&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;FROM centos:7
+RUN set -x \
+    &amp;amp;&amp;amp; yum upgrade -y \
+        &amp;amp;&amp;amp; yum install -y bash-completion \
+    &amp;amp;&amp;amp; yum install -y https://repos.fedorapeople.org/repos/openstack/EOL/openstack-kilo/rdo-release-kilo-2.noarch.rpm \
+    &amp;amp;&amp;amp; yum install -y python-novaclient \
+    &amp;amp;&amp;amp; yum install -y python-ceilometerclient \
+    &amp;amp;&amp;amp; yum install -y python-cinderclient \
+    &amp;amp;&amp;amp; yum install -y python-glanceclient \
+    &amp;amp;&amp;amp; yum install -y python-heatclient \
+    &amp;amp;&amp;amp; yum install -y python-ironicclient \
+    &amp;amp;&amp;amp; yum install -y python-keystoneclient \
+    &amp;amp;&amp;amp; yum install -y python-manilaclient \
+    &amp;amp;&amp;amp; yum install -y python-novaclient \
+    &amp;amp;&amp;amp; yum install -y python-openstackclient \
+    &amp;amp;&amp;amp; yum install -y python-saharaclient \
+    &amp;amp;&amp;amp; yum install -y python-troveclient \
+    &amp;amp;&amp;amp; yum install -y python-zaqarclient \
+    &amp;amp;&amp;amp; yum clean all \
+    &amp;amp;&amp;amp; useradd client
 
-&lt;span class="k"&gt;USER&lt;/span&gt; &lt;span class="n"&gt;client&lt;/span&gt;
+USER client
 
-&lt;span class="n"&gt;ENTRYPOINT&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="ss"&gt;&amp;quot;bash&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;--rcfile&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="ss"&gt;&amp;quot;/home/client/.keystonerc&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;]&lt;/span&gt;
+ENTRYPOINT [&amp;quot;bash&amp;quot;, &amp;quot;--rcfile&amp;quot;, &amp;quot;/home/client/.keystonerc&amp;quot;]
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;as you could see I opted to install every package using a separate yum install command. That way when a package can't be installed the others aren't infected. Also a yum clean all is performed to cleanup a bit the filesystem to keep the image size a bit under control. By adding a 'client' user I could prevent doing everything as root user which isn't really necessary in our case.&lt;/p&gt;
@@ -1289,7 +1289,7 @@ bash-4.2$
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;which will check if all packages are installed correctly and if the commands are working as they should;&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dgoss&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;--name openstack-client --rm -ti -v $(pwd)/keystonerc_admin:/home/client/.keystonerc visibilityspots/openstackclient-kilo&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;dgoss&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;run&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="n"&gt;rm&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;ti&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;v&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;pwd&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nl"&gt;keystonerc_admin&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;home&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;client&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;keystonerc&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;visibilityspots&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openstackclient&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;kilo&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Starting&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;docker&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;container&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Container&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;ID&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mi"&gt;539&lt;/span&gt;&lt;span class="n"&gt;f6896&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;INFO&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Sleeping&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0.2&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
@@ -1308,7 +1308,7 @@ bash-4.2$
 &lt;span class="nl"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nl"&gt;keystoneclient&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;installed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;matches&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;expectation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;true&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nl"&gt;ceilometerclient&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;installed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;matches&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;expectation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;true&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;span class="nl"&gt;Package&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;python&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nl"&gt;openstackclient&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;installed&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;matches&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;expectation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;true&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
-&lt;span class="nl"&gt;Command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="c1"&gt;--version: exit-status: matches expectation: [0]&lt;/span&gt;
+&lt;span class="nl"&gt;Command&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nl"&gt;version&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;exit&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nl"&gt;status&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;matches&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;expectation&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="n"&gt;0&lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
 
 &lt;span class="n"&gt;Total&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nl"&gt;Duration&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0.786&lt;/span&gt;&lt;span class="n"&gt;s&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;

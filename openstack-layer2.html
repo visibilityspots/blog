@@ -80,41 +80,41 @@
                         <p>A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.</p>
 <p>We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)</p>
 <p>When upgrading the all-in-one controller before we started using the cloud in 'production' a mean <a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978">bug</a> bit us in the ankle due to a new hiera package. After some digging around a <a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py">patch</a> came to the rescue together with the exclusion of the packages puppet<em> and hiera</em> from the epel repository</p>
-<div class="highlight"><pre><span></span><code><span class="err">vim /etc/yum.repos.d/epel.repo +9</span>
-<span class="err">exclude=hiera*,puppet</span>
+<div class="highlight"><pre><span></span><code>vim /etc/yum.repos.d/epel.repo +9
+exclude=hiera*,puppet
 </code></pre></div>
 
 <p>Once launched some rather irritating behavior seemed to be the default timeout of horizon (openstack-dashboard) of 30 minutes. It's a development cloud after all and people didn't wanted to re login all the time. To change the default timeout we added a SESSION_TIMEOUT parameter to the local_settings file and restarted apache</p>
-<div class="highlight"><pre><span></span><code><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">openstack</span><span class="o">-</span><span class="n">dashboard</span><span class="o">/</span><span class="n">local_settings</span>
-<span class="n">SESSION_TIMEOUT</span> <span class="o">=</span> <span class="mi">28800</span>
+<div class="highlight"><pre><span></span><code>vim /etc/openstack-dashboard/local_settings
+SESSION_TIMEOUT = 28800
 
-<span class="n">systemctl</span> <span class="k">restart</span> <span class="n">httpd</span>
+systemctl restart httpd
 </code></pre></div>
 
 <p>After which we reconfigured the expiration time of the keystone token and restarted the keystone service</p>
-<div class="highlight"><pre><span></span><code><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">keystone</span><span class="o">/</span><span class="n">keystone</span><span class="p">.</span><span class="n">conf</span>
-<span class="n">expiration</span> <span class="o">=</span> <span class="mi">28800</span>
+<div class="highlight"><pre><span></span><code>vim /etc/keystone/keystone.conf
+expiration = 28800
 
-<span class="n">systemctl</span> <span class="k">restart</span> <span class="n">openstack</span><span class="o">-</span><span class="n">keystone</span><span class="p">.</span><span class="n">service</span>
+systemctl restart openstack-keystone.service
 </code></pre></div>
 
 <p>Another rather tiny issue was the access to the console through the web interface. It couldn't connect through the instance when running on another compute node.</p>
 <p>After some research it seemed to by DNS. In the development setup no DNS has been configured for the different compute nodes. We tackled it by the proxy client setting in nova.conf on every compute node</p>
-<div class="highlight"><pre><span></span><code><span class="err">vim /etc/nova/nova/conf</span>
-<span class="err">vncserver_proxyclient_address=actual.ip.of.the.server</span>
+<div class="highlight"><pre><span></span><code>vim /etc/nova/nova/conf
+vncserver_proxyclient_address=actual.ip.of.the.server
 </code></pre></div>
 
 <p>During maintenance we had to reboot a compute-node, after this reboot the instances living on the compute node where not started and came up in shutdown state.</p>
 <p>It seemed to be the default behavior of openstack, but as always there is a configuration parameter for it to force the instances to start after a reboot.</p>
-<div class="highlight"><pre><span></span><code><span class="err">vim /etc/nova/nova.conf</span>
-<span class="err">resume_guests_state_on_host_boot=true</span>
+<div class="highlight"><pre><span></span><code>vim /etc/nova/nova.conf
+resume_guests_state_on_host_boot=true
 </code></pre></div>
 
 <p>The default behavior of the kilo RDO deployed cloud to pass data through cloud-init to the instance is by serving the file through a separate network at boot time.</p>
 <p>We however found it more efficient to serve this file through the filesystem, the so called <a href="http://docs.openstack.org/user-guide/cli_config_drive.html">config_drive</a> option.</p>
 <p>It can be forced through the nova config file</p>
-<div class="highlight"><pre><span></span><code><span class="err">vim /etc/nova/nova.conf</span>
-<span class="err">force_config_drive=True</span>
+<div class="highlight"><pre><span></span><code>vim /etc/nova/nova.conf
+force_config_drive=True
 </code></pre></div>
 
 <p>Also be aware with the lock_passwd feature with passing users through cloud init in openstack due to a <a href="https://bugs.launchpad.net/cloud-init/+bug/1521554">bug</a></p>
@@ -129,22 +129,22 @@
 <p>We only need layer2 connectivity when adding an instance to a specific VLAN based network, an ip address is provided by another DHCP server on this VLAN network. So we don't want openstack to provide DHCP addresses.</p>
 <p>By using the nova interface-attach command and the bug/feature of having networks without subnets configured attached we achieved to meet this goal of layer2 connectivity.</p>
 <p>So to disable the linux bridge you'll need to <a href="https://gist.github.com/djoreilly/db9c2d32a473c6643551">disable</a> the security groups</p>
-<div class="highlight"><pre><span></span><code><span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">nova</span><span class="o">/</span><span class="n">nova</span><span class="p">.</span><span class="n">conf</span>
-<span class="n">security_group_api</span> <span class="o">=</span> <span class="n">nova</span>
-<span class="n">firewall_driver</span> <span class="o">=</span> <span class="n">nova</span><span class="p">.</span><span class="n">virt</span><span class="p">.</span><span class="n">firewall</span><span class="p">.</span><span class="n">NoopFirewallDriver</span>
+<div class="highlight"><pre><span></span><code>vim /etc/nova/nova.conf
+security_group_api = nova
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
-<span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">neutron</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">ml2</span><span class="o">/</span><span class="n">ml2_conf</span><span class="p">.</span><span class="n">ini</span> <span class="o">#</span> <span class="p">(</span><span class="k">only</span> <span class="k">on</span> <span class="n">controller</span> <span class="n">node</span><span class="p">)</span>
-<span class="n">enable_security_group</span> <span class="o">=</span> <span class="k">False</span>
+vim /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)
+enable_security_group = False
 
-<span class="n">vim</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">neutron</span><span class="o">/</span><span class="n">plugins</span><span class="o">/</span><span class="n">openvswitch</span><span class="o">/</span>
-<span class="n">firewall_driver</span> <span class="o">=</span> <span class="n">neutron</span><span class="p">.</span><span class="n">agent</span><span class="p">.</span><span class="n">firewall</span><span class="p">.</span><span class="n">NoopFirewallDriver</span>
+vim /etc/neutron/plugins/openvswitch/
+firewall_driver = neutron.agent.firewall.NoopFirewallDriver
 </code></pre></div>
 
 <p>Last but not least some configuration parameters got changed through without we noticed probably by some misconfigured settings in <a href="https://wiki.openstack.org/wiki/Packstack">packstack</a>. To keep this under control we made the configuration files immutable so they could only be modified by manual changes.</p>
-<div class="highlight"><pre><span></span><code><span class="err">chattr +i /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)</span>
-<span class="err">chattr +i /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini</span>
-<span class="err">chattr +i /etc/nova/nova.conf</span>
-<span class="err">chattr +i /etc/neutron/policy.json</span>
+<div class="highlight"><pre><span></span><code>chattr +i /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)
+chattr +i /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
+chattr +i /etc/nova/nova.conf
+chattr +i /etc/neutron/policy.json
 </code></pre></div>
 
 <p>Those are about the main issues worth mentioning we went through. By sharing those I hope to help others in their quest to tame the openstack cluster. If any question arise feel free to comment or contact me about them!</p>

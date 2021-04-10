@@ -86,25 +86,25 @@
 <p>I first started by installing the octoprint manually on a raspbian distribution. But it took really long, I mean REALLY long so I downloaded the preconfigured <a href="https://github.com/guysoft/OctoPi">image</a>, maintained by <a href="http://osrc.dfm.io/guysoft">Guy Sheffer</a>, and installed it on a 4GB SD card.</p>
 <p>I did some tweaks on the raspbian distribution, configured a for the pi user, disabled root login for the ssh service, updated the whole distribution and configured the wlan0 interface to connect wireless.</p>
 <p>I struggled a bit with the configuration of the wireless part. Merely the pairwise parameter. I forgot to configure it to CCMP for the WPA2 settings of the wireless network. Resulting in the iwconfig output:</p>
-<div class="highlight"><pre><span></span><code><span class="err">    unassociated Nickname:&quot;&lt;WIFI@REALTEK&gt;&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">    </span><span class="n">unassociated</span><span class="w"> </span><span class="nl">Nickname</span><span class="p">:</span><span class="ss">&quot;&lt;WIFI@REALTEK&gt;&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>Once I've setted up the configuration as you can see, network traffic came up on the wlan0 interface:
 File: /etc/network/interfaces</p>
-<div class="highlight"><pre><span></span><code><span class="err">    allow-hotplug wlan0</span>
-<span class="err">    auto wlan0</span>
-<span class="err">    iface wlan0 inet dhcp</span>
-<span class="err">            wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf</span>
+<div class="highlight"><pre><span></span><code>    allow-hotplug wlan0
+    auto wlan0
+    iface wlan0 inet dhcp
+            wpa-conf /etc/wpa_supplicant/wpa_supplicant.conf
 </code></pre></div>
 
 <p>File: /etc/wpa_supplicant/wpa_supplicant.conf</p>
-<div class="highlight"><pre><span></span><code><span class="err">    ssid=&quot;&quot;</span>
-<span class="err">    scan_ssid=0</span>
-<span class="err">    psk=&quot;&quot;</span>
-<span class="err">    proto=RSN</span>
-<span class="err">    key_mgmt=WPA-PSK</span>
-<span class="err">    pairwise=CCMP</span>
-<span class="err">    auth_alg=OPEN</span>
+<div class="highlight"><pre><span></span><code>    ssid=&quot;&quot;
+    scan_ssid=0
+    psk=&quot;&quot;
+    proto=RSN
+    key_mgmt=WPA-PSK
+    pairwise=CCMP
+    auth_alg=OPEN
 </code></pre></div>
 
 <h1>Raspberry cam</h1>

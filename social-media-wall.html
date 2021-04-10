@@ -98,7 +98,7 @@
 <p>It's one of the topics on my todo list to configure a raspberry pi so I could use him as an emergency work station. That means my current window and display manager on a archlinux distribution on a pi. Since this project also needs an output I started to configure this pi with the <a href="https://wiki.archlinux.org/index.php/SLiM">slim</a> display manager and <a href="https://wiki.archlinux.org/index.php/Ratpoison">ratpoison</a> window manager.</p>
 <p>To get them working you also need <a href="https://wiki.archlinux.org/index.php/Xorg">xorg</a> and the xf86-video-fbdev driver.</p>
 <p>I configured slim to auto login and used .xinitrc in the users home dir to start ratpoison</p>
-<div class="highlight"><pre><span></span><code><span class="err">  exec ratpoison</span>
+<div class="highlight"><pre><span></span><code>  <span class="k">exec</span> <span class="nv">ratpoison</span>
 </code></pre></div>
 
 <p>That way when booting up the pi my window manager is started up immediately.</p>
@@ -119,14 +119,14 @@
 <p>It worked fine through the cli but took me a while to have it started on the pi at boottime. Added it to the startup script;</p>
 <h3>startup script</h3>
 <p>I also wrote a little startup script which waits till there is internet connectivity, start the pagekite service, starts the tweet grabber and the <a href="https://wiki.archlinux.org/index.php/Luakit">luakit</a> web browser which points directly to the smswall.</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal">1</span>
+<span class="normal">2</span>
+<span class="normal">3</span>
+<span class="normal">4</span>
+<span class="normal">5</span>
+<span class="normal">6</span>
+<span class="normal">7</span>
+<span class="normal">8</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="k">while</span> ! ping -c1 www.google.com <span class="p">&amp;</span>&gt;/dev/null<span class="p">;</span> <span class="k">do</span> :<span class="p">;</span> <span class="k">done</span>
 /bin/bash -c <span class="s2">&quot;pagekite &amp;&quot;</span>
 <span class="nb">cd</span> /srv/http/smswall/

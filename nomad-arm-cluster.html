@@ -103,70 +103,70 @@ $ sudo chown -R consul: /opt/consul
 
 <p>next step on the list is the actual configuration of the consul service for a server functionality</p>
 <p><strong>/etc/consul.d/config.json</strong></p>
-<div class="highlight"><pre><span></span><code><span class="err">{</span>
-    <span class="ss">&quot;acl_default_policy&quot;</span><span class="p">:</span> <span class="ss">&quot;allow&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;addresses&quot;</span><span class="p">:</span> <span class="err">{</span>
-        <span class="ss">&quot;dns&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;grpc&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;http&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;https&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span>
-    <span class="err">}</span><span class="p">,</span>
-    <span class="ss">&quot;advertise_addr&quot;</span><span class="p">:</span> <span class="ss">&quot;IP.ADDRESS.OF.THIS.NODE&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;advertise_addr_wan&quot;</span><span class="p">:</span> <span class="ss">&quot;IP.ADDRESS.OF.THIS.NODE&quot;</span><span class="p">,</span>
+<div class="highlight"><pre><span></span><code>{
+    &quot;acl_default_policy&quot;: &quot;allow&quot;,
+    &quot;addresses&quot;: {
+        &quot;dns&quot;: &quot;0.0.0.0&quot;,
+        &quot;grpc&quot;: &quot;0.0.0.0&quot;,
+        &quot;http&quot;: &quot;0.0.0.0&quot;,
+        &quot;https&quot;: &quot;0.0.0.0&quot;
+    },
+    &quot;advertise_addr&quot;: &quot;IP.ADDRESS.OF.THIS.NODE&quot;,
+    &quot;advertise_addr_wan&quot;: &quot;IP.ADDRESS.OF.THIS.NODE&quot;,
 
-    <span class="ss">&quot;bind_addr&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+    &quot;bind_addr&quot;: &quot;0.0.0.0&quot;,
 
-    <span class="ss">&quot;bootstrap&quot;</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
-    <span class="ss">&quot;bootstrap_expect&quot;</span><span class="p">:</span> <span class="ss">&quot;3&quot;</span><span class="p">,</span>
+    &quot;bootstrap&quot;: true,
+    &quot;bootstrap_expect&quot;: &quot;3&quot;,
 
-    <span class="ss">&quot;client_addr&quot;</span><span class="p">:</span> <span class="ss">&quot;0.0.0.0&quot;</span><span class="p">,</span>
+    &quot;client_addr&quot;: &quot;0.0.0.0&quot;,
 
-    <span class="ss">&quot;data_dir&quot;</span><span class="p">:</span> <span class="ss">&quot;/opt/consul&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;datacenter&quot;</span><span class="p">:</span> <span class="ss">&quot;NAME_DC&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;disable_update_check&quot;</span><span class="p">:</span> <span class="k">false</span><span class="p">,</span>
-    <span class="ss">&quot;domain&quot;</span><span class="p">:</span> <span class="ss">&quot;consul&quot;</span><span class="p">,</span>
+    &quot;data_dir&quot;: &quot;/opt/consul&quot;,
+    &quot;datacenter&quot;: &quot;NAME_DC&quot;,
+    &quot;disable_update_check&quot;: false,
+    &quot;domain&quot;: &quot;consul&quot;,
 
-    <span class="ss">&quot;enable_script_checks&quot;</span><span class="p">:</span> <span class="k">false</span><span class="p">,</span>
-    <span class="ss">&quot;enable_syslog&quot;</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
-    <span class="ss">&quot;encrypt&quot;</span><span class="p">:</span> <span class="ss">&quot;ENCRYPTION_KEY&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;log_level&quot;</span><span class="p">:</span> <span class="ss">&quot;INFO&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;node_name&quot;</span><span class="p">:</span> <span class="ss">&quot;NODE NAME&quot;</span><span class="p">,</span>
+    &quot;enable_script_checks&quot;: false,
+    &quot;enable_syslog&quot;: true,
+    &quot;encrypt&quot;: &quot;ENCRYPTION_KEY&quot;,
+    &quot;log_level&quot;: &quot;INFO&quot;,
+    &quot;node_name&quot;: &quot;NODE NAME&quot;,
 
-    <span class="ss">&quot;performance&quot;</span><span class="p">:</span> <span class="err">{</span>
-        <span class="ss">&quot;leave_drain_time&quot;</span><span class="p">:</span> <span class="ss">&quot;5s&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;raft_multiplier&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="ss">&quot;rpc_hold_timeout&quot;</span><span class="p">:</span> <span class="ss">&quot;7s&quot;</span>
-    <span class="err">}</span><span class="p">,</span>
+    &quot;performance&quot;: {
+        &quot;leave_drain_time&quot;: &quot;5s&quot;,
+        &quot;raft_multiplier&quot;: 1,
+        &quot;rpc_hold_timeout&quot;: &quot;7s&quot;
+    },
 
-    <span class="ss">&quot;ports&quot;</span><span class="p">:</span> <span class="err">{</span>
-        <span class="ss">&quot;dns&quot;</span><span class="p">:</span> <span class="mi">8600</span><span class="p">,</span>
-        <span class="ss">&quot;http&quot;</span><span class="p">:</span> <span class="mi">8500</span><span class="p">,</span>
-        <span class="ss">&quot;server&quot;</span><span class="p">:</span> <span class="mi">8300</span>
-    <span class="err">}</span><span class="p">,</span>
+    &quot;ports&quot;: {
+        &quot;dns&quot;: 8600,
+        &quot;http&quot;: 8500,
+        &quot;server&quot;: 8300
+    },
 
-    <span class="ss">&quot;raft_protocol&quot;</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
-    <span class="ss">&quot;retry_interval&quot;</span><span class="p">:</span> <span class="ss">&quot;30s&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;retry_interval_wan&quot;</span><span class="p">:</span> <span class="ss">&quot;30s&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;retry_join&quot;</span><span class="p">:</span> <span class="p">[</span>
-        <span class="ss">&quot;CONSUL_SERVER_IPS&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;CONSUL_SERVER_IPS&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;CONSUL_SERVER_IPS&quot;</span>
-    <span class="p">],</span>
+    &quot;raft_protocol&quot;: 3,
+    &quot;retry_interval&quot;: &quot;30s&quot;,
+    &quot;retry_interval_wan&quot;: &quot;30s&quot;,
+    &quot;retry_join&quot;: [
+        &quot;CONSUL_SERVER_IPS&quot;,
+        &quot;CONSUL_SERVER_IPS&quot;,
+        &quot;CONSUL_SERVER_IPS&quot;
+    ],
 
-    <span class="ss">&quot;retry_max&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="ss">&quot;retry_max_wan&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
-    <span class="ss">&quot;server&quot;</span><span class="p">:</span> <span class="k">true</span><span class="p">,</span>
-    <span class="ss">&quot;syslog_facility&quot;</span><span class="p">:</span> <span class="ss">&quot;local0&quot;</span><span class="p">,</span>
-    <span class="ss">&quot;ui&quot;</span><span class="p">:</span> <span class="k">true</span>
-<span class="err">}</span>
+    &quot;retry_max&quot;: 0,
+    &quot;retry_max_wan&quot;: 0,
+    &quot;server&quot;: true,
+    &quot;syslog_facility&quot;: &quot;local0&quot;,
+    &quot;ui&quot;: true
+}
 </code></pre></div>
 
 <p>This configuration is based on a 3 server node setup, when adding extra clients without the server role you can reuse this config but remove the line of <strong>bootstrap_expect</strong> and change <strong>server</strong> to false when configuring a consul client only node.</p>
 <p>Most of the parameters to configure should be self explaining if not you can always check the <a href="https://www.consul.io/docs/agent/options.html">consul documentation</a> for more detailed explanations.</p>
 <p>! The encryption key needs to be generated as explained in the <a href="https://www.consul.io/docs/agent/encryption.html">agent encryption</a> section.</p>
 <h2>service</h2>
-<div class="highlight"><pre><span></span><code><span class="err"># systemctl start consul.service</span>
-<span class="err"># systemctl enable consul.service</span>
+<div class="highlight"><pre><span></span><code># systemctl start consul.service
+# systemctl enable consul.service
 </code></pre></div>
 
 <h2>gui</h2>
@@ -184,58 +184,58 @@ $ sudo chown -R consul: /opt/consul
 <p>All of them based in /etc/nomad.d/</p>
 <p>I began with a 3 server/client node setup but added extra client only nodes afterwards.</p>
 <p><strong>/etc/nomad.d/base.hcl</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">name</span> <span class="o">=</span> <span class="ss">&quot;NODENAME&quot;</span>
-<span class="n">region</span> <span class="o">=</span> <span class="ss">&quot;global&quot;</span>
-<span class="n">datacenter</span> <span class="o">=</span> <span class="ss">&quot;DATACENTERNAME&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;NODENAME&quot;</span>
+<span class="n">region</span> <span class="o">=</span> <span class="s">&quot;global&quot;</span>
+<span class="n">datacenter</span> <span class="o">=</span> <span class="s">&quot;DATACENTERNAME&quot;</span>
 
-<span class="n">advertise</span> <span class="err">{</span>
-    <span class="n">http</span> <span class="o">=</span> <span class="ss">&quot;IP.ADDRESS&quot;</span>
-    <span class="n">rpc</span> <span class="o">=</span> <span class="ss">&quot;IP.ADDRESS&quot;</span>
-    <span class="n">serf</span> <span class="o">=</span> <span class="ss">&quot;IP.ADDRESS&quot;</span>
-<span class="err">}</span>
+<span class="n">advertise</span> <span class="p">{</span>
+    <span class="n">http</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
+    <span class="n">rpc</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
+    <span class="n">serf</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
+<span class="p">}</span>
 
-<span class="n">consul</span> <span class="err">{</span>
-    <span class="o">#</span> <span class="n">The</span> <span class="n">address</span> <span class="k">to</span> <span class="n">the</span> <span class="n">Consul</span> <span class="n">agent</span><span class="p">.</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="ss">&quot;localhost:8500&quot;</span>
-    <span class="o">#</span> <span class="n">The</span> <span class="n">service</span> <span class="n">name</span> <span class="k">to</span> <span class="n">register</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="k">with</span> <span class="n">Consul</span><span class="p">.</span>
-    <span class="n">server_service_name</span> <span class="o">=</span> <span class="ss">&quot;nomad-servers&quot;</span>
-    <span class="n">client_service_name</span> <span class="o">=</span> <span class="ss">&quot;nomad-clients&quot;</span>
+<span class="n">consul</span> <span class="p">{</span>
+    <span class="p">#</span> <span class="n">The</span> <span class="n">address</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Consul</span> <span class="n">agent</span><span class="p">.</span>
+    <span class="n">address</span> <span class="o">=</span> <span class="s">&quot;localhost:8500&quot;</span>
+    <span class="p">#</span> <span class="n">The</span> <span class="n">service</span> <span class="n">name</span> <span class="n">to</span> <span class="n">register</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="n">with</span> <span class="n">Consul</span><span class="p">.</span>
+    <span class="n">server_service_name</span> <span class="o">=</span> <span class="s">&quot;nomad-servers&quot;</span>
+    <span class="n">client_service_name</span> <span class="o">=</span> <span class="s">&quot;nomad-clients&quot;</span>
 
-    <span class="o">#</span> <span class="n">Enables</span> <span class="n">automatically</span> <span class="n">registering</span> <span class="n">the</span> <span class="n">services</span><span class="p">.</span>
-    <span class="n">auto_advertise</span> <span class="o">=</span> <span class="k">true</span>
+    <span class="p">#</span> <span class="n">Enables</span> <span class="n">automatically</span> <span class="n">registering</span> <span class="n">the</span> <span class="n">services</span><span class="p">.</span>
+    <span class="n">auto_advertise</span> <span class="o">=</span> <span class="n">true</span>
 
-    <span class="o">#</span> <span class="n">Enabling</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="k">to</span> <span class="n">bootstrap</span> <span class="k">using</span> <span class="n">Consul</span><span class="p">.</span>
-    <span class="n">server_auto_join</span> <span class="o">=</span> <span class="k">true</span>
-    <span class="n">client_auto_join</span> <span class="o">=</span> <span class="k">true</span>
-<span class="err">}</span>
+    <span class="p">#</span> <span class="n">Enabling</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="n">to</span> <span class="n">bootstrap</span> <span class="n">using</span> <span class="n">Consul</span><span class="p">.</span>
+    <span class="n">server_auto_join</span> <span class="o">=</span> <span class="n">true</span>
+    <span class="n">client_auto_join</span> <span class="o">=</span> <span class="n">true</span>
+<span class="p">}</span>
 
-<span class="n">data_dir</span> <span class="o">=</span> <span class="ss">&quot;/opt/nomad&quot;</span>
+<span class="n">data_dir</span> <span class="o">=</span> <span class="s">&quot;/opt/nomad&quot;</span>
 
-<span class="n">log_level</span> <span class="o">=</span> <span class="ss">&quot;INFO&quot;</span>
-<span class="n">enable_syslog</span> <span class="o">=</span> <span class="k">true</span>
+<span class="n">log_level</span> <span class="o">=</span> <span class="s">&quot;INFO&quot;</span>
+<span class="n">enable_syslog</span> <span class="o">=</span> <span class="n">true</span>
 </code></pre></div>
 
 <p><strong>/etc/nomad.d/server.hcl</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">server</span> <span class="err">{</span>
-    <span class="n">enabled</span> <span class="o">=</span> <span class="k">true</span>
-    <span class="n">raft_protocol</span> <span class="o">=</span> <span class="mi">3</span>
-    <span class="n">bootstrap_expect</span> <span class="o">=</span> <span class="mi">3</span>
+<div class="highlight"><pre><span></span><code>server {
+    enabled = true
+    raft_protocol = 3
+    bootstrap_expect = 3
 
-<span class="err">}</span>
+}
 </code></pre></div>
 
 <p><strong>/etc/nomad.d/client.hcl</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">client</span> <span class="err">{</span>
-  <span class="n">enabled</span> <span class="o">=</span> <span class="k">true</span>
-  <span class="n">meta</span> <span class="err">{</span>
-  <span class="err">}</span>
-<span class="err">}</span>
+<div class="highlight"><pre><span></span><code>client {
+  enabled = true
+  meta {
+  }
+}
 
-<span class="n">plugin</span> <span class="ss">&quot;docker&quot;</span> <span class="err">{</span>
-  <span class="n">config</span> <span class="err">{</span>
-    <span class="n">allow_caps</span> <span class="o">=</span> <span class="p">[</span> <span class="ss">&quot;ALL&quot;</span> <span class="p">]</span>
-  <span class="err">}</span>
-<span class="err">}</span>
+plugin &quot;docker&quot; {
+  config {
+    allow_caps = [ &quot;ALL&quot; ]
+  }
+}
 </code></pre></div>
 
 <h2>service</h2>
@@ -261,8 +261,8 @@ $ sudo chown -R consul: /opt/consul
 </code></pre></div>
 
 <p>now start and enable the nomad service so we can access the gui to see if everything works as expected.</p>
-<div class="highlight"><pre><span></span><code><span class="err"># systemctl start nomad.service</span>
-<span class="err"># systemctl enable nomad.service</span>
+<div class="highlight"><pre><span></span><code># systemctl start nomad.service
+# systemctl enable nomad.service
 </code></pre></div>
 
 <h2>gui</h2>

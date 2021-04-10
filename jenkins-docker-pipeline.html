@@ -111,31 +111,31 @@
 <ul>
 <li>push the created and tested image to the registry with the latest tag and with the short commit hash</li>
 </ul>
-<div class="highlight"><pre><span></span><code>node (&#39;generic&#39;) {
-  def container
+<div class="highlight"><pre><span></span><code><span class="n">node</span> <span class="p">(</span><span class="s1">&#39;generic&#39;</span><span class="p">)</span> <span class="p">{</span>
+  <span class="n">def</span> <span class="n">container</span>
 
-  ansiColor(&#39;xterm&#39;) {
-    stage(&#39;Clone repository&#39;) {
-      checkout scm
-      shortCommit = sh(returnStdout: true, script: &#39;git rev-parse --short HEAD&#39;).trim()
-    }
+  <span class="n">ansiColor</span><span class="p">(</span><span class="s1">&#39;xterm&#39;</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Clone repository&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">checkout</span> <span class="n">scm</span>
+      <span class="n">shortCommit</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="n">returnStdout</span><span class="p">:</span> <span class="bp">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;git rev-parse --short HEAD&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">trim</span><span class="p">()</span>
+    <span class="p">}</span>
 
-    stage(&#39;Build image&#39;) {
-      container = docker.build(&#39;visibilityspots/jenkins-docker&#39;)
-    }
+    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Build image&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">container</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#39;visibilityspots/jenkins-docker&#39;</span><span class="p">)</span>
+    <span class="p">}</span>
 
-    stage(&#39;Test image&#39;) {
-      sh &#39;export GOSS_FILES_STRATEGY=cp <span class="err">&amp;&amp;</span> /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&#39;
-    }
+    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Test image&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">sh</span> <span class="s1">&#39;export GOSS_FILES_STRATEGY=cp &amp;&amp; /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&#39;</span>
+    <span class="p">}</span>
 
-    stage(&#39;Push image&#39;) {
-      docker.withRegistry(&#39;https://nexus.repository&#39;, &#39;nexus-credentials-id&#39;) {
-        container.push(&quot;<span class="cp">${</span><span class="n">shortCommit</span><span class="cp">}</span>&quot;)
-        container.push(&#39;latest&#39;)
-      }
-    }
-  }
-}
+    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Push image&#39;</span><span class="p">)</span> <span class="p">{</span>
+      <span class="n">docker</span><span class="o">.</span><span class="n">withRegistry</span><span class="p">(</span><span class="s1">&#39;https://nexus.repository&#39;</span><span class="p">,</span> <span class="s1">&#39;nexus-credentials-id&#39;</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s2">&quot;${shortCommit}&quot;</span><span class="p">)</span>
+        <span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;latest&#39;</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
 </code></pre></div>
 
 <h2>testing the docker image</h2>
@@ -143,7 +143,7 @@
 <p>When one of the defined tests fails after the image has been build using the Dockerfile, the jenkins pipeline will abort and will not push the image to the registry. To be able to run the goss test suite the software is also preinstalled on our jenkins-slave docker images.</p>
 <div class="highlight"><pre><span></span><code><span class="o">[</span><span class="n">jenkins-docker</span><span class="o">]</span><span class="w"> </span><span class="n">Running</span><span class="w"> </span><span class="n">shell</span><span class="w"> </span><span class="n">script</span><span class="w"></span>
 <span class="n">export</span><span class="w"> </span><span class="n">GOSS_FILES_STRATEGY</span><span class="o">=</span><span class="n">cp</span><span class="w"></span>
-<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">dgoss</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="c1">--name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker</span>
+<span class="o">/</span><span class="n">usr</span><span class="o">/</span><span class="k">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">dgoss</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">jenkins</span><span class="o">-</span><span class="n">docker</span><span class="o">-</span><span class="n">dgoss</span><span class="o">-</span><span class="n">test</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">ti</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">jenkins</span><span class="o">-</span><span class="n">docker</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Starting</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">container</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Container</span><span class="w"> </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="n">e0849245</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Sleeping</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mf">0.2</span><span class="w"></span>

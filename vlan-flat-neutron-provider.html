@@ -88,7 +88,7 @@
 <h1>Openstack</h1>
 <p>We used the RDO <a href="https://www.rdoproject.org/Quickstart">all-in-one</a> installer to get an openstack up and running on one physical machine rather quickly (15-30 minutes for the initial services).</p>
 <p>To set openstack up without the demo data:</p>
-<div class="highlight"><pre><span></span><code><span class="err"># packstack --allinone --provision-demo=n</span>
+<div class="highlight"><pre><span></span><code># packstack --allinone --provision-demo=n
 </code></pre></div>
 
 <p>This openstack instance is based on <a href="https://www.centos.org/download/">CentOS 7 minimal</a> since it's a requirement of the used openstack release <a href="https://wiki.openstack.org/wiki/ReleaseNotes/Kilo">kilo</a>.</p>
@@ -132,18 +132,18 @@ ip route add default via <span class="m">192</span>.168.0.1
 </code></pre></div>
 
 <p>restarting neutron-dhcp-agent</p>
-<div class="highlight"><pre><span></span><code><span class="err"># openstack-service status neutron-dhcp-agent</span>
+<div class="highlight"><pre><span></span><code># openstack-service status neutron-dhcp-agent
 </code></pre></div>
 
 <p>Configuring the openstack networks on the all-in-one machine:</p>
-<div class="highlight"><pre><span></span><code><span class="err"># source keystonerc_admin</span>
-<span class="err"># neutron subnet-list</span>
-<span class="err"># neutron subnet-delete ID</span>
-<span class="err"># neutron net-list</span>
-<span class="err"># neutron net-delete ID</span>
-<span class="err"># neutron net-create vlan100 --shared --provider:network_type vlan --provider:segmentation_id 100 --provider:physical_network vlan100 --router:external</span>
-<span class="err"># neutron subnet-create --name vlan100 --gateway 192.168.0.1 --allocation-pool start=192.168.0.150,end=192.168.0.200 --enable-dhcp --dns-nameserver 192.168.0.1 vlan100 192.168.0.0/24</span>
-<span class="err"># neutron subnet-update --host-route destination=169.254.169.254/32,nexthop=192.168.0.151 vlan100</span>
+<div class="highlight"><pre><span></span><code># <span class="nv">source</span> <span class="nv">keystonerc_admin</span>
+# <span class="nv">neutron</span> <span class="nv">subnet</span><span class="o">-</span><span class="nv">list</span>
+# <span class="nv">neutron</span> <span class="nv">subnet</span><span class="o">-</span><span class="nv">delete</span> <span class="nv">ID</span>
+# <span class="nv">neutron</span> <span class="nv">net</span><span class="o">-</span><span class="nv">list</span>
+# <span class="nv">neutron</span> <span class="nv">net</span><span class="o">-</span><span class="nv">delete</span> <span class="nv">ID</span>
+# <span class="nv">neutron</span> <span class="nv">net</span><span class="o">-</span><span class="nv">create</span> <span class="nv">vlan100</span> <span class="o">--</span><span class="nv">shared</span> <span class="o">--</span><span class="nv">provider</span>:<span class="nv">network_type</span> <span class="nv">vlan</span> <span class="o">--</span><span class="nv">provider</span>:<span class="nv">segmentation_id</span> <span class="mi">100</span> <span class="o">--</span><span class="nv">provider</span>:<span class="nv">physical_network</span> <span class="nv">vlan100</span> <span class="o">--</span><span class="nv">router</span>:<span class="nv">external</span>
+# <span class="nv">neutron</span> <span class="nv">subnet</span><span class="o">-</span><span class="nv">create</span> <span class="o">--</span><span class="nv">name</span> <span class="nv">vlan100</span> <span class="o">--</span><span class="nv">gateway</span> <span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">1</span> <span class="o">--</span><span class="nv">allocation</span><span class="o">-</span><span class="nv">pool</span> <span class="nv">start</span><span class="o">=</span><span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">150</span>,<span class="k">end</span><span class="o">=</span><span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">200</span> <span class="o">--</span><span class="nv">enable</span><span class="o">-</span><span class="nv">dhcp</span> <span class="o">--</span><span class="nv">dns</span><span class="o">-</span><span class="nv">nameserver</span> <span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">1</span> <span class="nv">vlan100</span> <span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">0</span><span class="o">/</span><span class="mi">24</span>
+# <span class="nv">neutron</span> <span class="nv">subnet</span><span class="o">-</span><span class="nv">update</span> <span class="o">--</span><span class="nv">host</span><span class="o">-</span><span class="nv">route</span> <span class="nv">destination</span><span class="o">=</span><span class="mi">169</span>.<span class="mi">254</span>.<span class="mi">169</span>.<span class="mi">254</span><span class="o">/</span><span class="mi">32</span>,<span class="nv">nexthop</span><span class="o">=</span><span class="mi">192</span>.<span class="mi">168</span>.<span class="mi">0</span>.<span class="mi">151</span> <span class="nv">vlan100</span>
 </code></pre></div>
 
 <p>We do have a working setup right now if everything went well and you should be able to <a href="https://www.rdoproject.org/Running_an_instance">launch</a> an instance. To test ICMP traffic do not forget to enable a security group which allows this kind of traffic. Otherwise you couldn't use ping to test traffic.</p>

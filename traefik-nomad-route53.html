@@ -160,17 +160,17 @@
 <div class="highlight"><pre><span></span><code><span class="k">[entryPoints]</span>
   <span class="k">[entryPoints.http]</span>
     <span class="na">address</span> <span class="o">=</span> <span class="s">&quot;:80&quot;</span>
-<span class="s">  [entryPoints.https]</span>
-<span class="s">    address = &quot;:443&quot;</span>
+  <span class="k">[entryPoints.https]</span>
+    <span class="na">address</span> <span class="o">=</span> <span class="s">&quot;:443&quot;</span>
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="k">group</span> <span class="ss">&quot;traefik&quot;</span> <span class="err">{</span>
-    <span class="n">service</span> <span class="err">{</span>
-      <span class="n">name</span> <span class="o">=</span> <span class="ss">&quot;traefik&quot;</span>
+<div class="highlight"><pre><span></span><code>group &quot;traefik&quot; {
+    service {
+      name = &quot;traefik&quot;
 
-      <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="ss">&quot;traefik.enable=true&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.http.middlewares.http2https.redirectscheme.scheme=https&quot;</span><span class="p">,</span>
+      tags = [
+        &quot;traefik.enable=true&quot;,
+        &quot;traefik.http.middlewares.http2https.redirectscheme.scheme=https&quot;,
 </code></pre></div>
 
 <p>As a start I configured every service separately to redirect its http traffic towards https. But I found out by reading through some issues in the community from an <a href="https://community.traefik.io/t/router-not-showing-up-using-consul-nomad/8770">answer</a> by Kugel that this could also achieved by setting a global redirect;</p>
@@ -190,26 +190,26 @@
 <p>Also when you want to use a <a href="https://doc.traefik.io/traefik/https/acme/#wildcard-domains">wildcard</a> certificate you'll have to use the <a href="https://doc.traefik.io/traefik/https/acme/#dnschallenge">DNS-01</a> challenge. I looked into this wildcard domain since I hit the rate limitations quite fast. I asked certificates for every sub domain using my routers and forgot to mount the acme.json file. So I went to the internet, found a <a href="https://computerz.solutions/traefik-ssl-wildcard-letsencrypt/">solution</a> for using a wildcard certificate for different services and fixed the acme.json mount.</p>
 <p>Since I already got my domains configured in AWS I added a CNAME record for all my sub domains to point to the internal ip of the traefik instance which I pinned to a specific nomad client using metadata.</p>
 <p>Luckily there is a <a href="https://doc.traefik.io/traefik/https/acme/#providers">route53</a> provider, which only needs some <a href="https://go-acme.github.io/lego/dns/route53/">configuration</a> in the AWS backend such as the IAM policy and a user from which you grab the ID's and keys to configure as environment variables towards the traefik container;</p>
-<div class="highlight"><pre><span></span><code>    <span class="n">task</span> <span class="ss">&quot;traefik&quot;</span> <span class="err">{</span>
+<div class="highlight"><pre><span></span><code>    task &quot;traefik&quot; {
 
-      <span class="n">driver</span> <span class="o">=</span> <span class="ss">&quot;docker&quot;</span>
+      driver = &quot;docker&quot;
 
-      <span class="n">env</span> <span class="err">{</span>
-        <span class="n">AWS_ACCESS_KEY_ID</span> <span class="o">=</span> <span class="ss">&quot;&quot;</span>
-        <span class="n">AWS_SECRET_ACCESS_KEY</span> <span class="o">=</span> <span class="ss">&quot;&quot;</span>
-        <span class="n">AWS_HOSTED_ZONE_ID</span> <span class="o">=</span> <span class="ss">&quot;&quot;</span>
-        <span class="n">AWS_REGION</span> <span class="o">=</span> <span class="ss">&quot;eu-west-1&quot;</span>
-      <span class="err">}</span>
+      env {
+        AWS_ACCESS_KEY_ID = &quot;&quot;
+        AWS_SECRET_ACCESS_KEY = &quot;&quot;
+        AWS_HOSTED_ZONE_ID = &quot;&quot;
+        AWS_REGION = &quot;eu-west-1&quot;
+      }
 </code></pre></div>
 
 <p>Once the AWS part is done you can configure the certificateResolver part in the traefik.toml static configuration mark the commented caServer to use the staging environment of letsencrypt first before putting it into production to not hit the rate limit too soon ;);</p>
 <div class="highlight"><pre><span></span><code><span class="k">[certificatesResolvers.letsencrypt.acme]</span>
   <span class="na">email</span> <span class="o">=</span> <span class="s">&quot;letsencrypt@example.org&quot;</span>
-<span class="s">  storage = &quot;/etc/traefik/acme/acme.json&quot;</span>
-<span class="s">  #  caServer = &quot;https://acme-staging-v02.api.letsencrypt.org/directory&quot;</span>
-<span class="s">  [certificatesResolvers.letsencrypt.acme.dnsChallenge]</span>
-<span class="s">    provider = &quot;route53&quot;</span>
-<span class="s">    delaybeforecheck = &quot;0&quot;</span>
+  <span class="na">storage</span> <span class="o">=</span> <span class="s">&quot;/etc/traefik/acme/acme.json&quot;</span>
+  <span class="c1">#  caServer = &quot;https://acme-staging-v02.api.letsencrypt.org/directory&quot;</span>
+  <span class="k">[certificatesResolvers.letsencrypt.acme.dnsChallenge]</span>
+    <span class="na">provider</span> <span class="o">=</span> <span class="s">&quot;route53&quot;</span>
+    <span class="na">delaybeforecheck</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
 </code></pre></div>
 
 <p>and last but not least you'll have to reconfigure the traefik consul tags so the tls will be used;</p>
@@ -229,17 +229,17 @@
 </code></pre></div>
 
 <p>Additional services on their turn can be configured in way they only have to enable tls and therefore falling back towards the wildcard certificate;</p>
-<div class="highlight"><pre><span></span><code>  <span class="k">group</span> <span class="ss">&quot;helloworld&quot;</span> <span class="err">{</span>
-    <span class="n">service</span> <span class="err">{</span>
-      <span class="n">name</span> <span class="o">=</span> <span class="ss">&quot;helloworld&quot;</span>
+<div class="highlight"><pre><span></span><code>  group &quot;helloworld&quot; {
+    service {
+      name = &quot;helloworld&quot;
 
-      <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="ss">&quot;traefik.enable=true&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.http.routers.helloworld-secure.rule=Host(`helloworld.example.org`)&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.http.routers.helloworld-secure.entrypoints=https&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.http.routers.helloworld-secure.tls=true&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.http.routers.helloworld-secure.middlewares=default-auth&quot;</span>
-      <span class="p">]</span>
+      tags = [
+        &quot;traefik.enable=true&quot;,
+        &quot;traefik.http.routers.helloworld-secure.rule=Host(`helloworld.example.org`)&quot;,
+        &quot;traefik.http.routers.helloworld-secure.entrypoints=https&quot;,
+        &quot;traefik.http.routers.helloworld-secure.tls=true&quot;,
+        &quot;traefik.http.routers.helloworld-secure.middlewares=default-auth&quot;
+      ]
 </code></pre></div>
 
 <p>So now letsencrypt only requests a wildcard for my domain with *.example.org as an alternative and all my services are using that wildcard. That way I could keep the letsencrypt communication to a bare minimum for my setup.</p>
@@ -249,22 +249,22 @@
 </code></pre></div>
 
 <p>and a TCP <a href="https://doc.traefik.io/traefik/routing/routers/#configuring-udp-routers">router</a> using tags in the <a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html">pihole</a> nomad job;</p>
-<div class="highlight"><pre><span></span><code>  <span class="k">group</span> <span class="ss">&quot;pihole&quot;</span> <span class="err">{</span>
-    <span class="n">service</span> <span class="err">{</span>
-      <span class="n">name</span> <span class="o">=</span> <span class="ss">&quot;pihole&quot;</span>
+<div class="highlight"><pre><span></span><code>  group &quot;pihole&quot; {
+    service {
+      name = &quot;pihole&quot;
 
-      <span class="n">tags</span> <span class="o">=</span> <span class="p">[</span>
-        <span class="ss">&quot;traefik.enable=true&quot;</span><span class="p">,</span>
-        <span class="ss">&quot;traefik.udp.routers.pihole-dns.entrypoints=dns&quot;</span>
-      <span class="p">]</span>
+      tags = [
+        &quot;traefik.enable=true&quot;,
+        &quot;traefik.udp.routers.pihole-dns.entrypoints=dns&quot;
+      ]
 </code></pre></div>
 
 <p>That way I don't have to pin the pihole containers anymore to a specific node, traefik will proxy the DNS traffic towards the pihole service dynamically which is again a little step up in my humble home lab :)</p>
 <p>And as finishing touch I also have configured the nomad service on every node with some <a href="https://www.nomadproject.io/docs/configuration/consul#tags">consul tags</a> by doing so I'm able to configure a router using tags in the traefik job;</p>
-<div class="highlight"><pre><span></span><code><span class="err">        &quot;traefik.http.routers.nomad-ui.rule=Host(`nomad.example.org`)&quot;,</span>
-<span class="err">        &quot;traefik.http.routers.nomad-ui.service=nomad-client@consulcatalog&quot;,</span>
-<span class="err">        &quot;traefik.http.routers.nomad-ui.entrypoints=https&quot;,</span>
-<span class="err">        &quot;traefik.http.routers.nomad-ui.tls=true&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="w">        </span><span class="ss">&quot;traefik.http.routers.nomad-ui.rule=Host(`nomad.example.org`)&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;traefik.http.routers.nomad-ui.service=nomad-client@consulcatalog&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;traefik.http.routers.nomad-ui.entrypoints=https&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="ss">&quot;traefik.http.routers.nomad-ui.tls=true&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>nomad.example.org will now be redirected to the nomad dashboard through one of the different clients. Since it's a cluster I will always get the same state and don't have to bother which client to access :)</p>

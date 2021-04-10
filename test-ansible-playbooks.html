@@ -85,7 +85,7 @@
 </code></pre></div>
 
 <p>This will mount the current directory where a file named playbook.yml is placed to the /tmp directory of the docker container. By changing the container's workdir to this /tmp directory the ansible-playbook-wrapper he wrote will be executed using the mounted playbook.yml and spawning the results.</p>
-<div class="highlight"><pre><span></span><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="s">&quot;$(pwd)&quot;</span><span class="o">:/</span><span class="n">tmp</span> <span class="o">--</span><span class="n">workdir</span><span class="o">=</span><span class="s">&quot;/tmp&quot;</span> <span class="n">williamyeh</span><span class="o">/</span><span class="nl">ansible</span><span class="p">:</span><span class="n">centos7</span><span class="o">-</span><span class="n">onbuild</span> <span class="n">ansible</span><span class="o">-</span><span class="n">playbook</span><span class="o">-</span><span class="n">wrapper</span>
+<div class="highlight"><pre><span></span><code><span class="n">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="s">&quot;$(pwd)&quot;</span><span class="o">:/</span><span class="n">tmp</span> <span class="o">--</span><span class="n">workdir</span><span class="o">=</span><span class="s">&quot;/tmp&quot;</span> <span class="n">williamyeh</span><span class="o">/</span><span class="nl">ansible</span><span class="p">:</span><span class="n">centos7</span><span class="o">-</span><span class="n">onbuild</span> <span class="n">ansible</span><span class="o">-</span><span class="n">playbook</span><span class="o">-</span><span class="n">wrapper</span>
 <span class="n">PLAY</span> <span class="p">[</span><span class="n">Remove</span> <span class="n">upstream</span> <span class="n">repositories</span> <span class="n">when</span> <span class="n">being</span> <span class="n">an</span> <span class="n">offline</span> <span class="n">instance</span><span class="p">]</span> <span class="o">**************************************************************************************************************************************************************************************************************</span>
 
 <span class="n">TASK</span> <span class="p">[</span><span class="n">Gathering</span> <span class="n">Facts</span><span class="p">]</span> <span class="o">**********************************************************************************************************************************************************************************************************************************************************</span>
@@ -111,40 +111,40 @@
 </code></pre></div>
 
 <p>the playbook will check for a certain file and depending on that file's existence it will remove all repositories except from a predefined list.</p>
-<div class="highlight"><pre><span></span><code><span class="x">---</span>
-<span class="x">- name: Remove upstream repositories when being an offline instance</span>
-<span class="x">  hosts: localhost</span>
-<span class="x">  become_user: root</span>
-<span class="x">  vars:</span>
-<span class="x">    repos_to_keep:</span>
-<span class="x">      - /etc/yum.repos.d/CentOS-fasttrack.repo</span>
+<div class="highlight"><pre><span></span><code><span class="o">---</span>
+<span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Remove</span> <span class="n">upstream</span> <span class="n">repositories</span> <span class="n">when</span> <span class="n">being</span> <span class="n">an</span> <span class="n">offline</span> <span class="n">instance</span>
+  <span class="n">hosts</span><span class="p">:</span> <span class="n">localhost</span>
+  <span class="n">become_user</span><span class="p">:</span> <span class="n">root</span>
+  <span class="n">vars</span><span class="p">:</span>
+    <span class="n">repos_to_keep</span><span class="p">:</span>
+      <span class="o">-</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">d</span><span class="o">/</span><span class="n">CentOS</span><span class="o">-</span><span class="n">fasttrack</span><span class="o">.</span><span class="n">repo</span>
 
-<span class="x">  tasks:</span>
+  <span class="n">tasks</span><span class="p">:</span>
 
-<span class="x">    - name: Check if system is supposed to be offline</span>
-<span class="x">      stat:</span>
-<span class="x">        path: /opt/offline</span>
-<span class="x">      register: offline</span>
+    <span class="o">-</span> <span class="n">name</span><span class="p">:</span> <span class="n">Check</span> <span class="k">if</span> <span class="n">system</span> <span class="k">is</span> <span class="n">supposed</span> <span class="n">to</span> <span class="n">be</span> <span class="n">offline</span>
+      <span class="n">stat</span><span class="p">:</span>
+        <span class="n">path</span><span class="p">:</span> <span class="o">/</span><span class="n">opt</span><span class="o">/</span><span class="n">offline</span>
+      <span class="n">register</span><span class="p">:</span> <span class="n">offline</span>
 
-<span class="x">    - find:</span>
-<span class="x">        paths: /etc/yum.repos.d/</span>
-<span class="x">        patterns: &quot;*.repo&quot;</span>
-<span class="x">      register: repos</span>
+    <span class="o">-</span> <span class="n">find</span><span class="p">:</span>
+        <span class="n">paths</span><span class="p">:</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="o">.</span><span class="n">repos</span><span class="o">.</span><span class="n">d</span><span class="o">/</span>
+        <span class="n">patterns</span><span class="p">:</span> <span class="s2">&quot;*.repo&quot;</span>
+      <span class="n">register</span><span class="p">:</span> <span class="n">repos</span>
 
-<span class="x">    - debug:</span>
-<span class="x">        var: repos.files</span>
+    <span class="o">-</span> <span class="n">debug</span><span class="p">:</span>
+        <span class="k">var</span><span class="p">:</span> <span class="n">repos</span><span class="o">.</span><span class="n">files</span>
 
-<span class="x">    - file:</span>
-<span class="x">        path: &quot;</span><span class="cp">{{</span> <span class="nv">item.path</span> <span class="cp">}}</span><span class="x">&quot;</span>
-<span class="x">        state: absent</span>
-<span class="x">      with_items: &quot;</span><span class="cp">{{</span> <span class="nv">repos.files</span> <span class="cp">}}</span><span class="x">&quot;</span>
-<span class="x">      when:</span>
-<span class="x">        - item.path not in repos_to_keep</span>
-<span class="x">        - offline.stat.exists</span>
+    <span class="o">-</span> <span class="n">file</span><span class="p">:</span>
+        <span class="n">path</span><span class="p">:</span> <span class="s2">&quot;{{ item.path }}&quot;</span>
+        <span class="n">state</span><span class="p">:</span> <span class="n">absent</span>
+      <span class="n">with_items</span><span class="p">:</span> <span class="s2">&quot;{{ repos.files }}&quot;</span>
+      <span class="n">when</span><span class="p">:</span>
+        <span class="o">-</span> <span class="n">item</span><span class="o">.</span><span class="n">path</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">repos_to_keep</span>
+        <span class="o">-</span> <span class="n">offline</span><span class="o">.</span><span class="n">stat</span><span class="o">.</span><span class="n">exists</span>
 </code></pre></div>
 
 <p>during development you want to keep the container online to troubleshoot. This can be done by running the container and instead of executing the ansible-playbook-wrapper just launching bash.</p>
-<div class="highlight"><pre><span></span><code><span class="err">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="s">&quot;$(pwd)&quot;</span><span class="o">:/</span><span class="n">tmp</span> <span class="o">--</span><span class="n">workdir</span><span class="o">=</span><span class="s">&quot;/tmp&quot;</span> <span class="n">williamyeh</span><span class="o">/</span><span class="nl">ansible</span><span class="p">:</span><span class="n">centos7</span><span class="o">-</span><span class="n">onbuild</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
+<div class="highlight"><pre><span></span><code><span class="n">$</span> <span class="n">docker</span> <span class="n">run</span> <span class="o">-</span><span class="n">ti</span> <span class="o">--</span><span class="n">rm</span> <span class="o">-</span><span class="n">v</span> <span class="s">&quot;$(pwd)&quot;</span><span class="o">:/</span><span class="n">tmp</span> <span class="o">--</span><span class="n">workdir</span><span class="o">=</span><span class="s">&quot;/tmp&quot;</span> <span class="n">williamyeh</span><span class="o">/</span><span class="nl">ansible</span><span class="p">:</span><span class="n">centos7</span><span class="o">-</span><span class="n">onbuild</span> <span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="n">bash</span>
 <span class="p">[</span><span class="n">root</span><span class="mi">@5</span><span class="n">cd5cfe2d7cf</span> <span class="n">tmp</span><span class="p">]</span><span class="err">#</span> <span class="n">ls</span> <span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">yum</span><span class="p">.</span><span class="n">repos</span><span class="p">.</span><span class="n">d</span><span class="o">/</span>
 <span class="n">CentOS</span><span class="o">-</span><span class="n">Base</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">CR</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">Debuginfo</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">fasttrack</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">Media</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">Sources</span><span class="p">.</span><span class="n">repo</span>  <span class="n">CentOS</span><span class="o">-</span><span class="n">Vault</span><span class="p">.</span><span class="n">repo</span>
 <span class="p">[</span><span class="n">root</span><span class="mi">@5</span><span class="n">cd5cfe2d7cf</span> <span class="n">tmp</span><span class="p">]</span><span class="err">#</span> <span class="n">ansible</span><span class="o">-</span><span class="n">playbook</span><span class="o">-</span><span class="n">wrapper</span>
@@ -179,7 +179,7 @@
 </code></pre></div>
 
 <p>Since the command is rather long to memorize I created an alias for it in my <a href="https://wiki.archlinux.org/index.php/Zsh">zsh</a> config (~/.zshrc)</p>
-<div class="highlight"><pre><span></span><code><span class="err">alias ansible-playbook-test=&#39;docker run -ti --rm -v &quot;$(pwd)&quot;:/tmp --workdir=&quot;/tmp&quot; williamyeh/ansible:centos7-onbuild ansible-playbook-wrapper&#39;</span>
+<div class="highlight"><pre><span></span><code>alias ansible-playbook-test=&#39;docker run -ti --rm -v &quot;$(pwd)&quot;:/tmp --workdir=&quot;/tmp&quot; williamyeh/ansible:centos7-onbuild ansible-playbook-wrapper&#39;
 </code></pre></div>
                     </section>
                     <hr/>

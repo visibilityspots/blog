@@ -72,7 +72,7 @@
                 <article class="post-entry">
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/httpd-semaphores.html" rel="bookmark"><h1>Httpd semaphores</h1></a>
-<div><p>takes 1 minute to read</p></div>                        <time class="post-time" datetime="2020-03-09T19:00:00+01:00" pubdate>
+<div><p>takes 0 minutes to read</p></div>                        <time class="post-time" datetime="2020-03-09T19:00:00+01:00" pubdate>
                             last modified at Mon 09 March 2020
                         </time>
                     </header>
@@ -84,34 +84,34 @@
 
 <p>After some research we found out the semaphores were all being used blocking httpd daemon to restart.</p>
 <p>The list of semaphores can be fetched by issuing</p>
-<div class="highlight"><pre><span></span><code><span class="o">#</span> <span class="n">ipcs</span> <span class="o">-</span><span class="n">st</span>
+<div class="highlight"><pre><span></span><code># ipcs -st
 
-<span class="c1">------ Semaphore Operation/Change Times --------</span>
-<span class="n">semid</span>    <span class="k">owner</span>      <span class="k">last</span><span class="o">-</span><span class="n">op</span>                    <span class="k">last</span><span class="o">-</span><span class="n">changed</span>
-<span class="mi">753664</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">786433</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">720898</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">819203</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">851972</span>   <span class="n">apache</span>      <span class="n">Tue</span> <span class="n">Feb</span> <span class="mi">18</span> <span class="mi">10</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">36</span> <span class="mi">2020</span>   <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">884741</span>   <span class="n">apache</span>      <span class="n">Tue</span> <span class="n">Feb</span> <span class="mi">18</span> <span class="mi">10</span><span class="p">:</span><span class="mi">04</span><span class="p">:</span><span class="mi">36</span> <span class="mi">2020</span>   <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">1540102</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">1572871</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">1507336</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">1605641</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">1638410</span>  <span class="n">apache</span>      <span class="n">Thu</span> <span class="n">Feb</span> <span class="mi">20</span> <span class="mi">11</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">48</span> <span class="mi">2020</span>   <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">1671179</span>  <span class="n">apache</span>      <span class="n">Thu</span> <span class="n">Feb</span> <span class="mi">20</span> <span class="mi">11</span><span class="p">:</span><span class="mi">16</span><span class="p">:</span><span class="mi">48</span> <span class="mi">2020</span>   <span class="n">Wed</span> <span class="n">Feb</span> <span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">57</span><span class="p">:</span><span class="mi">02</span> <span class="mi">2020</span>
-<span class="mi">3276812</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3309581</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3244046</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3342351</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3375120</span>  <span class="n">apache</span>      <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">24</span> <span class="mi">11</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">21</span> <span class="mi">2020</span>   <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3407889</span>  <span class="n">apache</span>      <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">24</span> <span class="mi">11</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">21</span> <span class="mi">2020</span>   <span class="n">Sun</span> <span class="n">Feb</span> <span class="mi">23</span> <span class="mi">20</span><span class="p">:</span><span class="mi">18</span><span class="p">:</span><span class="mi">54</span> <span class="mi">2020</span>
-<span class="mi">3538962</span>  <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">24</span> <span class="mi">11</span><span class="p">:</span><span class="mi">30</span><span class="p">:</span><span class="mi">21</span> <span class="mi">2020</span>
+------ Semaphore Operation/Change Times --------
+semid    owner      last-op                    last-changed
+753664   apache      Not set                    Mon Feb 17 20:20:47 2020
+786433   apache      Not set                    Mon Feb 17 20:20:47 2020
+720898   apache      Not set                    Mon Feb 17 20:20:47 2020
+819203   apache      Not set                    Mon Feb 17 20:20:47 2020
+851972   apache      Tue Feb 18 10:04:36 2020   Mon Feb 17 20:20:47 2020
+884741   apache      Tue Feb 18 10:04:36 2020   Mon Feb 17 20:20:47 2020
+1540102  apache      Not set                    Wed Feb 19 22:57:02 2020
+1572871  apache      Not set                    Wed Feb 19 22:57:02 2020
+1507336  apache      Not set                    Wed Feb 19 22:57:02 2020
+1605641  apache      Not set                    Wed Feb 19 22:57:02 2020
+1638410  apache      Thu Feb 20 11:16:48 2020   Wed Feb 19 22:57:02 2020
+1671179  apache      Thu Feb 20 11:16:48 2020   Wed Feb 19 22:57:02 2020
+3276812  apache      Not set                    Sun Feb 23 20:18:54 2020
+3309581  apache      Not set                    Sun Feb 23 20:18:54 2020
+3244046  apache      Not set                    Sun Feb 23 20:18:54 2020
+3342351  apache      Not set                    Sun Feb 23 20:18:54 2020
+3375120  apache      Mon Feb 24 11:30:21 2020   Sun Feb 23 20:18:54 2020
+3407889  apache      Mon Feb 24 11:30:21 2020   Sun Feb 23 20:18:54 2020
+3538962  apache      Not set                    Mon Feb 24 11:30:21 2020
 </code></pre></div>
 
 <p>Open connections are not cleared while restarting the httpd daemon in our case unfortunately which leads after some time into the error.</p>
 <p>We did found out that clearing those semaphores fixed the issue. Initially we did this manually by executing a for loop;</p>
-<div class="highlight"><pre><span></span><code><span class="err"># ipcrm sem $(ipcs -s | grep apache | awk &#39;{print$2}&#39;)</span>
+<div class="highlight"><pre><span></span><code># ipcrm sem $(ipcs -s | grep apache | awk &#39;{print$2}&#39;)
 </code></pre></div>
 
 <p>Obviously we didn't wanted to wait for our alerting or colleagues to shout when the httpd daemon is stuck. So we configured the ExecStopPost parameter of the httpd systemd unit.</p>

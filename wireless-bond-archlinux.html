@@ -87,35 +87,35 @@
 
 <p>The bonding kernel module needs to be installed and configured</p>
 <p>vim /etc/modules-load.d/bonding.conf</p>
-<div class="highlight"><pre><span></span><code><span class="n">bonding</span>
+<div class="highlight"><pre><span></span><code>bonding
 
-<span class="o">/</span><span class="n">etc</span><span class="o">/</span><span class="n">modprobe</span><span class="p">.</span><span class="n">d</span><span class="o">/</span><span class="n">bonding</span><span class="p">.</span><span class="n">conf</span>
+/etc/modprobe.d/bonding.conf
 </code></pre></div>
 
 <p>options bonding mode=active-backup miimon=100 primary=wlan0 max_bonds=0</p>
 <p>the netctl wired connection profile
 /etc/netcltl/wired</p>
-<div class="highlight"><pre><span></span><code><span class="err">Description=&#39;A basic static ethernet connection&#39;</span>
-<span class="err">Interface=eth0</span>
-<span class="err">Connection=ethernet</span>
-<span class="err">IP=static</span>
-<span class="err">Address=(&#39;192.168.0.106/24&#39;)</span>
-<span class="err">Routes=(&#39;default metric 1 via 192.168.0.1&#39;)</span>
-<span class="err">DNS=(&#39;192.168.0.1&#39;)</span>
-<span class="err">ExcludeAuto=no</span>
-<span class="err">Priority=2</span>
+<div class="highlight"><pre><span></span><code>Description=&#39;A basic static ethernet connection&#39;
+Interface=eth0
+Connection=ethernet
+IP=static
+Address=(&#39;192.168.0.106/24&#39;)
+Routes=(&#39;default metric 1 via 192.168.0.1&#39;)
+DNS=(&#39;192.168.0.1&#39;)
+ExcludeAuto=no
+Priority=2
 </code></pre></div>
 
 <p>the netctl profile failover needs to be configured also with a static ip</p>
 <p>/etc/netctl/failover</p>
-<div class="highlight"><pre><span></span><code><span class="err">Description=&quot;bond interface&quot;</span>
-<span class="err">Interface=bond0</span>
-<span class="err">Connection=bond</span>
-<span class="err">BindsToInterfaces=(wlan0 wlan1)</span>
-<span class="err">IP=static</span>
-<span class="err">Address=(&#39;192.168.43.150/24&#39;)</span>
-<span class="err">Routes=(&#39;default metric 100 via 192.168.43.1&#39;)</span>
-<span class="err">DNS=(&#39;192.168.43.1&#39;)</span>
+<div class="highlight"><pre><span></span><code>Description=&quot;bond interface&quot;
+Interface=bond0
+Connection=bond
+BindsToInterfaces=(wlan0 wlan1)
+IP=static
+Address=(&#39;192.168.43.150/24&#39;)
+Routes=(&#39;default metric 100 via 192.168.43.1&#39;)
+DNS=(&#39;192.168.43.1&#39;)
 </code></pre></div>
 
 <p>notice the Router parameter instead of the Gateway, by assigning different metrics both profiles can be used together. Else the will be fighting with each other to configure the default route. And in my experience obviously the one you need (wired) will loose over and over again..</p>
@@ -140,25 +140,25 @@ $ sudo systemctl disable netctl-ifplugd@eth0.service
 
 <p>and copy over the output into the following configuration files</p>
 <p>/etc/wpa_supplicant/wpa_supplicant-wlan0.conf</p>
-<div class="highlight"><pre><span></span><code><span class="n">ctrl_interface</span><span class="o">=/</span><span class="n">run</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">-</span><span class="n">wlan0</span>
-<span class="n">update_config</span><span class="o">=</span><span class="mi">1</span>
+<div class="highlight"><pre><span></span><code>ctrl_interface=/run/wpa_supplicant-wlan0
+update_config=1
 
-<span class="n">network</span><span class="o">=</span><span class="err">{</span>
-    <span class="n">ssid</span><span class="o">=</span><span class="ss">&quot;SSID&quot;</span>
-    <span class="o">#</span><span class="n">psk</span><span class="o">=</span><span class="ss">&quot;passphrase&quot;</span>
-    <span class="n">psk</span><span class="o">=</span><span class="n">XX</span>
-<span class="err">}</span>
+network={
+    ssid=&quot;SSID&quot;
+    #psk=&quot;passphrase&quot;
+    psk=XX
+}
 </code></pre></div>
 
 <p>/etc/wpa_supplicant/wpa_supplicant-wlan1.conf</p>
-<div class="highlight"><pre><span></span><code><span class="n">ctrl_interface</span><span class="o">=/</span><span class="n">run</span><span class="o">/</span><span class="n">wpa_supplicant</span><span class="o">-</span><span class="n">wlan1</span>
-<span class="n">update_config</span><span class="o">=</span><span class="mi">1</span>
+<div class="highlight"><pre><span></span><code>ctrl_interface=/run/wpa_supplicant-wlan1
+update_config=1
 
-<span class="n">network</span><span class="o">=</span><span class="err">{</span>
-    <span class="n">ssid</span><span class="o">=</span><span class="ss">&quot;SSID&quot;</span>
-    <span class="o">#</span><span class="n">psk</span><span class="o">=</span><span class="ss">&quot;passphrase&quot;</span>
-    <span class="n">psk</span><span class="o">=</span><span class="n">XX</span>
-<span class="err">}</span>
+network={
+    ssid=&quot;SSID&quot;
+    #psk=&quot;passphrase&quot;
+    psk=XX
+}
 </code></pre></div>
 
 <p>and their dependency configuration files</p>
@@ -175,33 +175,33 @@ $ sudo systemctl disable netctl-ifplugd@eth0.service
 <p>I had to configure them in this order since they didn't came up properly if I didn't only one could achieve to authenticate instead of both. By having the wlan1 unit depend on the wlan0 I had tackled it.</p>
 <p>When rebooting the device you should see them both connected using 'iwconfig' and only the bond0 and eth0 interfaces having an ip address using 'ifconfig' or 'ip -4 a'</p>
 <p>to see the bond status</p>
-<div class="highlight"><pre><span></span><code><span class="o">#</span> <span class="n">cat</span> <span class="o">/</span><span class="n">proc</span><span class="o">/</span><span class="n">net</span><span class="o">/</span><span class="n">bonding</span><span class="o">/</span><span class="n">bond0</span>
+<div class="highlight"><pre><span></span><code># cat /proc/net/bonding/bond0
 
-<span class="n">Ethernet</span> <span class="n">Channel</span> <span class="n">Bonding</span> <span class="n">Driver</span><span class="p">:</span> <span class="n">v3</span><span class="p">.</span><span class="mi">7</span><span class="p">.</span><span class="mi">1</span> <span class="p">(</span><span class="n">April</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">2011</span><span class="p">)</span>
+Ethernet Channel Bonding Driver: v3.7.1 (April 27, 2011)
 
-<span class="n">Bonding</span> <span class="k">Mode</span><span class="p">:</span> <span class="n">fault</span><span class="o">-</span><span class="n">tolerance</span> <span class="p">(</span><span class="n">active</span><span class="o">-</span><span class="n">backup</span><span class="p">)</span>
-<span class="k">Primary</span> <span class="n">Slave</span><span class="p">:</span> <span class="n">wlan0</span> <span class="p">(</span><span class="n">primary_reselect</span> <span class="n">always</span><span class="p">)</span>
-<span class="n">Currently</span> <span class="n">Active</span> <span class="n">Slave</span><span class="p">:</span> <span class="n">wlan0</span>
-<span class="n">MII</span> <span class="n">Status</span><span class="p">:</span> <span class="n">up</span>
-<span class="n">MII</span> <span class="n">Polling</span> <span class="nb">Interval</span> <span class="p">(</span><span class="n">ms</span><span class="p">):</span> <span class="mi">100</span>
-<span class="n">Up</span> <span class="n">Delay</span> <span class="p">(</span><span class="n">ms</span><span class="p">):</span> <span class="mi">0</span>
-<span class="n">Down</span> <span class="n">Delay</span> <span class="p">(</span><span class="n">ms</span><span class="p">):</span> <span class="mi">0</span>
+Bonding Mode: fault-tolerance (active-backup)
+Primary Slave: wlan0 (primary_reselect always)
+Currently Active Slave: wlan0
+MII Status: up
+MII Polling Interval (ms): 100
+Up Delay (ms): 0
+Down Delay (ms): 0
 
-<span class="n">Slave</span> <span class="n">Interface</span><span class="p">:</span> <span class="n">wlan0</span>
-<span class="n">MII</span> <span class="n">Status</span><span class="p">:</span> <span class="n">up</span>
-<span class="n">Speed</span><span class="p">:</span> <span class="k">Unknown</span>
-<span class="n">Duplex</span><span class="p">:</span> <span class="k">Unknown</span>
-<span class="n">Link</span> <span class="n">Failure</span> <span class="k">Count</span><span class="p">:</span> <span class="mi">0</span>
-<span class="n">Permanent</span> <span class="n">HW</span> <span class="n">addr</span><span class="p">:</span> <span class="o">##</span><span class="p">:</span><span class="o">##</span> 
-<span class="n">Slave</span> <span class="n">queue</span> <span class="n">ID</span><span class="p">:</span> <span class="mi">0</span>
+Slave Interface: wlan0
+MII Status: up
+Speed: Unknown
+Duplex: Unknown
+Link Failure Count: 0
+Permanent HW addr: ##:## 
+Slave queue ID: 0
 
-<span class="n">Slave</span> <span class="n">Interface</span><span class="p">:</span> <span class="n">wlan1</span>
-<span class="n">MII</span> <span class="n">Status</span><span class="p">:</span> <span class="n">up</span>
-<span class="n">Speed</span><span class="p">:</span> <span class="k">Unknown</span>
-<span class="n">Duplex</span><span class="p">:</span> <span class="k">Unknown</span>
-<span class="n">Link</span> <span class="n">Failure</span> <span class="k">Count</span><span class="p">:</span> <span class="mi">1</span>
-<span class="n">Permanent</span> <span class="n">HW</span> <span class="n">addr</span><span class="p">:</span> <span class="o">##</span><span class="p">:</span><span class="o">##</span>
-<span class="n">Slave</span> <span class="n">queue</span> <span class="n">ID</span><span class="p">:</span> <span class="mi">0</span>
+Slave Interface: wlan1
+MII Status: up
+Speed: Unknown
+Duplex: Unknown
+Link Failure Count: 1
+Permanent HW addr: ##:##
+Slave queue ID: 0
 </code></pre></div>
 
 <p>I did some testing by unplugging interfaces, bringing them down through the cli and my system kept online. Even without the ethernet cable plugged ;)</p>

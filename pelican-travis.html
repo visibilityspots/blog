@@ -106,26 +106,26 @@
 <h1>Letsencrypt</h1>
 <p><a href="https://letsencrypt.org/">letsencrypt</a> is a free, automated and open Certificate Authority which can be used in combination with S3 using the <a href="https://github.com/dlapiduz/certbot-s3front">certbot-s3front</a> tool to get your site served through https.</p>
 <p>I automated this process with a script based in /usr/local/bin/:</p>
-<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
- 2
- 3
- 4
- 5
- 6
- 7
- 8
- 9
-10
-11
-12
-13
-14
-15
-16
-17
-18
-19
-20</pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
+<table class="highlighttable"><tr><td class="linenos"><div class="linenodiv"><pre><span class="normal"> 1</span>
+<span class="normal"> 2</span>
+<span class="normal"> 3</span>
+<span class="normal"> 4</span>
+<span class="normal"> 5</span>
+<span class="normal"> 6</span>
+<span class="normal"> 7</span>
+<span class="normal"> 8</span>
+<span class="normal"> 9</span>
+<span class="normal">10</span>
+<span class="normal">11</span>
+<span class="normal">12</span>
+<span class="normal">13</span>
+<span class="normal">14</span>
+<span class="normal">15</span>
+<span class="normal">16</span>
+<span class="normal">17</span>
+<span class="normal">18</span>
+<span class="normal">19</span>
+<span class="normal">20</span></pre></div></td><td class="code"><div class="highlight"><pre><span></span><code><span class="ch">#!/bin/bash</span>
 <span class="c1">#</span>
 <span class="c1"># renew certificates for X</span>
 
@@ -150,7 +150,7 @@ certbot --agree-tos -a certbot-s3front:auth <span class="se">\</span>
 <p>It will source the IAM credentials you created for this specific use case, use certbot to renew your certificate on the specified cloudfront distribution and use <a href="http://ntfy.readthedocs.io/en/latest/">ntfy</a> to inform you about it through telegram in this case.</p>
 <p>When the renewal fails it will also sent a notification, I didn't had this feature in the past which lead to expiration of the certificate..</p>
 <p>It's triggered by cron:</p>
-<div class="highlight"><pre><span></span><code><span class="err">0 0 1 */2 * /usr/local/bin/letsencrypt-*</span>
+<div class="highlight"><pre><span></span><code><span class="mf">0</span> <span class="mf">0</span> <span class="mf">1</span> <span class="o">*/</span><span class="mf">2</span> <span class="o">*</span> <span class="o">/</span><span class="nb">usr</span><span class="o">/</span><span class="n">local</span><span class="o">/</span><span class="n">bin</span><span class="o">/</span><span class="kd">let</span><span class="n">sencrypt</span><span class="o">-*</span>
 </code></pre></div>
 
 <p>it will be triggered the <a href="https://crontab.guru/#0_0_1_*/2_*">first day every 2 months</a>, I used this sequence so in case of issues I have time enough to solve it before it expires.</p>

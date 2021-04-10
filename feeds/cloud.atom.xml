@@ -21,7 +21,7 @@
 &lt;p&gt;Unfortunately until today we didn't find a fix where a new VM gets a network connection on the OVS bridge with this increased MTU size automatically.&lt;/p&gt;
 &lt;p&gt;We tried several configurations but no luck.&lt;/p&gt;
 &lt;p&gt;As a temporary workaround we &lt;a href="http://serverfault.com/questions/680635/mtu-on-open-vswitch-bridge-port"&gt;found&lt;/a&gt; a loop which reconfigures the MTU sizes for all available ports on an OVS bridge.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; i in &lt;span class="k"&gt;$(&lt;/span&gt;ovs-vsctl list ports &amp;lt;BRIDGENAME&amp;gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;do&lt;/span&gt; ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="m"&gt;9000&lt;/span&gt; dev &lt;span class="nv"&gt;$i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;ip a show &amp;lt;BRIDGENAME&amp;gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;for&lt;/span&gt; i &lt;span class="k"&gt;in&lt;/span&gt; &lt;span class="k"&gt;$(&lt;/span&gt;ovs-vsctl list ports &amp;lt;BRIDGENAME&amp;gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;do&lt;/span&gt; ip link &lt;span class="nb"&gt;set&lt;/span&gt; mtu &lt;span class="m"&gt;9000&lt;/span&gt; dev &lt;span class="nv"&gt;$i&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;&lt;span class="k"&gt;done&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;ip a show &amp;lt;BRIDGENAME&amp;gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The unsuccesfull changes;&lt;/p&gt;
@@ -189,41 +189,41 @@ umount /mnt
 &lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.&lt;/p&gt;
 &lt;p&gt;We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)&lt;/p&gt;
 &lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the packages puppet&lt;em&gt; and hiera&lt;/em&gt; from the epel repository&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/yum.repos.d/epel.repo +9&lt;/span&gt;
-&lt;span class="err"&gt;exclude=hiera*,puppet&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/yum.repos.d/epel.repo +9
+exclude=hiera*,puppet
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Once launched some rather irritating behavior seemed to be the default timeout of horizon (openstack-dashboard) of 30 minutes. It's a development cloud after all and people didn't wanted to re login all the time. To change the default timeout we added a SESSION_TIMEOUT parameter to the local_settings file and restarted apache&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;dashboard&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local_settings&lt;/span&gt;
-&lt;span class="n"&gt;SESSION_TIMEOUT&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;28800&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/openstack-dashboard/local_settings
+SESSION_TIMEOUT = 28800
 
-&lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;restart&lt;/span&gt; &lt;span class="n"&gt;httpd&lt;/span&gt;
+systemctl restart httpd
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;After which we reconfigured the expiration time of the keystone token and restarted the keystone service&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="n"&gt;expiration&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="mi"&gt;28800&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/keystone/keystone.conf
+expiration = 28800
 
-&lt;span class="n"&gt;systemctl&lt;/span&gt; &lt;span class="k"&gt;restart&lt;/span&gt; &lt;span class="n"&gt;openstack&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;keystone&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;service&lt;/span&gt;
+systemctl restart openstack-keystone.service
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Another rather tiny issue was the access to the console through the web interface. It couldn't connect through the instance when running on another compute node.&lt;/p&gt;
 &lt;p&gt;After some research it seemed to by DNS. In the development setup no DNS has been configured for the different compute nodes. We tackled it by the proxy client setting in nova.conf on every compute node&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova/conf&lt;/span&gt;
-&lt;span class="err"&gt;vncserver_proxyclient_address=actual.ip.of.the.server&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/nova/nova/conf
+vncserver_proxyclient_address=actual.ip.of.the.server
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;During maintenance we had to reboot a compute-node, after this reboot the instances living on the compute node where not started and came up in shutdown state.&lt;/p&gt;
 &lt;p&gt;It seemed to be the default behavior of openstack, but as always there is a configuration parameter for it to force the instances to start after a reboot.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova.conf&lt;/span&gt;
-&lt;span class="err"&gt;resume_guests_state_on_host_boot=true&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/nova/nova.conf
+resume_guests_state_on_host_boot=true
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;The default behavior of the kilo RDO deployed cloud to pass data through cloud-init to the instance is by serving the file through a separate network at boot time.&lt;/p&gt;
 &lt;p&gt;We however found it more efficient to serve this file through the filesystem, the so called &lt;a href="http://docs.openstack.org/user-guide/cli_config_drive.html"&gt;config_drive&lt;/a&gt; option.&lt;/p&gt;
 &lt;p&gt;It can be forced through the nova config file&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;vim /etc/nova/nova.conf&lt;/span&gt;
-&lt;span class="err"&gt;force_config_drive=True&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/nova/nova.conf
+force_config_drive=True
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Also be aware with the lock_passwd feature with passing users through cloud init in openstack due to a &lt;a href="https://bugs.launchpad.net/cloud-init/+bug/1521554"&gt;bug&lt;/a&gt;&lt;/p&gt;
@@ -238,22 +238,22 @@ umount /mnt
 &lt;p&gt;We only need layer2 connectivity when adding an instance to a specific VLAN based network, an ip address is provided by another DHCP server on this VLAN network. So we don't want openstack to provide DHCP addresses.&lt;/p&gt;
 &lt;p&gt;By using the nova interface-attach command and the bug/feature of having networks without subnets configured attached we achieved to meet this goal of layer2 connectivity.&lt;/p&gt;
 &lt;p&gt;So to disable the linux bridge you'll need to &lt;a href="https://gist.github.com/djoreilly/db9c2d32a473c6643551"&gt;disable&lt;/a&gt; the security groups&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;conf&lt;/span&gt;
-&lt;span class="n"&gt;security_group_api&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nova&lt;/span&gt;
-&lt;span class="n"&gt;firewall_driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;nova&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;virt&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NoopFirewallDriver&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/nova/nova.conf
+security_group_api = nova
+firewall_driver = nova.virt.firewall.NoopFirewallDriver
 
-&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ml2&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;ml2_conf&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;ini&lt;/span&gt; &lt;span class="o"&gt;#&lt;/span&gt; &lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="k"&gt;only&lt;/span&gt; &lt;span class="k"&gt;on&lt;/span&gt; &lt;span class="n"&gt;controller&lt;/span&gt; &lt;span class="n"&gt;node&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
-&lt;span class="n"&gt;enable_security_group&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="k"&gt;False&lt;/span&gt;
+vim /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)
+enable_security_group = False
 
-&lt;span class="n"&gt;vim&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;etc&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;plugins&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;openvswitch&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;
-&lt;span class="n"&gt;firewall_driver&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;neutron&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;agent&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;firewall&lt;/span&gt;&lt;span class="p"&gt;.&lt;/span&gt;&lt;span class="n"&gt;NoopFirewallDriver&lt;/span&gt;
+vim /etc/neutron/plugins/openvswitch/
+firewall_driver = neutron.agent.firewall.NoopFirewallDriver
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Last but not least some configuration parameters got changed through without we noticed probably by some misconfigured settings in &lt;a href="https://wiki.openstack.org/wiki/Packstack"&gt;packstack&lt;/a&gt;. To keep this under control we made the configuration files immutable so they could only be modified by manual changes.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;chattr +i /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)&lt;/span&gt;
-&lt;span class="err"&gt;chattr +i /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini&lt;/span&gt;
-&lt;span class="err"&gt;chattr +i /etc/nova/nova.conf&lt;/span&gt;
-&lt;span class="err"&gt;chattr +i /etc/neutron/policy.json&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;chattr +i /etc/neutron/plugins/ml2/ml2_conf.ini # (only on controller node)
+chattr +i /etc/neutron/plugins/openvswitch/ovs_neutron_plugin.ini
+chattr +i /etc/nova/nova.conf
+chattr +i /etc/neutron/policy.json
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Those are about the main issues worth mentioning we went through. By sharing those I hope to help others in their quest to tame the openstack cluster. If any question arise feel free to comment or contact me about them!&lt;/p&gt;</content><category term="cloud"></category><category term="openstack"></category><category term="layer2"></category><category term="security"></category><category term="groups"></category><category term="linux"></category><category term="bridge"></category><category term="ovs"></category><category term="open"></category><category term="vswitch"></category><category term="dhcp"></category><category term="kilo"></category><category term="rdo"></category></entry><entry><title>Openstack vlan based flat neutron network provider</title><link href="https://visibilityspots.github.io/blog/vlan-flat-neutron-provider.html" rel="alternate"></link><published>2015-09-29T19:00:00+02:00</published><updated>2015-10-02T00:00:00+02:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2015-09-29:/blog/vlan-flat-neutron-provider.html</id><summary type="html">&lt;p&gt;at one of my projects I was been asked to set up a private cloud for a validation platform. The whole idea behind this proof of concept is based on the flexibility to spin up and down certain instances providing some specific functionality so tests banks can be ran against them.&lt;/p&gt;
@@ -269,7 +269,7 @@ umount /mnt
 &lt;h1&gt;Openstack&lt;/h1&gt;
 &lt;p&gt;We used the RDO &lt;a href="https://www.rdoproject.org/Quickstart"&gt;all-in-one&lt;/a&gt; installer to get an openstack up and running on one physical machine rather quickly (15-30 minutes for the initial services).&lt;/p&gt;
 &lt;p&gt;To set openstack up without the demo data:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# packstack --allinone --provision-demo=n&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# packstack --allinone --provision-demo=n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;This openstack instance is based on &lt;a href="https://www.centos.org/download/"&gt;CentOS 7 minimal&lt;/a&gt; since it's a requirement of the used openstack release &lt;a href="https://wiki.openstack.org/wiki/ReleaseNotes/Kilo"&gt;kilo&lt;/a&gt;.&lt;/p&gt;
@@ -313,18 +313,18 @@ ip route add default via &lt;span class="m"&gt;192&lt;/span&gt;.168.0.1
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;restarting neutron-dhcp-agent&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# openstack-service status neutron-dhcp-agent&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# openstack-service status neutron-dhcp-agent
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Configuring the openstack networks on the all-in-one machine:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;# source keystonerc_admin&lt;/span&gt;
-&lt;span class="err"&gt;# neutron subnet-list&lt;/span&gt;
-&lt;span class="err"&gt;# neutron subnet-delete ID&lt;/span&gt;
-&lt;span class="err"&gt;# neutron net-list&lt;/span&gt;
-&lt;span class="err"&gt;# neutron net-delete ID&lt;/span&gt;
-&lt;span class="err"&gt;# neutron net-create vlan100 --shared --provider:network_type vlan --provider:segmentation_id 100 --provider:physical_network vlan100 --router:external&lt;/span&gt;
-&lt;span class="err"&gt;# neutron subnet-create --name vlan100 --gateway 192.168.0.1 --allocation-pool start=192.168.0.150,end=192.168.0.200 --enable-dhcp --dns-nameserver 192.168.0.1 vlan100 192.168.0.0/24&lt;/span&gt;
-&lt;span class="err"&gt;# neutron subnet-update --host-route destination=169.254.169.254/32,nexthop=192.168.0.151 vlan100&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;# &lt;span class="nv"&gt;source&lt;/span&gt; &lt;span class="nv"&gt;keystonerc_admin&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;subnet&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;list&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;subnet&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;delete&lt;/span&gt; &lt;span class="nv"&gt;ID&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;net&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;list&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;net&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;delete&lt;/span&gt; &lt;span class="nv"&gt;ID&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;net&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;create&lt;/span&gt; &lt;span class="nv"&gt;vlan100&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;shared&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;provider&lt;/span&gt;:&lt;span class="nv"&gt;network_type&lt;/span&gt; &lt;span class="nv"&gt;vlan&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;provider&lt;/span&gt;:&lt;span class="nv"&gt;segmentation_id&lt;/span&gt; &lt;span class="mi"&gt;100&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;provider&lt;/span&gt;:&lt;span class="nv"&gt;physical_network&lt;/span&gt; &lt;span class="nv"&gt;vlan100&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;router&lt;/span&gt;:&lt;span class="nv"&gt;external&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;subnet&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;create&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;name&lt;/span&gt; &lt;span class="nv"&gt;vlan100&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;gateway&lt;/span&gt; &lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;allocation&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;pool&lt;/span&gt; &lt;span class="nv"&gt;start&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;150&lt;/span&gt;,&lt;span class="k"&gt;end&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;200&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;enable&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;dhcp&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;dns&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;nameserver&lt;/span&gt; &lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;1&lt;/span&gt; &lt;span class="nv"&gt;vlan100&lt;/span&gt; &lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;24&lt;/span&gt;
+# &lt;span class="nv"&gt;neutron&lt;/span&gt; &lt;span class="nv"&gt;subnet&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;update&lt;/span&gt; &lt;span class="o"&gt;--&lt;/span&gt;&lt;span class="nv"&gt;host&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="nv"&gt;route&lt;/span&gt; &lt;span class="nv"&gt;destination&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;169&lt;/span&gt;.&lt;span class="mi"&gt;254&lt;/span&gt;.&lt;span class="mi"&gt;169&lt;/span&gt;.&lt;span class="mi"&gt;254&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="mi"&gt;32&lt;/span&gt;,&lt;span class="nv"&gt;nexthop&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;192&lt;/span&gt;.&lt;span class="mi"&gt;168&lt;/span&gt;.&lt;span class="mi"&gt;0&lt;/span&gt;.&lt;span class="mi"&gt;151&lt;/span&gt; &lt;span class="nv"&gt;vlan100&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We do have a working setup right now if everything went well and you should be able to &lt;a href="https://www.rdoproject.org/Running_an_instance"&gt;launch&lt;/a&gt; an instance. To test ICMP traffic do not forget to enable a security group which allows this kind of traffic. Otherwise you couldn't use ping to test traffic.&lt;/p&gt;

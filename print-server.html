@@ -84,11 +84,11 @@ From both my wife and daughter, especially during the holidays where the wife wa
 <p>So during one of the evenings I pulled myself together and installed <a href="https://archlinuxarm.org/">ArchLinux ARM</a> on a pi zero w and went through the following configuration.</p>
 <p>First off all install and configure cups on the pi zero following the <a href="https://wiki.archlinux.org/index.php/CUPS">Arch wiki</a></p>
 <p>Do not configure any printer yet, only install cups. When following the guide you can also set cups to be <a href="https://wiki.archlinux.org/index.php/CUPS/Printer_sharing#Remote_administration">available</a> on our local network through the browser on port 631;</p>
-<div class="highlight"><pre><span></span><code><span class="err"># vim /etc/cups/cupsd.conf</span>
-<span class="err"># Only listen for connections from the local machine.</span>
-<span class="err">#Listen localhost:631</span>
-<span class="err">Port 631</span>
-<span class="err">Listen /run/cups/cups.sock</span>
+<div class="highlight"><pre><span></span><code># <span class="nv">vim</span> <span class="o">/</span><span class="nv">etc</span><span class="o">/</span><span class="nv">cups</span><span class="o">/</span><span class="nv">cupsd</span>.<span class="nv">conf</span>
+# <span class="nv">Only</span> <span class="nv">listen</span> <span class="k">for</span> <span class="nv">connections</span> <span class="nv">from</span> <span class="nv">the</span> <span class="nv">local</span> <span class="nv">machine</span>.
+#<span class="nv">Listen</span> <span class="nv">localhost</span>:<span class="mi">631</span>
+<span class="nv">Port</span> <span class="mi">631</span>
+<span class="nv">Listen</span> <span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">cups</span><span class="o">/</span><span class="nv">cups</span>.<span class="nv">sock</span>
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code># Restrict access to the server...
@@ -113,31 +113,31 @@ From both my wife and daughter, especially during the holidays where the wife wa
 </code></pre></div>
 
 <p>Once that's done you can start the cups service and enable it to start at boot;</p>
-<div class="highlight"><pre><span></span><code><span class="err"># systemctl start cups.service</span>
-<span class="err"># systemctl enable cups.service</span>
+<div class="highlight"><pre><span></span><code># systemctl start cups.service
+# systemctl enable cups.service
 </code></pre></div>
 
 <p>Next we will configure the USB connected printers as raw on the pi.</p>
 <p>first get your printer USB handle</p>
-<div class="highlight"><pre><span></span><code><span class="err"># lpinfo -v | grep usb:</span>
-<span class="err">direct usb://Samsung/CLP-310%20Series?serial=################</span>
+<div class="highlight"><pre><span></span><code># lpinfo -v | grep usb:
+direct usb://Samsung/CLP-310%20Series?serial=################
 </code></pre></div>
 
 <p>add a new printer with the found USB handle</p>
-<div class="highlight"><pre><span></span><code><span class="err"># lpadmin -p Visibilityspots-LaserJet -v usb://Samsung/CLP-310%20Series?serial=##################</span>
-<span class="err"># lpstat -p Visibilityspots-LaserJet -l</span>
-<span class="err">printer Visibilityspots-LaserJet disabled since Mon Dec 24 20:51:24 2018 -</span>
-<span class="err">    reason unknown</span>
+<div class="highlight"><pre><span></span><code># lpadmin -p Visibilityspots-LaserJet -v usb://Samsung/CLP-310%20Series?serial=##################
+# lpstat -p Visibilityspots-LaserJet -l
+printer Visibilityspots-LaserJet disabled since Mon Dec 24 20:51:24 2018 -
+    reason unknown
 </code></pre></div>
 
 <p>enable the printer</p>
-<div class="highlight"><pre><span></span><code><span class="err"># cupsenable Visibilityspots-LaserJet</span>
-<span class="err"># lpstat -p Visibilityspots-LaserJet -l</span>
-<span class="err">printer Visibilityspots-LaserJet is idle.  enabled since Mon Dec 24 20:51:54 2018</span>
+<div class="highlight"><pre><span></span><code># cupsenable Visibilityspots-LaserJet
+# lpstat -p Visibilityspots-LaserJet -l
+printer Visibilityspots-LaserJet is idle.  enabled since Mon Dec 24 20:51:54 2018
 </code></pre></div>
 
 <p>make the printer accept jobs</p>
-<div class="highlight"><pre><span></span><code><span class="err"># cupsaccept Visibilityspots-LaserJet</span>
+<div class="highlight"><pre><span></span><code># cupsaccept Visibilityspots-LaserJet
 </code></pre></div>
 
 <p>We do have a server now which can accept print jobs.</p>
@@ -157,9 +157,9 @@ From both my wife and daughter, especially during the holidays where the wife wa
 </code></pre></div>
 
 <p>zsh config:</p>
-<div class="highlight"><pre><span></span><code><span class="err">scan () {</span>
-<span class="err">    scanimage --device &quot;net:IP-ADDRESS-PRINT-SERVER-ON-A-PI:hpaio:/usb/Deskjet_F4100_series?serial=#################&quot; --resolution 600 -p | pnmtops | ps2pdf - &quot;$1.pdf&quot;</span>
-<span class="err">    }</span>
+<div class="highlight"><pre><span></span><code>scan () {
+    scanimage --device &quot;net:IP-ADDRESS-PRINT-SERVER-ON-A-PI:hpaio:/usb/Deskjet_F4100_series?serial=#################&quot; --resolution 600 -p | pnmtops | ps2pdf - &quot;$1.pdf&quot;
+    }
 </code></pre></div>
 
 <p>which creates a pdf file in the current directory based on the scanned file.</p>

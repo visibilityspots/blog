@@ -82,49 +82,49 @@
 <p>Obviously on that very moment disaster happened.. Due to an unexpected interrupt the journal went corrupt. When trying to boot I got stuck right after decrypted the disk failing to mount my btrfs root volume.</p>
 <p>Uncool, unpleasant, .. I almost got insane..</p>
 <p>So back to the live usb arch Linux, decrypted my disk:</p>
-<div class="highlight"><pre><span></span><code><span class="err"># cryptsetup luksOpen /dev/sda2</span>
+<div class="highlight"><pre><span></span><code># cryptsetup luksOpen /dev/sda2
 </code></pre></div>
 
 <p>and tried to manually mount the root volume</p>
-<div class="highlight"><pre><span></span><code><span class="err"># mount /dev/mapper/root /mnt</span>
+<div class="highlight"><pre><span></span><code># mount /dev/mapper/root /mnt
 </code></pre></div>
 
 <p>which resulted in some error like:</p>
-<div class="highlight"><pre><span></span><code><span class="err">parent transid verify failed on 109973766144 wanted 1823 found 1821</span>
-<span class="err">parent transid verify failed on 13891821568 wanted 540620 found 541176</span>
-<span class="err">parent transid verify failed on 13891821568 wanted 540620 found 541176</span>
-<span class="err">parent transid verify failed on 13891821568 wanted 540620 found 541176</span>
-<span class="err">parent transid verify failed on 13891821568 wanted 540620 found 541176</span>
-<span class="c">btrfs: open_ctree failed</span>
+<div class="highlight"><pre><span></span><code>parent transid verify failed on 109973766144 wanted 1823 found 1821
+parent transid verify failed on 13891821568 wanted 540620 found 541176
+parent transid verify failed on 13891821568 wanted 540620 found 541176
+parent transid verify failed on 13891821568 wanted 540620 found 541176
+parent transid verify failed on 13891821568 wanted 540620 found 541176
+btrfs: open_ctree failed
 </code></pre></div>
 
 <p>Crawling through so many forum posts, stack overflow, blogposts a lot of solutions were suggested but none of them resulted in successfully mounting my brand new system..</p>
 <p>After some time I could mount the filesystem in <a href="http://ram.kossboss.com/btrfs-restore-curropt-system/">recovery mode</a></p>
-<div class="highlight"><pre><span></span><code><span class="err"># mkdir -p /mnt/root</span>
-<span class="err"># mount -o ro,recover /dev/mapper/root /mnt/root</span>
+<div class="highlight"><pre><span></span><code># mkdir -p /mnt/root
+# mount -o ro,recover /dev/mapper/root /mnt/root
 </code></pre></div>
 
 <p>So I decided to copy over all this data to an USB disk using rsync:</p>
-<div class="highlight"><pre><span></span><code><span class="err"># mkdir -p /mnt/disk</span>
-<span class="err"># mount /dev/sdb1 /mnt/disk</span>
-<span class="err"># rsync -ah --progress /mnt/root /mnt/disk</span>
+<div class="highlight"><pre><span></span><code># mkdir -p /mnt/disk
+# mount /dev/sdb1 /mnt/disk
+# rsync -ah --progress /mnt/root /mnt/disk
 </code></pre></div>
 
 <p>Off course this took some time.. Once the data was copied over I followed the steps described by <a href="http://ram.kossboss.com/btrfs-transid-issue-explained-fix/">kossboss</a>:</p>
-<div class="highlight"><pre><span></span><code><span class="err"># btrfs-zero-log /dev/mapper/root</span>
-<span class="err"># btrfsck --init-csum-tree /dev/mapper/root</span>
-<span class="err"># btrfsck --fix-crc /dev/mapper/root</span>
-<span class="err"># btrfsck --repair /dev/mapper/root</span>
+<div class="highlight"><pre><span></span><code># btrfs-zero-log /dev/mapper/root
+# btrfsck --init-csum-tree /dev/mapper/root
+# btrfsck --fix-crc /dev/mapper/root
+# btrfsck --repair /dev/mapper/root
 </code></pre></div>
 
 <p>But no luck at all unfortunately</p>
 <p>So I went online to the <a href="http://irc.lc/freenode/btrfs/">irc #btrfs</a> channel and explained my issue. A user named darkling reached out a hand and really made my day by suggesting to mount the filesystem as <a href="https://btrfs.wiki.kernel.org/index.php/Mount_options#Recovery">recovery</a> without the ro option.</p>
-<div class="highlight"><pre><span></span><code><span class="err"># mount -orecovery /dev/mapper/root /mnt/root</span>
+<div class="highlight"><pre><span></span><code># mount -orecovery /dev/mapper/root /mnt/root
 </code></pre></div>
 
 <p>And hell yeah I finally got it mounted, this recovery option did wrote a new working tree when I unmounted the filesystem so I could mount it in a normal way again!</p>
-<div class="highlight"><pre><span></span><code><span class="err"># umount /mnt/root</span>
-<span class="err"># mount /dev/mapper/root /mnt/root</span>
+<div class="highlight"><pre><span></span><code># umount /mnt/root
+# mount /dev/mapper/root /mnt/root
 </code></pre></div>
 
 <p>So I rebooted my system from live cd to hard drive and got my system back up and running!</p>

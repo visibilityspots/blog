@@ -97,7 +97,7 @@
 <p>Unfortunately until today we didn't find a fix where a new VM gets a network connection on the OVS bridge with this increased MTU size automatically.</p>
 <p>We tried several configurations but no luck.</p>
 <p>As a temporary workaround we <a href="http://serverfault.com/questions/680635/mtu-on-open-vswitch-bridge-port">found</a> a loop which reconfigures the MTU sizes for all available ports on an OVS bridge.</p>
-<div class="highlight"><pre><span></span><code><span class="k">for</span> i in <span class="k">$(</span>ovs-vsctl list ports &lt;BRIDGENAME&gt;<span class="k">)</span><span class="p">;</span><span class="k">do</span> ip link <span class="nb">set</span> mtu <span class="m">9000</span> dev <span class="nv">$i</span><span class="p">;</span><span class="k">done</span><span class="p">;</span>ip a show &lt;BRIDGENAME&gt;
+<div class="highlight"><pre><span></span><code><span class="k">for</span> i <span class="k">in</span> <span class="k">$(</span>ovs-vsctl list ports &lt;BRIDGENAME&gt;<span class="k">)</span><span class="p">;</span><span class="k">do</span> ip link <span class="nb">set</span> mtu <span class="m">9000</span> dev <span class="nv">$i</span><span class="p">;</span><span class="k">done</span><span class="p">;</span>ip a show &lt;BRIDGENAME&gt;
 </code></pre></div>
 
 <p>The unsuccesfull changes;</p>

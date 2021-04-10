@@ -132,7 +132,7 @@
   <span class="nv">HOSTS</span><span class="o">=</span><span class="s2">&quot;8.8.4.4 gateway.ip.address&quot;</span>
   <span class="nv">COUNT</span><span class="o">=</span><span class="m">4</span>
   <span class="nb">echo</span> <span class="s2">&quot;===========================================================&quot;</span> &gt;&gt; /tmp/monitor-lan.log
-  <span class="k">for</span> myHost in <span class="nv">$HOSTS</span>
+  <span class="k">for</span> myHost <span class="k">in</span> <span class="nv">$HOSTS</span>
   <span class="k">do</span>
     <span class="nv">count</span><span class="o">=</span><span class="k">$(</span>ping -c <span class="nv">$COUNT</span> <span class="nv">$myHost</span> <span class="p">|</span> grep <span class="s1">&#39;received&#39;</span> <span class="p">|</span> awk -F<span class="s1">&#39;,&#39;</span> <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span><span class="k">)</span>
     <span class="k">if</span> <span class="o">[</span> <span class="nv">$count</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>
@@ -160,7 +160,7 @@
   <span class="nb">echo</span> <span class="s2">&quot;===========================================================&quot;</span> &gt;&gt; /tmp/monitor-lan.log
 
   <span class="c1"># Reachable</span>
-  <span class="k">for</span> myHost in <span class="nv">$PING_HOSTS</span>
+  <span class="k">for</span> myHost <span class="k">in</span> <span class="nv">$PING_HOSTS</span>
   <span class="k">do</span>
     <span class="nv">count</span><span class="o">=</span><span class="k">$(</span>ping -c <span class="nv">$COUNT</span> <span class="nv">$myHost</span> <span class="p">|</span> grep <span class="s1">&#39;received&#39;</span> <span class="p">|</span> awk -F<span class="s1">&#39;,&#39;</span> <span class="s1">&#39;{ print $2 }&#39;</span> <span class="p">|</span> awk <span class="s1">&#39;{ print $1 }&#39;</span><span class="k">)</span>
     <span class="k">if</span> <span class="o">[</span> <span class="nv">$count</span> -eq <span class="m">0</span> <span class="o">]</span><span class="p">;</span> <span class="k">then</span>

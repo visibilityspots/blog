@@ -60,7 +60,7 @@
 
 &lt;p&gt;to fetch the real time data from your nest device and import them into your mysql database.&lt;/p&gt;
 &lt;p&gt;From my &lt;a href="../raspberry-pi.html"&gt;raspberry-pi&lt;/a&gt; I configured a cron job to log in into the my one.com hosting account using ssh and start the import job every 5 minutes.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="err"&gt;    */5 * * * * ssh ONE.COM-URL &amp;quot;/bin/rm -f /tmp/nest_php_* ; /usr/bin/php /path/to/nestgraph/insert.php &amp;gt; /dev/null&amp;quot;&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;    */5 * * * * ssh ONE.COM-URL &amp;quot;/bin/rm -f /tmp/nest_php_* ; /usr/bin/php /path/to/nestgraph/insert.php &amp;gt; /dev/null&amp;quot;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Last but not least I added some security to this service using &lt;a href="http://one-docs.com/tools/htaccess/"&gt;htaccess&lt;/a&gt; so all this information isn't publicly available. Now I only have to wait to winter so I can finally start monitoring our heating usage!&lt;/p&gt;

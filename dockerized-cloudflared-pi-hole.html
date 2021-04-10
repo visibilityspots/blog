@@ -208,22 +208,22 @@ visibilityspots.org.    <span class="m">37</span>  IN  A   <span class="m">54</s
 </code></pre></div>
 
 <p>Obviously I wanted to see myself that when sniffing the network the DNS requests aren't readable so I used tcp dump to prove myself the data was sent through HTTPS</p>
-<div class="highlight"><pre><span></span><code><span class="err">pi-hole# tcpdump -i eth0 udp port 53</span>
-<span class="c">22:39:30.837594 IP 192.168.0.3.35765 &gt; piholeContainerID.domain: 36972+ [1au] A? visibilityspots.com. (60)</span>
-<span class="c">22:39:31.009345 IP piholeContainerID.domain &gt; 192.168.0.3.35765: 36972 8/0/1 A 54.230.228.38, A 54.230.228.42, A 54.230.228.54, A 54.230.228.68, A 54.230.228.69, A 54.230.228.84, A 54.230.228.92, A 54.230.228.104 (328)</span>
+<div class="highlight"><pre><span></span><code>pi-hole# tcpdump -i eth0 udp port 53
+22:39:30.837594 IP 192.168.0.3.35765 &gt; piholeContainerID.domain: 36972+ [1au] A? visibilityspots.com. (60)
+22:39:31.009345 IP piholeContainerID.domain &gt; 192.168.0.3.35765: 36972 8/0/1 A 54.230.228.38, A 54.230.228.42, A 54.230.228.54, A 54.230.228.68, A 54.230.228.69, A 54.230.228.84, A 54.230.228.92, A 54.230.228.104 (328)
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err">cloudflared# tcpdump -i eth0 udp port 5054</span>
-<span class="c">tcpdump: verbose output suppressed, use -v or -vv for full protocol decode</span>
-<span class="err">listening on eth0, link-type EN10MB (Ethernet), capture size 262144 bytes</span>
-<span class="c">20:39:29.029132 IP piholeContainerID.59189 &gt; cloudflaredContainerID.5054: UDP, length 40</span>
-<span class="c">20:39:29.069864 IP cloudflaredContainerID.5054 &gt; piholeContainerID.59189: UDP, length 116</span>
-<span class="c">20:39:30.838803 IP piholeContainerID.28892 &gt; cloudflaredContainerID.5054: UDP, length 60</span>
-<span class="c">20:39:31.003756 IP cloudflaredContainerID.5054 &gt; piholeContainerID.28892: UDP, length 328</span>
-<span class="c">20:39:31.352487 IP piholeContainerID.50291 &gt; cloudflaredContainerID.5054: UDP, length 31</span>
-<span class="c">20:39:31.364073 IP piholeContainerID.16365 &gt; cloudflaredContainerID.5054: UDP, length 31</span>
-<span class="c">20:39:31.411227 IP cloudflaredContainerID.5054 &gt; piholeContainerID.50291: UDP, length 156</span>
-<span class="c">20:39:31.432364 IP cloudflaredContainerID.5054 &gt; piholeContainerID.16365: UDP, length 218</span>
+<div class="highlight"><pre><span></span><code><span class="nv">cloudflared</span># <span class="nv">tcpdump</span> <span class="o">-</span><span class="nv">i</span> <span class="nv">eth0</span> <span class="nv">udp</span> <span class="nv">port</span> <span class="mi">5054</span>
+<span class="nv">tcpdump</span>: <span class="nv">verbose</span> <span class="nv">output</span> <span class="nv">suppressed</span>, <span class="nv">use</span> <span class="o">-</span><span class="nv">v</span> <span class="nv">or</span> <span class="o">-</span><span class="nv">vv</span> <span class="k">for</span> <span class="nv">full</span> <span class="nv">protocol</span> <span class="nv">decode</span>
+<span class="nv">listening</span> <span class="nv">on</span> <span class="nv">eth0</span>, <span class="nv">link</span><span class="o">-</span><span class="nv">type</span> <span class="nv">EN10MB</span> <span class="ss">(</span><span class="nv">Ethernet</span><span class="ss">)</span>, <span class="nv">capture</span> <span class="nv">size</span> <span class="mi">262144</span> <span class="nv">bytes</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">29</span>.<span class="mi">029132</span> <span class="nv">IP</span> <span class="nv">piholeContainerID</span>.<span class="mi">59189</span> <span class="o">&gt;</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">40</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">29</span>.<span class="mi">069864</span> <span class="nv">IP</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span> <span class="o">&gt;</span> <span class="nv">piholeContainerID</span>.<span class="mi">59189</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">116</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">30</span>.<span class="mi">838803</span> <span class="nv">IP</span> <span class="nv">piholeContainerID</span>.<span class="mi">28892</span> <span class="o">&gt;</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">60</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">31</span>.<span class="mi">003756</span> <span class="nv">IP</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span> <span class="o">&gt;</span> <span class="nv">piholeContainerID</span>.<span class="mi">28892</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">328</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">31</span>.<span class="mi">352487</span> <span class="nv">IP</span> <span class="nv">piholeContainerID</span>.<span class="mi">50291</span> <span class="o">&gt;</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">31</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">31</span>.<span class="mi">364073</span> <span class="nv">IP</span> <span class="nv">piholeContainerID</span>.<span class="mi">16365</span> <span class="o">&gt;</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">31</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">31</span>.<span class="mi">411227</span> <span class="nv">IP</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span> <span class="o">&gt;</span> <span class="nv">piholeContainerID</span>.<span class="mi">50291</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">156</span>
+<span class="mi">20</span>:<span class="mi">39</span>:<span class="mi">31</span>.<span class="mi">432364</span> <span class="nv">IP</span> <span class="nv">cloudflaredContainerID</span>.<span class="mi">5054</span> <span class="o">&gt;</span> <span class="nv">piholeContainerID</span>.<span class="mi">16365</span>: <span class="nv">UDP</span>, <span class="nv">length</span> <span class="mi">218</span>
 </code></pre></div>
 
 <p>So by now you can configure this new DNS service on your router or dhcp daemon within your local network.</p>

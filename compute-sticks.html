@@ -86,10 +86,10 @@
 <p>since we had to install and configure about 8 sticks we decided to configure a base archlinux setup on one stick and using <a href="https://wiki.archlinux.org/index.php/Dd">dd</a> afterwards to get the others up and running with a basic archlinux stack.</p>
 <h2>BIOS</h2>
 <p>before we could boot a live usb archlinux distro we had to change the operating system setting in the bios to Android</p>
-<div class="highlight"><pre><span></span><code><span class="err">boot device</span>
-<span class="err">press F2</span>
-<span class="err">-&gt; Select Operating System</span>
-<span class="err">-&gt; Android</span>
+<div class="highlight"><pre><span></span><code><span class="n">boot</span> <span class="n">device</span>
+<span class="n">press</span> <span class="n">F2</span>
+<span class="o">-&gt;</span> <span class="n">Select</span> <span class="n">Operating</span> <span class="n">System</span>
+<span class="o">-&gt;</span> <span class="n">Android</span>
 </code></pre></div>
 
 <p>once that's done and you've rebooted press F10 to boot from the live USB distro</p>
@@ -98,15 +98,15 @@
 <p>following the basic <a href="https://wiki.archlinux.org/index.php/Installation_Guide">installation guide</a> we went for an UEFI setup with a <a href="https://wiki.archlinux.org/index.php/EFI_system_partition#GPT_partitioned_disks">GPT partitioned</a> disk.</p>
 <p>and opted for this layout where 20G is reserved for the root partition, 7.6G as var and 1G for swap.</p>
 <h4>partition layout</h4>
-<div class="highlight"><pre><span></span><code><span class="err">Device            Start      End  Sectors  Size Type</span>
-<span class="err">/dev/mmcblk0p1     2048  1050623  1048576  512M EFI System</span>
-<span class="err">/dev/mmcblk0p2  1050624  3147775  2097152    1G Linux swap</span>
-<span class="err">/dev/mmcblk0p3  3147776 45090815 41943040   20G Linux filesystem</span>
-<span class="err">/dev/mmcblk0p4 45090816 61071326 15980511  7.6G Linux filesystem</span>
+<div class="highlight"><pre><span></span><code><span class="nv">Device</span>            <span class="nv">Start</span>      <span class="k">End</span>  <span class="nv">Sectors</span>  <span class="nv">Size</span> <span class="nv">Type</span>
+<span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">mmcblk0p1</span>     <span class="mi">2048</span>  <span class="mi">1050623</span>  <span class="mi">1048576</span>  <span class="mi">512</span><span class="nv">M</span> <span class="nv">EFI</span> <span class="nv">System</span>
+<span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">mmcblk0p2</span>  <span class="mi">1050624</span>  <span class="mi">3147775</span>  <span class="mi">2097152</span>    <span class="mi">1</span><span class="nv">G</span> <span class="nv">Linux</span> <span class="nv">swap</span>
+<span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">mmcblk0p3</span>  <span class="mi">3147776</span> <span class="mi">45090815</span> <span class="mi">41943040</span>   <span class="mi">20</span><span class="nv">G</span> <span class="nv">Linux</span> <span class="nv">filesystem</span>
+<span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">mmcblk0p4</span> <span class="mi">45090816</span> <span class="mi">61071326</span> <span class="mi">15980511</span>  <span class="mi">7</span>.<span class="mi">6</span><span class="nv">G</span> <span class="nv">Linux</span> <span class="nv">filesystem</span>
 </code></pre></div>
 
 <p>We configured <a href="https://wiki.archlinux.org/index.php/GRUB#Generate_the_main_configuration_file">grub</a> assuming the EFI partition being mounted as boot and chrooted using arch-chroot as being explained in the installation guide.</p>
-<div class="highlight"><pre><span></span><code><span class="err"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
 </code></pre></div>
 
 <h4>tools</h4>
@@ -118,79 +118,79 @@
 <p>when you have rebooted you should now enter the Grub to the installed archlinux distribution based on the disk of the compute stick. Once that's working fine you can go ahead.</p>
 <h1>create an image with dd on separate stick</h1>
 <p>as soon as you got a working compute stick you can reboot and now use the live usb distro again</p>
-<div class="highlight"><pre><span></span><code><span class="err"># wifi-menu</span>
-<span class="err"># systemctl start sshd.service</span>
-<span class="err"># passwd</span>
+<div class="highlight"><pre><span></span><code># wifi-menu
+# systemctl start sshd.service
+# passwd
 </code></pre></div>
 
 <p>now try to ssh into the live distro from another machine so you could unplug the keyboard and use that second USB port to connect an empty USB drive to store the image on.</p>
 <p><img alt="copy" src="../../images/compute-sticks/copy.jpeg"></p>
-<div class="highlight"><pre><span></span><code><span class="err"># lsblk</span>
-<span class="err">NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span>
-<span class="err">loop0          7:0    0 500.8M  1 loop /run/archiso/sfs/airootfs</span>
-<span class="err">sda            8:0    1  14.5G  0 disk</span>
-<span class="err">├─sda1         8:1    1   614M  0 part /run/archiso/bootmnt</span>
-<span class="err">└─sda2         8:2    1    64M  0 part</span>
-<span class="err">sdb            8:16   1  28.9G  0 disk</span>
-<span class="err">└─sdb1         8:17   1  28.9G  0 part</span>
-<span class="err">mmcblk0      179:0    0  29.1G  0 disk</span>
-<span class="err">mmcblk0boot0 179:8    0     4M  1 disk</span>
-<span class="err">mmcblk0boot1 179:16   0     4M  1 disk</span>
+<div class="highlight"><pre><span></span><code># <span class="nv">lsblk</span>
+<span class="nv">NAME</span>         <span class="nv">MAJ</span>:<span class="nv">MIN</span> <span class="nv">RM</span>   <span class="nv">SIZE</span> <span class="nv">RO</span> <span class="nv">TYPE</span> <span class="nv">MOUNTPOINT</span>
+<span class="nv">loop0</span>          <span class="mi">7</span>:<span class="mi">0</span>    <span class="mi">0</span> <span class="mi">500</span>.<span class="mi">8</span><span class="nv">M</span>  <span class="mi">1</span> <span class="k">loop</span> <span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">archiso</span><span class="o">/</span><span class="nv">sfs</span><span class="o">/</span><span class="nv">airootfs</span>
+<span class="nv">sda</span>            <span class="mi">8</span>:<span class="mi">0</span>    <span class="mi">1</span>  <span class="mi">14</span>.<span class="mi">5</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+├─<span class="nv">sda1</span>         <span class="mi">8</span>:<span class="mi">1</span>    <span class="mi">1</span>   <span class="mi">614</span><span class="nv">M</span>  <span class="mi">0</span> <span class="nv">part</span> <span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">archiso</span><span class="o">/</span><span class="nv">bootmnt</span>
+└─<span class="nv">sda2</span>         <span class="mi">8</span>:<span class="mi">2</span>    <span class="mi">1</span>    <span class="mi">64</span><span class="nv">M</span>  <span class="mi">0</span> <span class="nv">part</span>
+<span class="nv">sdb</span>            <span class="mi">8</span>:<span class="mi">16</span>   <span class="mi">1</span>  <span class="mi">28</span>.<span class="mi">9</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+└─<span class="nv">sdb1</span>         <span class="mi">8</span>:<span class="mi">17</span>   <span class="mi">1</span>  <span class="mi">28</span>.<span class="mi">9</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">part</span>
+<span class="nv">mmcblk0</span>      <span class="mi">179</span>:<span class="mi">0</span>    <span class="mi">0</span>  <span class="mi">29</span>.<span class="mi">1</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+<span class="nv">mmcblk0boot0</span> <span class="mi">179</span>:<span class="mi">8</span>    <span class="mi">0</span>     <span class="mi">4</span><span class="nv">M</span>  <span class="mi">1</span> <span class="nv">disk</span>
+<span class="nv">mmcblk0boot1</span> <span class="mi">179</span>:<span class="mi">16</span>   <span class="mi">0</span>     <span class="mi">4</span><span class="nv">M</span>  <span class="mi">1</span> <span class="nv">disk</span>
 </code></pre></div>
 
 <p>mount the additional USB drive and start creating an image through a screen session</p>
-<div class="highlight"><pre><span></span><code><span class="err"># mount /dev/sdb1 /mnt</span>
-<span class="err"># screen -S image-creation</span>
-<span class="err"># dd if=/dev/mmcblk0 conv=sync,noerror bs=64K status=progress | gzip -c &gt; /mnt/base-image-dashboards.img.gz</span>
+<div class="highlight"><pre><span></span><code># <span class="nv">mount</span> <span class="o">/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">sdb1</span> <span class="o">/</span><span class="nv">mnt</span>
+# <span class="nv">screen</span> <span class="o">-</span><span class="nv">S</span> <span class="nv">image</span><span class="o">-</span><span class="nv">creation</span>
+# <span class="nv">dd</span> <span class="k">if</span><span class="o">=/</span><span class="nv">dev</span><span class="o">/</span><span class="nv">mmcblk0</span> <span class="nv">conv</span><span class="o">=</span><span class="nv">sync</span>,<span class="nv">noerror</span> <span class="nv">bs</span><span class="o">=</span><span class="mi">64</span><span class="nv">K</span> <span class="nv">status</span><span class="o">=</span><span class="nv">progress</span> <span class="o">|</span> <span class="nv">gzip</span> <span class="o">-</span><span class="nv">c</span> <span class="o">&gt;</span> <span class="o">/</span><span class="nv">mnt</span><span class="o">/</span><span class="nv">base</span><span class="o">-</span><span class="nv">image</span><span class="o">-</span><span class="nv">dashboards</span>.<span class="nv">img</span>.<span class="nv">gz</span>
 </code></pre></div>
 
 <h1>restore image</h1>
 <p>to restore the image on a new compute stick you have to boot again in live distro mode and enable wifi + ssh to be able to unplug the keyboard USB port once again</p>
-<div class="highlight"><pre><span></span><code><span class="err"># wifi-menu</span>
-<span class="err"># systemctl start sshd.service</span>
-<span class="err"># passwd</span>
+<div class="highlight"><pre><span></span><code># wifi-menu
+# systemctl start sshd.service
+# passwd
 </code></pre></div>
 
-<div class="highlight"><pre><span></span><code><span class="err"># lsblk</span>
-<span class="err">NAME         MAJ:MIN RM   SIZE RO TYPE MOUNTPOINT</span>
-<span class="err">loop0          7:0    0 500.8M  1 loop /run/archiso/sfs/airootfs</span>
-<span class="err">sda            8:0    1  14.5G  0 disk</span>
-<span class="err">├─sda1         8:1    1   614M  0 part /run/archiso/bootmnt</span>
-<span class="err">└─sda2         8:2    1    64M  0 part</span>
-<span class="err">sdb            8:16   1  28.9G  0 disk</span>
-<span class="err">└─sdb1         8:17   1  28.9G  0 part</span>
-<span class="err">mmcblk0      179:0    0  29.1G  0 disk</span>
-<span class="err">mmcblk0boot0 179:8    0     4M  1 disk</span>
-<span class="err">mmcblk0boot1 179:16   0     4M  1 disk</span>
+<div class="highlight"><pre><span></span><code># <span class="nv">lsblk</span>
+<span class="nv">NAME</span>         <span class="nv">MAJ</span>:<span class="nv">MIN</span> <span class="nv">RM</span>   <span class="nv">SIZE</span> <span class="nv">RO</span> <span class="nv">TYPE</span> <span class="nv">MOUNTPOINT</span>
+<span class="nv">loop0</span>          <span class="mi">7</span>:<span class="mi">0</span>    <span class="mi">0</span> <span class="mi">500</span>.<span class="mi">8</span><span class="nv">M</span>  <span class="mi">1</span> <span class="k">loop</span> <span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">archiso</span><span class="o">/</span><span class="nv">sfs</span><span class="o">/</span><span class="nv">airootfs</span>
+<span class="nv">sda</span>            <span class="mi">8</span>:<span class="mi">0</span>    <span class="mi">1</span>  <span class="mi">14</span>.<span class="mi">5</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+├─<span class="nv">sda1</span>         <span class="mi">8</span>:<span class="mi">1</span>    <span class="mi">1</span>   <span class="mi">614</span><span class="nv">M</span>  <span class="mi">0</span> <span class="nv">part</span> <span class="o">/</span><span class="nv">run</span><span class="o">/</span><span class="nv">archiso</span><span class="o">/</span><span class="nv">bootmnt</span>
+└─<span class="nv">sda2</span>         <span class="mi">8</span>:<span class="mi">2</span>    <span class="mi">1</span>    <span class="mi">64</span><span class="nv">M</span>  <span class="mi">0</span> <span class="nv">part</span>
+<span class="nv">sdb</span>            <span class="mi">8</span>:<span class="mi">16</span>   <span class="mi">1</span>  <span class="mi">28</span>.<span class="mi">9</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+└─<span class="nv">sdb1</span>         <span class="mi">8</span>:<span class="mi">17</span>   <span class="mi">1</span>  <span class="mi">28</span>.<span class="mi">9</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">part</span>
+<span class="nv">mmcblk0</span>      <span class="mi">179</span>:<span class="mi">0</span>    <span class="mi">0</span>  <span class="mi">29</span>.<span class="mi">1</span><span class="nv">G</span>  <span class="mi">0</span> <span class="nv">disk</span>
+<span class="nv">mmcblk0boot0</span> <span class="mi">179</span>:<span class="mi">8</span>    <span class="mi">0</span>     <span class="mi">4</span><span class="nv">M</span>  <span class="mi">1</span> <span class="nv">disk</span>
+<span class="nv">mmcblk0boot1</span> <span class="mi">179</span>:<span class="mi">16</span>   <span class="mi">0</span>     <span class="mi">4</span><span class="nv">M</span>  <span class="mi">1</span> <span class="nv">disk</span>
 </code></pre></div>
 
 <p>next mount the USB drive with the base image on</p>
-<div class="highlight"><pre><span></span><code><span class="err"># mount /dev/sdb1 /mnt</span>
-<span class="err"># ls /mnt</span>
-<span class="err">base-image-dashboards.img.gz  lost+found</span>
+<div class="highlight"><pre><span></span><code># mount /dev/sdb1 /mnt
+# ls /mnt
+base-image-dashboards.img.gz  lost+found
 </code></pre></div>
 
 <p>then start a screen session to unpack the image to the disk of the compute stick</p>
-<div class="highlight"><pre><span></span><code><span class="err"># screen -S restore</span>
-<span class="err"># gunzip -c /mnt/base-image-dashboards.img.gz | dd of=/dev/mmcblk0 status=progress</span>
-<span class="err"># umount -R /mnt</span>
+<div class="highlight"><pre><span></span><code># screen -S restore
+# gunzip -c /mnt/base-image-dashboards.img.gz | dd of=/dev/mmcblk0 status=progress
+# umount -R /mnt
 </code></pre></div>
 
 <p>and last but not least initiate grub to install the UEFI partition</p>
-<div class="highlight"><pre><span></span><code><span class="o">#</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mmcblk0p3</span> <span class="o">/</span><span class="n">mnt</span>                                                                                                                                                                                                                                 <span class="p">:(</span>
-<span class="o">#</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mmcblk0p1</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">boot</span>
-<span class="o">#</span> <span class="n">mount</span> <span class="o">/</span><span class="n">dev</span><span class="o">/</span><span class="n">mmcblk0p4</span> <span class="o">/</span><span class="n">mnt</span><span class="o">/</span><span class="n">var</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># mount /dev/mmcblk0p3 /mnt                                                                                                                                                                                                                                 :(</span>
+<span class="c1"># mount /dev/mmcblk0p1 /mnt/boot</span>
+<span class="c1"># mount /dev/mmcblk0p4 /mnt/var</span>
 
-<span class="o">#</span> <span class="n">arch</span><span class="o">-</span><span class="n">chroot</span> <span class="o">/</span><span class="n">mnt</span>
+<span class="c1"># arch-chroot /mnt</span>
 
-<span class="o">#</span> <span class="n">grub</span><span class="o">-</span><span class="n">install</span> <span class="c1">--target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
-<span class="n">Installing</span> <span class="k">for</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">efi</span> <span class="n">platform</span><span class="p">.</span>
-<span class="n">Installation</span> <span class="n">finished</span><span class="p">.</span> <span class="k">No</span> <span class="n">error</span> <span class="n">reported</span><span class="p">.</span>
+<span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
+<span class="n">Installing</span> <span class="k">for</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">efi</span> <span class="n">platform</span><span class="o">.</span>
+<span class="n">Installation</span> <span class="n">finished</span><span class="o">.</span> <span class="n">No</span> <span class="n">error</span> <span class="n">reported</span><span class="o">.</span>
 
-<span class="o">#</span> <span class="n">exit</span>
+<span class="c1"># exit</span>
 
-<span class="o">#</span> <span class="n">umount</span> <span class="o">-</span><span class="n">R</span> <span class="o">/</span><span class="n">mnt</span>
-<span class="o">#</span> <span class="n">reboot</span>
+<span class="c1"># umount -R /mnt</span>
+<span class="c1"># reboot</span>
 </code></pre></div>
 
 <p>the compute stick should now boot into the new ArchLinux distribution installed on it's disk and can be configured using ansible.</p>

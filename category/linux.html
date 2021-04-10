@@ -83,12 +83,13 @@
 
 <p>After some research we found out the semaphores were all being used blocking httpd daemon to restart.</p>
 <p>The list of semaphores can be fetched by issuing</p>
-<div class="highlight"><pre><span></span><code><span class="o">#</span> <span class="n">ipcs</span> <span class="o">-</span><span class="n">st</span>
+<div class="highlight"><pre><span></span><code># ipcs -st
 
-<span class="c1">------ Semaphore Operation/Change Times --------</span>
-<span class="n">semid</span>    <span class="k">owner</span>      <span class="k">last</span><span class="o">-</span><span class="n">op</span>                    <span class="k">last</span><span class="o">-</span><span class="n">changed</span>
-<span class="mi">753664</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47</span> <span class="mi">2020</span>
-<span class="mi">786433</span>   <span class="n">apache</span>      <span class="k">Not</span> <span class="k">set</span>                    <span class="n">Mon</span> <span class="n">Feb</span> <span class="mi">17</span> <span class="mi">20</span><span class="p">:</span><span class="mi">20</span><span class="p">:</span><span class="mi">47 …</span></code></pre></div>
+------ Semaphore Operation/Change Times --------
+semid    owner      last-op                    last-changed
+753664   apache      Not set                    Mon Feb 17 20:20:47 2020
+786433   apache      Not set                    Mon Feb 17 20:20:47 2020
+720898 …</code></pre></div>
                     </section>
                 </article>
             </li>
@@ -178,7 +179,7 @@ From both my wife and daughter, especially during the holidays where the wife wa
 <p>I almost grabbed to some anti depressants when I thought of the thing I always forget about.</p>
 <p><strong>SELINUX</strong></p>
 <p>When crawling through the audit log it became clear I forgot to configure the proper selinux context type for the new script.</p>
-<div class="highlight"><pre><span></span><code><span class="err">type=PATH msg=audit(1518702310 …</span></code></pre></div>
+<div class="highlight"><pre><span></span><code><span class="nv">type</span><span class="o">=</span><span class="nv">PATH</span> <span class="nv">msg</span><span class="o">=</span><span class="nv">audit</span><span class="ss">(</span><span class="mi">1518702310 …</span></code></pre></div>
                     </section>
                 </article>
             </li>

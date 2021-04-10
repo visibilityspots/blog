@@ -72,7 +72,7 @@
                 <article class="post-entry">
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/docker-openstackclient-kilo.html" rel="bookmark"><h1>Docker openstackclient-kilo container</h1></a>
-<div><p>takes 3 minutes to read</p></div>                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
+<div><p>takes 2 minutes to read</p></div>                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
                             last modified at Wed 23 August 2017
                         </time>
                     </header>
@@ -84,30 +84,30 @@
 <h2>docker build</h2>
 <p>The whole setup relies on one <a href="https://github.com/visibilityspots/dockerfile-openstackclient-kilo/blob/master/Dockerfile">Dockerfile</a>. Since I rely on centos in almost every server environment I'm working on I decided to use the centos:7 <a href="https://hub.docker.com/_/centos/">official</a> docker image.</p>
 <p>After some try and error I came to this setup:</p>
-<div class="highlight"><pre><span></span><code><span class="k">FROM</span> <span class="n">centos</span><span class="p">:</span><span class="mi">7</span>
-<span class="n">RUN</span> <span class="k">set</span> <span class="o">-</span><span class="n">x</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">upgrade</span> <span class="o">-</span><span class="n">y</span> <span class="err">\</span>
-        <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">bash</span><span class="o">-</span><span class="k">completion</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">https</span><span class="p">:</span><span class="o">//</span><span class="n">repos</span><span class="p">.</span><span class="n">fedorapeople</span><span class="p">.</span><span class="n">org</span><span class="o">/</span><span class="n">repos</span><span class="o">/</span><span class="n">openstack</span><span class="o">/</span><span class="n">EOL</span><span class="o">/</span><span class="n">openstack</span><span class="o">-</span><span class="n">kilo</span><span class="o">/</span><span class="n">rdo</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">kilo</span><span class="o">-</span><span class="mi">2</span><span class="p">.</span><span class="n">noarch</span><span class="p">.</span><span class="n">rpm</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">novaclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">ceilometerclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">cinderclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">glanceclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">heatclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">ironicclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">keystoneclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">manilaclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">novaclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">saharaclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">troveclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">install</span> <span class="o">-</span><span class="n">y</span> <span class="n">python</span><span class="o">-</span><span class="n">zaqarclient</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">yum</span> <span class="n">clean</span> <span class="k">all</span> <span class="err">\</span>
-    <span class="o">&amp;&amp;</span> <span class="n">useradd</span> <span class="n">client</span>
+<div class="highlight"><pre><span></span><code>FROM centos:7
+RUN set -x \
+    &amp;&amp; yum upgrade -y \
+        &amp;&amp; yum install -y bash-completion \
+    &amp;&amp; yum install -y https://repos.fedorapeople.org/repos/openstack/EOL/openstack-kilo/rdo-release-kilo-2.noarch.rpm \
+    &amp;&amp; yum install -y python-novaclient \
+    &amp;&amp; yum install -y python-ceilometerclient \
+    &amp;&amp; yum install -y python-cinderclient \
+    &amp;&amp; yum install -y python-glanceclient \
+    &amp;&amp; yum install -y python-heatclient \
+    &amp;&amp; yum install -y python-ironicclient \
+    &amp;&amp; yum install -y python-keystoneclient \
+    &amp;&amp; yum install -y python-manilaclient \
+    &amp;&amp; yum install -y python-novaclient \
+    &amp;&amp; yum install -y python-openstackclient \
+    &amp;&amp; yum install -y python-saharaclient \
+    &amp;&amp; yum install -y python-troveclient \
+    &amp;&amp; yum install -y python-zaqarclient \
+    &amp;&amp; yum clean all \
+    &amp;&amp; useradd client
 
-<span class="k">USER</span> <span class="n">client</span>
+USER client
 
-<span class="n">ENTRYPOINT</span> <span class="p">[</span><span class="ss">&quot;bash&quot;</span><span class="p">,</span> <span class="ss">&quot;--rcfile&quot;</span><span class="p">,</span> <span class="ss">&quot;/home/client/.keystonerc&quot;</span><span class="p">]</span>
+ENTRYPOINT [&quot;bash&quot;, &quot;--rcfile&quot;, &quot;/home/client/.keystonerc&quot;]
 </code></pre></div>
 
 <p>as you could see I opted to install every package using a separate yum install command. That way when a package can't be installed the others aren't infected. Also a yum clean all is performed to cleanup a bit the filesystem to keep the image size a bit under control. By adding a 'client' user I could prevent doing everything as root user which isn't really necessary in our case.</p>
@@ -185,7 +185,7 @@ bash-4.2$
 </code></pre></div>
 
 <p>which will check if all packages are installed correctly and if the commands are working as they should;</p>
-<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="n">dgoss</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="c1">--name openstack-client --rm -ti -v $(pwd)/keystonerc_admin:/home/client/.keystonerc visibilityspots/openstackclient-kilo</span>
+<div class="highlight"><pre><span></span><code><span class="err">$</span><span class="w"> </span><span class="n">dgoss</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">openstack</span><span class="o">-</span><span class="n">client</span><span class="w"> </span><span class="o">--</span><span class="n">rm</span><span class="w"> </span><span class="o">-</span><span class="n">ti</span><span class="w"> </span><span class="o">-</span><span class="n">v</span><span class="w"> </span><span class="err">$</span><span class="p">(</span><span class="n">pwd</span><span class="p">)</span><span class="o">/</span><span class="nl">keystonerc_admin</span><span class="p">:</span><span class="o">/</span><span class="n">home</span><span class="o">/</span><span class="n">client</span><span class="o">/</span><span class="p">.</span><span class="n">keystonerc</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Starting</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">container</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Container</span><span class="w"> </span><span class="nl">ID</span><span class="p">:</span><span class="w"> </span><span class="mi">539</span><span class="n">f6896</span><span class="w"></span>
 <span class="nl">INFO</span><span class="p">:</span><span class="w"> </span><span class="n">Sleeping</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="mf">0.2</span><span class="w"></span>
@@ -204,7 +204,7 @@ bash-4.2$
 <span class="nl">Package</span><span class="p">:</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="nl">keystoneclient</span><span class="p">:</span><span class="w"> </span><span class="nl">installed</span><span class="p">:</span><span class="w"> </span><span class="n">matches</span><span class="w"> </span><span class="nl">expectation</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">true</span><span class="o">]</span><span class="w"></span>
 <span class="nl">Package</span><span class="p">:</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="nl">ceilometerclient</span><span class="p">:</span><span class="w"> </span><span class="nl">installed</span><span class="p">:</span><span class="w"> </span><span class="n">matches</span><span class="w"> </span><span class="nl">expectation</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">true</span><span class="o">]</span><span class="w"></span>
 <span class="nl">Package</span><span class="p">:</span><span class="w"> </span><span class="n">python</span><span class="o">-</span><span class="nl">openstackclient</span><span class="p">:</span><span class="w"> </span><span class="nl">installed</span><span class="p">:</span><span class="w"> </span><span class="n">matches</span><span class="w"> </span><span class="nl">expectation</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">true</span><span class="o">]</span><span class="w"></span>
-<span class="nl">Command</span><span class="p">:</span><span class="w"> </span><span class="n">openstack</span><span class="w"> </span><span class="c1">--version: exit-status: matches expectation: [0]</span>
+<span class="nl">Command</span><span class="p">:</span><span class="w"> </span><span class="n">openstack</span><span class="w"> </span><span class="o">--</span><span class="nl">version</span><span class="p">:</span><span class="w"> </span><span class="k">exit</span><span class="o">-</span><span class="nl">status</span><span class="p">:</span><span class="w"> </span><span class="n">matches</span><span class="w"> </span><span class="nl">expectation</span><span class="p">:</span><span class="w"> </span><span class="o">[</span><span class="n">0</span><span class="o">]</span><span class="w"></span>
 
 
 <span class="n">Total</span><span class="w"> </span><span class="nl">Duration</span><span class="p">:</span><span class="w"> </span><span class="mf">0.786</span><span class="n">s</span><span class="w"></span>
