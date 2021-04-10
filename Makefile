@@ -77,7 +77,8 @@ aws-build:
 
 aws-deploy: aws-build
 	cd $(OUTPUTDIR)
-	s3cmd sync $(OUTPUTDIR)/ s3://$(S3_BUCKET) --exclude 'log/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v
+#	s3cmd sync $(OUTPUTDIR)/ s3://$(S3_BUCKET) --exclude 'log/*' --exclude 'cflog/*' --exclude 'status.html' --acl-public --delete-removed --guess-mime-type -v -d
+	s3cmd --acl-public --cache-file=md5-list --delete-removed --guess-mime-type --cf-invalidate --stats -v sync $(OUTPUTDIR)/ s3://$(S3_BUCKET)
 
 github-deploy: github-build
 	cd $(INPUTDIR) && ghp-import -m 'Updating repository to real world blog' -n $(OUTPUTDIR) && git push origin gh-pages
