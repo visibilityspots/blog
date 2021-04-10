@@ -38,7 +38,6 @@ jobs:
     - name: build AWS based content
       run: make aws-deploy
 
-jobs:
   github-pages:
     runs-on: ubuntu-latest
 
