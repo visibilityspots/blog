@@ -29,7 +29,6 @@ Modified:       2017-03-29 21:00
 - a lightweight window manager [ratpoison](http://www.nongnu.org/ratpoison/)
 - creating backups using [rsnapshot](http://rsnapshot.org/)
 - taking control of your amazon services [s3cmd](http://s3tools.org/s3cmd)
-- [sakis3g](http://www.sakis3g.com/) is a great tool to enable your 3G connectivity
 - a semantic launcher called [synapse](https://launchpad.net/synapse-project)
 - [thefuck](https://github.com/nvbn/thefuck), the magnificent app which corrects your previous console command
 - [vagrant](https://vagrantup.com) used for setting local development environments based on [lxc](https://github.com/fgrehm/vagrant-lxc) with perhaps one of those [boxes](https://atlas.hashicorp.com/visibilityspots) I maintain
