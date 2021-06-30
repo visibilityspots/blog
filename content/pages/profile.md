@@ -13,7 +13,7 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-#### November 2017 - present | Operations Engineer - [Trendminer](https://trendminer.com) - HASSELT
+#### November 2017 - June 2021 | Operations Engineer - [Trendminer](https://trendminer.com) - HASSELT
 
 Setup and automation of the product’s deployment options: cloud-based or on premise.
 
@@ -23,6 +23,7 @@ Setup and automation of the internal development tooling and infrastructure.
 * nomad / docker setup
 * prometheus implementation
 * azure been used as a public cloud
+* kubernetes gitops based flow using github actions in combination with argo cd
 
 #### July 2017 - October 2017 | Continuous Integration Engineer - [Zappware](https://zappware.com) - HASSELT
 
