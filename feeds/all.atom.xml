@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/all.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2021-03-18T00:00:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Traefik nomad route53 setup</title><link href="https://visibilityspots.github.io/blog/traefik-nomad-route53.html" rel="alternate"></link><published>2020-12-27T21:00:00+01:00</published><updated>2020-12-27T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2020-12-27:/blog/traefik-nomad-route53.html</id><summary type="html">&lt;p&gt;I have this &lt;a href="https://nomadproject.io"&gt;nomad&lt;/a&gt; cluster running on some spare devices for a while now. Serving my &lt;a href="https://visibilityspots.github.io/blog/planespotting.html"&gt;plane spotting&lt;/a&gt; setup, &lt;a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html"&gt;dns&lt;/a&gt; setup, mqtt bridge and some other services I experiment with throughout the years. Until today I've always relied on the ip addresses to point my browser and other services towards the different services. For my DNS setup I even had to pin the jobs towards specific hardware using &lt;a href="https://www.nomadproject.io/docs/configuration/client#custom-metadata-network-speed-and-node-class"&gt;meta&lt;/a&gt; data.&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>visibilityspots</title><link href="https://visibilityspots.github.io/blog/" rel="alternate"></link><link href="https://visibilityspots.github.io/blog/feeds/all.atom.xml" rel="self"></link><id>https://visibilityspots.github.io/blog/</id><updated>2021-03-18T00:00:00+01:00</updated><subtitle>Linux &amp; Open-Source enthusiast | Scouting | Longboarding</subtitle><entry><title>Traefik nomad route53 setup</title><link href="https://visibilityspots.github.io/blog/traefik-nomad-route53.html" rel="alternate"></link><published>2020-12-27T21:00:00+01:00</published><updated>2020-12-27T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2020-12-27:/blog/traefik-nomad-route53.html</id><summary type="html">&lt;p&gt;I have this &lt;a href="https://nomadproject.io"&gt;nomad&lt;/a&gt; cluster running on some spare devices for a while now. Serving my &lt;a href="https://visibilityspots.github.io/blog/planespotting.html"&gt;plane spotting&lt;/a&gt; setup, &lt;a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html"&gt;dns&lt;/a&gt; setup, mqtt bridge and some other services I experiment with throughout the years. Until today I've always relied on the ip addresses to point my browser and other services towards the different services. For my DNS setup I even had to pin the jobs towards specific hardware using &lt;a href="https://www.nomadproject.io/docs/configuration/client#custom-metadata-network-speed-and-node-class"&gt;meta&lt;/a&gt; data.&lt;/p&gt;
 &lt;p&gt;But I've always wanted to implement a proxy in between so I could rely on DNS names instead. This would also increase the flexibility of my DNS setup since for …&lt;/p&gt;</summary><content type="html">&lt;p&gt;I have this &lt;a href="https://nomadproject.io"&gt;nomad&lt;/a&gt; cluster running on some spare devices for a while now. Serving my &lt;a href="https://visibilityspots.github.io/blog/planespotting.html"&gt;plane spotting&lt;/a&gt; setup, &lt;a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html"&gt;dns&lt;/a&gt; setup, mqtt bridge and some other services I experiment with throughout the years. Until today I've always relied on the ip addresses to point my browser and other services towards the different services. For my DNS setup I even had to pin the jobs towards specific hardware using &lt;a href="https://www.nomadproject.io/docs/configuration/client#custom-metadata-network-speed-and-node-class"&gt;meta&lt;/a&gt; data.&lt;/p&gt;
 &lt;p&gt;But I've always wanted to implement a proxy in between so I could rely on DNS names instead. This would also increase the flexibility of my DNS setup since for a couple of months now I figured the proxy I was looking into implemented UDP services too.&lt;/p&gt;
 &lt;p&gt;This proxy is &lt;a href="https://traefik.io/"&gt;traefik&lt;/a&gt;, a few years ago &lt;a href="https://twitter.com/emilevauge"&gt;Emile Vauge&lt;/a&gt; talked about it on a meetup we organized with &lt;a href="https://inuits.eu"&gt;Inuits&lt;/a&gt; in Prague. Ever since it stood on my todo list to get it implemented on my home lab.&lt;/p&gt;
@@ -970,7 +970,7 @@ visibilityspots.org.    &lt;span class="m"&gt;37&lt;/span&gt;  IN  A   &lt;span 
 &lt;p&gt;I almost grabbed to some anti depressants when I thought of the thing I always forget about.&lt;/p&gt;
 &lt;p&gt;&lt;strong&gt;SELINUX&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;When crawling through the audit log it became clear I forgot to configure the proper selinux context type for the new script.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt; &lt;span class="nv"&gt;msg&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;audit&lt;/span&gt;&lt;span class="ss"&gt;(&lt;/span&gt;&lt;span class="mi"&gt;1518702310 …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;When refactoring a &lt;a href="https://github.com/visibilityspots/icinga-scripts/blob/master/check_memory"&gt;check_memory&lt;/a&gt; I wrote a few years ago I bumped into the feared&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt; &lt;span class="nv"&gt;msg&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;audit …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;When refactoring a &lt;a href="https://github.com/visibilityspots/icinga-scripts/blob/master/check_memory"&gt;check_memory&lt;/a&gt; I wrote a few years ago I bumped into the feared&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NRPE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;read&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -1868,26 +1868,7 @@ bash-4.2$
 &lt;h1&gt;Letsencrypt&lt;/h1&gt;
 &lt;p&gt;&lt;a href="https://letsencrypt.org/"&gt;letsencrypt&lt;/a&gt; is a free, automated and open Certificate Authority which can be used in combination with S3 using the &lt;a href="https://github.com/dlapiduz/certbot-s3front"&gt;certbot-s3front&lt;/a&gt; tool to get your site served through https.&lt;/p&gt;
 &lt;p&gt;I automated this process with a script based in /usr/local/bin/:&lt;/p&gt;
-&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt; 1&lt;/span&gt;
-&lt;span class="normal"&gt; 2&lt;/span&gt;
-&lt;span class="normal"&gt; 3&lt;/span&gt;
-&lt;span class="normal"&gt; 4&lt;/span&gt;
-&lt;span class="normal"&gt; 5&lt;/span&gt;
-&lt;span class="normal"&gt; 6&lt;/span&gt;
-&lt;span class="normal"&gt; 7&lt;/span&gt;
-&lt;span class="normal"&gt; 8&lt;/span&gt;
-&lt;span class="normal"&gt; 9&lt;/span&gt;
-&lt;span class="normal"&gt;10&lt;/span&gt;
-&lt;span class="normal"&gt;11&lt;/span&gt;
-&lt;span class="normal"&gt;12&lt;/span&gt;
-&lt;span class="normal"&gt;13&lt;/span&gt;
-&lt;span class="normal"&gt;14&lt;/span&gt;
-&lt;span class="normal"&gt;15&lt;/span&gt;
-&lt;span class="normal"&gt;16&lt;/span&gt;
-&lt;span class="normal"&gt;17&lt;/span&gt;
-&lt;span class="normal"&gt;18&lt;/span&gt;
-&lt;span class="normal"&gt;19&lt;/span&gt;
-&lt;span class="normal"&gt;20&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class="c1"&gt;#&lt;/span&gt;
 &lt;span class="c1"&gt;# renew certificates for X&lt;/span&gt;
 
@@ -1908,7 +1889,7 @@ certbot --agree-tos -a certbot-s3front:auth &lt;span class="se"&gt;\&lt;/span&gt
 
 /usr/bin/ntfy -b telegram send &lt;span class="s2"&gt;&amp;quot;SUCCESS | Certificates for DOMAIN have been renewed till &lt;/span&gt;&lt;span class="k"&gt;$(&lt;/span&gt;date -d &lt;span class="s2"&gt;&amp;quot;3 months&amp;quot;&lt;/span&gt;&lt;span class="k"&gt;)&lt;/span&gt;&lt;span class="s2"&gt; &amp;quot;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
 &lt;p&gt;It will source the IAM credentials you created for this specific use case, use certbot to renew your certificate on the specified cloudfront distribution and use &lt;a href="http://ntfy.readthedocs.io/en/latest/"&gt;ntfy&lt;/a&gt; to inform you about it through telegram in this case.&lt;/p&gt;
 &lt;p&gt;When the renewal fails it will also sent a notification, I didn't had this feature in the past which lead to expiration of the certificate..&lt;/p&gt;
 &lt;p&gt;It's triggered by cron:&lt;/p&gt;
@@ -2372,14 +2353,7 @@ chattr +i /etc/neutron/policy.json
 &lt;p&gt;It worked fine through the cli but took me a while to have it started on the pi at boottime. Added it to the startup script;&lt;/p&gt;
 &lt;h3&gt;startup script&lt;/h3&gt;
 &lt;p&gt;I also wrote a little startup script which waits till there is internet connectivity, start the pagekite service, starts the tweet grabber and the &lt;a href="https://wiki.archlinux.org/index.php/Luakit"&gt;luakit&lt;/a&gt; web browser which points directly to the smswall.&lt;/p&gt;
-&lt;table class="highlighttable"&gt;&lt;tr&gt;&lt;td class="linenos"&gt;&lt;div class="linenodiv"&gt;&lt;pre&gt;&lt;span class="normal"&gt;1&lt;/span&gt;
-&lt;span class="normal"&gt;2&lt;/span&gt;
-&lt;span class="normal"&gt;3&lt;/span&gt;
-&lt;span class="normal"&gt;4&lt;/span&gt;
-&lt;span class="normal"&gt;5&lt;/span&gt;
-&lt;span class="normal"&gt;6&lt;/span&gt;
-&lt;span class="normal"&gt;7&lt;/span&gt;
-&lt;span class="normal"&gt;8&lt;/span&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/td&gt;&lt;td class="code"&gt;&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="ch"&gt;#!/bin/bash&lt;/span&gt;
 &lt;span class="k"&gt;while&lt;/span&gt; ! ping -c1 www.google.com &lt;span class="p"&gt;&amp;amp;&lt;/span&gt;&amp;gt;/dev/null&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;do&lt;/span&gt; :&lt;span class="p"&gt;;&lt;/span&gt; &lt;span class="k"&gt;done&lt;/span&gt;
 /bin/bash -c &lt;span class="s2"&gt;&amp;quot;pagekite &amp;amp;&amp;quot;&lt;/span&gt;
 &lt;span class="nb"&gt;cd&lt;/span&gt; /srv/http/smswall/
@@ -2388,7 +2362,7 @@ xset s off
 xset -dpms
 luakit http://localhost/smswall/smswall
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
-&lt;/td&gt;&lt;/tr&gt;&lt;/table&gt;
+
 &lt;h1&gt;result&lt;/h1&gt;
 &lt;p&gt;at home I don't have a beamer to test this setup so I attached the pi to our television screen.&lt;/p&gt;
 &lt;p&gt;&lt;img alt="screen" src="../../images/smswall/screen.jpg"&gt;&lt;/p&gt;
@@ -4967,7 +4941,7 @@ decrypted and you can start using them.&lt;/p&gt;
 &lt;p&gt;on the puppetmaster. I did this to clean out the stored configs for those nodes.&lt;/p&gt;
 &lt;p&gt;But I didn't realized this also cleaned out the ssl certificates for those clients. So I started the new week with this uncomfortable issue:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-[root&amp;#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on failed …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command&lt;/p&gt;
+[root&amp;#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 # puppet node clean [hostname]
 &lt;/pre&gt;
@@ -5552,7 +5526,7 @@ $ sudo cp /old/file /new/file.bak
 &lt;/pre&gt;
 &lt;p&gt;/etc/lirc/hardware.conf&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb/hiddev0&amp;quot; REMOTE_SOCKET=&amp;quot;&amp;quot; REMOTE_LIRCD_CONF …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
+# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
 &lt;p&gt;It's quite easy once you know how.&lt;/p&gt;
 &lt;p&gt;Installation of the lirc library:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
@@ -5729,7 +5703,7 @@ chmod +x .startConky.sh
 &lt;span class="x"&gt;&amp;lt; ?php
 $dsn = array(
  'phptype' =&amp;gt; 'mysql',
- 'username' =&amp;gt; 'DBUSERNAME' …&lt;/span&gt;&lt;/pre&gt;</summary><content type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
+ 'username' …&lt;/span&gt;&lt;/pre&gt;</summary><content type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
 &lt;p&gt;Something like &amp;quot;We wish XXX a happy # anniversary!'&lt;/p&gt;
 &lt;p&gt;To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.&lt;/p&gt;
 &lt;p&gt;database connection (db_connectPear.php)&lt;/p&gt;
