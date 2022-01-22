@@ -157,11 +157,11 @@
 <p>by starting this nomad job I got a first working dashboard after I configured traefik.example.org pointing towards the host where my traefik job was running upon in /etc/hosts.</p>
 <p>As a second step I configured some middlewares. <a href="https://doc.traefik.io/traefik/middlewares/basicauth/">BasicAuth</a> to enable authentication for several services so I could maybe expose them to others in the future. And some redirection for http towards https.</p>
 <p>To achieve this I added an extra https entrypoint to the template and added the middleware as a tag to the traefik job;</p>
-<div class="highlight"><pre><span></span><code><span class="k">[entryPoints]</span>
-  <span class="k">[entryPoints.http]</span>
-    <span class="na">address</span> <span class="o">=</span> <span class="s">&quot;:80&quot;</span>
-  <span class="k">[entryPoints.https]</span>
-    <span class="na">address</span> <span class="o">=</span> <span class="s">&quot;:443&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="k">[entryPoints]</span><span class="w"></span>
+<span class="w">  </span><span class="k">[entryPoints.http]</span><span class="w"></span>
+<span class="w">    </span><span class="na">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;:80&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="k">[entryPoints.https]</span><span class="w"></span>
+<span class="w">    </span><span class="na">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;:443&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <div class="highlight"><pre><span></span><code>group &quot;traefik&quot; {
@@ -174,15 +174,15 @@
 </code></pre></div>
 
 <p>As a start I configured every service separately to redirect its http traffic towards https. But I found out by reading through some issues in the community from an <a href="https://community.traefik.io/t/router-not-showing-up-using-consul-nomad/8770">answer</a> by Kugel that this could also achieved by setting a global redirect;</p>
-<div class="highlight"><pre><span></span><code>group <span class="s">&quot;traefik&quot;</span> <span class="p">{</span>
-    service <span class="p">{</span>
-      name <span class="p">=</span> <span class="s">&quot;traefik&quot;</span>
+<div class="highlight"><pre><span></span><code>group<span class="w"> </span><span class="s">&quot;traefik&quot;</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span>service<span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span>name<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="s">&quot;traefik&quot;</span><span class="w"></span>
 
-      tags <span class="p">=</span> <span class="kt">[</span>
-        <span class="p">...</span>
-        <span class="s">&quot;traefik.http.routers.catchall.rule=HostRegexp(`{host:(www\\.)?.+}`)&quot;</span><span class="p">,</span>
-        <span class="s">&quot;traefik.http.routers.catchall.entrypoints=http&quot;</span><span class="p">,</span>
-        <span class="s">&quot;traefik.http.routers.catchall.middlewares=http2https&quot;</span><span class="p">,</span>
+<span class="w">      </span>tags<span class="w"> </span><span class="p">=</span><span class="w"> </span><span class="kt">[</span><span class="w"></span>
+<span class="w">        </span><span class="p">...</span><span class="w"></span>
+<span class="w">        </span><span class="s">&quot;traefik.http.routers.catchall.rule=HostRegexp(`{host:(www\\.)?.+}`)&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s">&quot;traefik.http.routers.catchall.entrypoints=http&quot;</span><span class="p">,</span><span class="w"></span>
+<span class="w">        </span><span class="s">&quot;traefik.http.routers.catchall.middlewares=http2https&quot;</span><span class="p">,</span><span class="w"></span>
 </code></pre></div>
 
 <p>by issuing this catchall rule all the http incoming traffic will be redirected to their https service done in one place instead of a separate configuration for every service.</p>
@@ -203,13 +203,13 @@
 </code></pre></div>
 
 <p>Once the AWS part is done you can configure the certificateResolver part in the traefik.toml static configuration mark the commented caServer to use the staging environment of letsencrypt first before putting it into production to not hit the rate limit too soon ;);</p>
-<div class="highlight"><pre><span></span><code><span class="k">[certificatesResolvers.letsencrypt.acme]</span>
-  <span class="na">email</span> <span class="o">=</span> <span class="s">&quot;letsencrypt@example.org&quot;</span>
-  <span class="na">storage</span> <span class="o">=</span> <span class="s">&quot;/etc/traefik/acme/acme.json&quot;</span>
-  <span class="c1">#  caServer = &quot;https://acme-staging-v02.api.letsencrypt.org/directory&quot;</span>
-  <span class="k">[certificatesResolvers.letsencrypt.acme.dnsChallenge]</span>
-    <span class="na">provider</span> <span class="o">=</span> <span class="s">&quot;route53&quot;</span>
-    <span class="na">delaybeforecheck</span> <span class="o">=</span> <span class="s">&quot;0&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="k">[certificatesResolvers.letsencrypt.acme]</span><span class="w"></span>
+<span class="w">  </span><span class="na">email</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;letsencrypt@example.org&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="na">storage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/etc/traefik/acme/acme.json&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="c1">#  caServer = &quot;https://acme-staging-v02.api.letsencrypt.org/directory&quot;</span><span class="w"></span>
+<span class="w">  </span><span class="k">[certificatesResolvers.letsencrypt.acme.dnsChallenge]</span><span class="w"></span>
+<span class="w">    </span><span class="na">provider</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;route53&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="na">delaybeforecheck</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;0&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>and last but not least you'll have to reconfigure the traefik consul tags so the tls will be used;</p>
@@ -244,8 +244,8 @@
 
 <p>So now letsencrypt only requests a wildcard for my domain with *.example.org as an alternative and all my services are using that wildcard. That way I could keep the letsencrypt communication to a bare minimum for my setup.</p>
 <p>Next up was the long waiting UDP feature, therefor I had to configure a separate UDP <a href="https://doc.traefik.io/traefik/routing/entrypoints/">entrypoint</a>;</p>
-<div class="highlight"><pre><span></span><code><span class="k">[entryPoints.dns]</span>
-  <span class="na">address</span> <span class="o">=</span> <span class="s">&quot;:53/udp&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="k">[entryPoints.dns]</span><span class="w"></span>
+<span class="w">  </span><span class="na">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;:53/udp&quot;</span><span class="w"></span>
 </code></pre></div>
 
 <p>and a TCP <a href="https://doc.traefik.io/traefik/routing/routers/#configuring-udp-routers">router</a> using tags in the <a href="https://visibilityspots.github.io/blog/dockerized-cloudflared-pi-hole.html">pihole</a> nomad job;</p>

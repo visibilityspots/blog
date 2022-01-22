@@ -132,8 +132,8 @@ services:
 
 <p>I remembered this <a href="https://learn.adafruit.com/pi-hole-ad-blocker-with-pi-zero-w">project</a> where a raspberry pi zero W was used together with a tiny display. In the meanwhile I have the DoH cloudflared/pi-hole combination running on such a tiny device using <a href="https://archlinuxarm.org">ArchLinux ARM</a> and ordered the display :D</p>
 <p>You can use the same dockerfile on a raspberry pi zero but with other tags for the container images:</p>
-<div class="highlight"><pre><span></span><code><span class="n">image</span><span class="o">:</span> <span class="n">visibilityspots</span><span class="o">/</span><span class="n">cloudflared</span><span class="o">:</span><span class="n">arm</span>
-<span class="n">image</span><span class="o">:</span> <span class="n">pihole</span><span class="o">/</span><span class="n">pihole</span><span class="o">:</span><span class="n">v4</span><span class="o">.</span><span class="mi">0</span><span class="n">_armhf</span>
+<div class="highlight"><pre><span></span><code><span class="n">image</span><span class="o">:</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">cloudflared</span><span class="o">:</span><span class="n">arm</span><span class="w"></span>
+<span class="n">image</span><span class="o">:</span><span class="w"> </span><span class="n">pihole</span><span class="o">/</span><span class="n">pihole</span><span class="o">:</span><span class="n">v4</span><span class="o">.</span><span class="mi">0</span><span class="n">_armhf</span><span class="w"></span>
 </code></pre></div>
 
 <p>As you can see unfortunately I had to configure static ip's since the dnsmasq config needs the ip address of the cloudflared service. If someone has a better solution to implement it let me know!</p>

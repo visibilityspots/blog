@@ -72,7 +72,7 @@
                 <article class="post-entry">
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/compute-sticks.html" rel="bookmark"><h1>ArchLinux on intel compute stick</h1></a>
-<div><p>takes 1 minute to read</p></div>                        <time class="post-time" datetime="2019-06-24T19:00:00+02:00" pubdate>
+<div><p>takes 2 minutes to read</p></div>                        <time class="post-time" datetime="2019-06-24T19:00:00+02:00" pubdate>
                             last modified at Wed 28 August 2019
                         </time>
                     </header>
@@ -86,10 +86,10 @@
 <p>since we had to install and configure about 8 sticks we decided to configure a base archlinux setup on one stick and using <a href="https://wiki.archlinux.org/index.php/Dd">dd</a> afterwards to get the others up and running with a basic archlinux stack.</p>
 <h2>BIOS</h2>
 <p>before we could boot a live usb archlinux distro we had to change the operating system setting in the bios to Android</p>
-<div class="highlight"><pre><span></span><code><span class="n">boot</span> <span class="n">device</span>
-<span class="n">press</span> <span class="n">F2</span>
-<span class="o">-&gt;</span> <span class="n">Select</span> <span class="n">Operating</span> <span class="n">System</span>
-<span class="o">-&gt;</span> <span class="n">Android</span>
+<div class="highlight"><pre><span></span><code><span class="n">boot</span><span class="w"> </span><span class="n">device</span><span class="w"></span>
+<span class="n">press</span><span class="w"> </span><span class="n">F2</span><span class="w"></span>
+<span class="o">-&gt;</span><span class="w"> </span><span class="n">Select</span><span class="w"> </span><span class="n">Operating</span><span class="w"> </span><span class="n">System</span><span class="w"></span>
+<span class="o">-&gt;</span><span class="w"> </span><span class="n">Android</span><span class="w"></span>
 </code></pre></div>
 
 <p>once that's done and you've rebooted press F10 to boot from the live USB distro</p>
@@ -106,7 +106,7 @@
 </code></pre></div>
 
 <p>We configured <a href="https://wiki.archlinux.org/index.php/GRUB#Generate_the_main_configuration_file">grub</a> assuming the EFI partition being mounted as boot and chrooted using arch-chroot as being explained in the installation guide.</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span><span class="w"></span>
 </code></pre></div>
 
 <h4>tools</h4>
@@ -177,20 +177,20 @@ base-image-dashboards.img.gz  lost+found
 </code></pre></div>
 
 <p>and last but not least initiate grub to install the UEFI partition</p>
-<div class="highlight"><pre><span></span><code><span class="c1"># mount /dev/mmcblk0p3 /mnt                                                                                                                                                                                                                                 :(</span>
-<span class="c1"># mount /dev/mmcblk0p1 /mnt/boot</span>
-<span class="c1"># mount /dev/mmcblk0p4 /mnt/var</span>
+<div class="highlight"><pre><span></span><code><span class="c1"># mount /dev/mmcblk0p3 /mnt                                                                                                                                                                                                                                 :(</span><span class="w"></span>
+<span class="c1"># mount /dev/mmcblk0p1 /mnt/boot</span><span class="w"></span>
+<span class="c1"># mount /dev/mmcblk0p4 /mnt/var</span><span class="w"></span>
 
-<span class="c1"># arch-chroot /mnt</span>
+<span class="c1"># arch-chroot /mnt</span><span class="w"></span>
 
-<span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span>
-<span class="n">Installing</span> <span class="k">for</span> <span class="n">x86_64</span><span class="o">-</span><span class="n">efi</span> <span class="n">platform</span><span class="o">.</span>
-<span class="n">Installation</span> <span class="n">finished</span><span class="o">.</span> <span class="n">No</span> <span class="n">error</span> <span class="n">reported</span><span class="o">.</span>
+<span class="c1"># grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB</span><span class="w"></span>
+<span class="n">Installing</span><span class="w"> </span><span class="k">for</span><span class="w"> </span><span class="n">x86_64</span><span class="o">-</span><span class="n">efi</span><span class="w"> </span><span class="n">platform</span><span class="o">.</span><span class="w"></span>
+<span class="n">Installation</span><span class="w"> </span><span class="n">finished</span><span class="o">.</span><span class="w"> </span><span class="n">No</span><span class="w"> </span><span class="n">error</span><span class="w"> </span><span class="n">reported</span><span class="o">.</span><span class="w"></span>
 
-<span class="c1"># exit</span>
+<span class="c1"># exit</span><span class="w"></span>
 
-<span class="c1"># umount -R /mnt</span>
-<span class="c1"># reboot</span>
+<span class="c1"># umount -R /mnt</span><span class="w"></span>
+<span class="c1"># reboot</span><span class="w"></span>
 </code></pre></div>
 
 <p>the compute stick should now boot into the new ArchLinux distribution installed on it's disk and can be configured using ansible.</p>

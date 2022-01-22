@@ -163,13 +163,13 @@ network={
 
 <p>and their dependency configuration files</p>
 <p>/etc/systemd/system/wpa_supplicant@wlan0.service.d/customdependency.conf</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">After</span><span class="o">=</span><span class="s">netctl@failover.service</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">After</span><span class="o">=</span><span class="s">netctl@failover.service</span><span class="w"></span>
 </code></pre></div>
 
 <p>/etc/systemd/system/wpa_supplicant@wlan1.service.d/customdependency.conf</p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">After</span><span class="o">=</span><span class="s">wpa_supplicant@wlan0.service</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">After</span><span class="o">=</span><span class="s">wpa_supplicant@wlan0.service</span><span class="w"></span>
 </code></pre></div>
 
 <p>I had to configure them in this order since they didn't came up properly if I didn't only one could achieve to authenticate instead of both. By having the wlan1 unit depend on the wlan0 I had tackled it.</p>

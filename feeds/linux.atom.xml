@@ -72,10 +72,10 @@ semid    owner      last-op                    last-changed
 &lt;p&gt;since we had to install and configure about 8 sticks we decided to configure a base archlinux setup on one stick and using &lt;a href="https://wiki.archlinux.org/index.php/Dd"&gt;dd&lt;/a&gt; afterwards to get the others up and running with a basic archlinux stack.&lt;/p&gt;
 &lt;h2&gt;BIOS&lt;/h2&gt;
 &lt;p&gt;before we could boot a live usb archlinux distro we had to change the operating system setting in the bios to Android&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;boot&lt;/span&gt; &lt;span class="n"&gt;device&lt;/span&gt;
-&lt;span class="n"&gt;press&lt;/span&gt; &lt;span class="n"&gt;F2&lt;/span&gt;
-&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Select&lt;/span&gt; &lt;span class="n"&gt;Operating&lt;/span&gt; &lt;span class="n"&gt;System&lt;/span&gt;
-&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt; &lt;span class="n"&gt;Android&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;boot&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;device&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;press&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;F2&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Select&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Operating&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;System&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="o"&gt;-&amp;gt;&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Android&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;once that's done and you've rebooted press F10 to boot from the live USB distro&lt;/p&gt;
@@ -92,7 +92,7 @@ semid    owner      last-op                    last-changed
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;We configured &lt;a href="https://wiki.archlinux.org/index.php/GRUB#Generate_the_main_configuration_file"&gt;grub&lt;/a&gt; assuming the EFI partition being mounted as boot and chrooted using arch-chroot as being explained in the installation guide.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;tools&lt;/h4&gt;
@@ -163,20 +163,20 @@ base-image-dashboards.img.gz  lost+found
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;and last but not least initiate grub to install the UEFI partition&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# mount /dev/mmcblk0p3 /mnt                                                                                                                                                                                                                                 :(&lt;/span&gt;
-&lt;span class="c1"&gt;# mount /dev/mmcblk0p1 /mnt/boot&lt;/span&gt;
-&lt;span class="c1"&gt;# mount /dev/mmcblk0p4 /mnt/var&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="c1"&gt;# mount /dev/mmcblk0p3 /mnt                                                                                                                                                                                                                                 :(&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# mount /dev/mmcblk0p1 /mnt/boot&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# mount /dev/mmcblk0p4 /mnt/var&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# arch-chroot /mnt&lt;/span&gt;
+&lt;span class="c1"&gt;# arch-chroot /mnt&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB&lt;/span&gt;
-&lt;span class="n"&gt;Installing&lt;/span&gt; &lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;efi&lt;/span&gt; &lt;span class="n"&gt;platform&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
-&lt;span class="n"&gt;Installation&lt;/span&gt; &lt;span class="n"&gt;finished&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt; &lt;span class="n"&gt;No&lt;/span&gt; &lt;span class="n"&gt;error&lt;/span&gt; &lt;span class="n"&gt;reported&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;
+&lt;span class="c1"&gt;# grub-install --target=x86_64-efi --efi-directory=boot --bootloader-id=GRUB&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;Installing&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;x86_64&lt;/span&gt;&lt;span class="o"&gt;-&lt;/span&gt;&lt;span class="n"&gt;efi&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;platform&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="n"&gt;Installation&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;finished&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;No&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;error&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;reported&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# exit&lt;/span&gt;
+&lt;span class="c1"&gt;# exit&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 
-&lt;span class="c1"&gt;# umount -R /mnt&lt;/span&gt;
-&lt;span class="c1"&gt;# reboot&lt;/span&gt;
+&lt;span class="c1"&gt;# umount -R /mnt&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;# reboot&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;the compute stick should now boot into the new ArchLinux distribution installed on it's disk and can be configured using ansible.&lt;/p&gt;
@@ -318,7 +318,7 @@ printer Visibilityspots-LaserJet is idle.  enabled since Mon Dec 24 20:51:54 201
 &lt;p&gt;In the initial phase I used to push my passwords as hashes into the playbook. But when I was about to push the playbook in &lt;a href="https://github.com/visibilityspots/ansible-playbook-archlinux-update"&gt;github&lt;/a&gt; I figured it wouldn't be a good idea to share that with the public. So I stumbled on &lt;a href="https://docs.ansible.com/ansible/latest/user_guide/playbooks_vault.html"&gt;ansible-vault&lt;/a&gt;.&lt;/p&gt;
 &lt;p&gt;That way I could refer to passwords in an encrypted file in the playbook so I could safely push the playbook to the public. In combination with the parameter &lt;a href="https://docs.ansible.com/ansible/latest/cli/ansible-playbook.html#cmdoption-ansible-playbook-vault-password-file"&gt;--vault-password-file&lt;/a&gt; I can now run the playbook without interaction for passwords.&lt;/p&gt;
 &lt;p&gt;And it works great, keeping them all up to date and having a clear output about which packages are updated on which machine. Yet another step closer to that ultimate dream of drinking cocktails on the beach while everything is running automatically in the back!&lt;/p&gt;</content><category term="linux"></category><category term="ansible"></category><category term="playbook"></category><category term="ansible-playbook"></category><category term="archlinux"></category><category term="aur"></category><category term="aurman"></category><category term="update"></category><category term="upgrade"></category><category term="ansible-aur"></category><category term="pacman"></category></entry><entry><title>NRPE troubleshooting</title><link href="https://visibilityspots.github.io/blog/nrpe-troubleshooting.html" rel="alternate"></link><published>2018-02-15T21:00:00+01:00</published><updated>2018-02-15T00:00:00+01:00</updated><author><name>Jan</name></author><id>tag:visibilityspots.github.io,2018-02-15:/blog/nrpe-troubleshooting.html</id><summary type="html">&lt;p&gt;When refactoring a &lt;a href="https://github.com/visibilityspots/icinga-scripts/blob/master/check_memory"&gt;check_memory&lt;/a&gt; I wrote a few years ago I bumped into the feared&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NRPE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;read&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NRPE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unable&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;error message on our nagios instance.&lt;/p&gt;
@@ -327,7 +327,7 @@ printer Visibilityspots-LaserJet is idle.  enabled since Mon Dec 24 20:51:54 201
 &lt;p&gt;&lt;strong&gt;SELINUX&lt;/strong&gt;&lt;/p&gt;
 &lt;p&gt;When crawling through the audit log it became clear I forgot to configure the proper selinux context type for the new script.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nv"&gt;type&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;PATH&lt;/span&gt; &lt;span class="nv"&gt;msg&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="nv"&gt;audit …&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;</summary><content type="html">&lt;p&gt;When refactoring a &lt;a href="https://github.com/visibilityspots/icinga-scripts/blob/master/check_memory"&gt;check_memory&lt;/a&gt; I wrote a few years ago I bumped into the feared&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NRPE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt; &lt;span class="n"&gt;Unable&lt;/span&gt; &lt;span class="n"&gt;to&lt;/span&gt; &lt;span class="n"&gt;read&lt;/span&gt; &lt;span class="n"&gt;output&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="n"&gt;NRPE&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Unable&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;to&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;read&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;output&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;error message on our nagios instance.&lt;/p&gt;
@@ -405,7 +405,7 @@ certbot --agree-tos -a certbot-s3front:auth &lt;span class="se"&gt;\&lt;/span&gt
 &lt;p&gt;It will source the IAM credentials you created for this specific use case, use certbot to renew your certificate on the specified cloudfront distribution and use &lt;a href="http://ntfy.readthedocs.io/en/latest/"&gt;ntfy&lt;/a&gt; to inform you about it through telegram in this case.&lt;/p&gt;
 &lt;p&gt;When the renewal fails it will also sent a notification, I didn't had this feature in the past which lead to expiration of the certificate..&lt;/p&gt;
 &lt;p&gt;It's triggered by cron:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="mf"&gt;0&lt;/span&gt; &lt;span class="mf"&gt;0&lt;/span&gt; &lt;span class="mf"&gt;1&lt;/span&gt; &lt;span class="o"&gt;*/&lt;/span&gt;&lt;span class="mf"&gt;2&lt;/span&gt; &lt;span class="o"&gt;*&lt;/span&gt; &lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="n"&gt;sencrypt&lt;/span&gt;&lt;span class="o"&gt;-*&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="mf"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;0&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="mf"&gt;1&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*/&lt;/span&gt;&lt;span class="mf"&gt;2&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;*&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="nb"&gt;usr&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;local&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="n"&gt;bin&lt;/span&gt;&lt;span class="o"&gt;/&lt;/span&gt;&lt;span class="kd"&gt;let&lt;/span&gt;&lt;span class="n"&gt;sencrypt&lt;/span&gt;&lt;span class="o"&gt;-*&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;it will be triggered the &lt;a href="https://crontab.guru/#0_0_1_*/2_*"&gt;first day every 2 months&lt;/a&gt;, I used this sequence so in case of issues I have time enough to solve it before it expires.&lt;/p&gt;
@@ -523,13 +523,13 @@ network={
 
 &lt;p&gt;and their dependency configuration files&lt;/p&gt;
 &lt;p&gt;/etc/systemd/system/wpa_supplicant@wlan0.service.d/customdependency.conf&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;netctl@failover.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;netctl@failover.service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;/etc/systemd/system/wpa_supplicant@wlan1.service.d/customdependency.conf&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;
-&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;wpa_supplicant@wlan0.service&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="k"&gt;[Unit]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="na"&gt;After&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;wpa_supplicant@wlan0.service&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;I had to configure them in this order since they didn't came up properly if I didn't only one could achieve to authenticate instead of both. By having the wlan1 unit depend on the wlan0 I had tackled it.&lt;/p&gt;
@@ -1404,10 +1404,10 @@ Hold ctrl+c to quit.
 &lt;p&gt;After editing the md files and saving your modifications they should appear immediately on your local preview when the mkdocs server command is running.&lt;/p&gt;
 &lt;h4&gt;mkdocs.yaml&lt;/h4&gt;
 &lt;p&gt;As mentioned a mkdocs.yml file manages the index and menus of the site:&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;site_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt; &lt;span class="l l-Scalar l-Scalar-Plain"&gt;My Docs&lt;/span&gt;
-&lt;span class="nt"&gt;pages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
-        &lt;span class="p p-Indicator"&gt;-&lt;/span&gt; &lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;index.md&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt; &lt;span class="nv"&gt;Home&lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;
-&lt;span class="c1"&gt;#theme: readthedocs&lt;/span&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;site_name&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="l l-Scalar l-Scalar-Plain"&gt;My Docs&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="nt"&gt;pages&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="p p-Indicator"&gt;-&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p p-Indicator"&gt;[&lt;/span&gt;&lt;span class="nv"&gt;index.md&lt;/span&gt;&lt;span class="p p-Indicator"&gt;,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nv"&gt;Home&lt;/span&gt;&lt;span class="p p-Indicator"&gt;]&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
+&lt;span class="c1"&gt;#theme: readthedocs&lt;/span&gt;&lt;span class="w"&gt;&lt;/span&gt;
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;h4&gt;images&lt;/h4&gt;

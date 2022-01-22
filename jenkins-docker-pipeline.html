@@ -111,31 +111,31 @@
 <ul>
 <li>push the created and tested image to the registry with the latest tag and with the short commit hash</li>
 </ul>
-<div class="highlight"><pre><span></span><code><span class="n">node</span> <span class="p">(</span><span class="s1">&#39;generic&#39;</span><span class="p">)</span> <span class="p">{</span>
-  <span class="n">def</span> <span class="n">container</span>
+<div class="highlight"><pre><span></span><code><span class="n">node</span><span class="w"> </span><span class="p">(</span><span class="s1">&#39;generic&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">  </span><span class="n">def</span><span class="w"> </span><span class="n">container</span><span class="w"></span>
 
-  <span class="n">ansiColor</span><span class="p">(</span><span class="s1">&#39;xterm&#39;</span><span class="p">)</span> <span class="p">{</span>
-    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Clone repository&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">checkout</span> <span class="n">scm</span>
-      <span class="n">shortCommit</span> <span class="o">=</span> <span class="n">sh</span><span class="p">(</span><span class="n">returnStdout</span><span class="p">:</span> <span class="bp">true</span><span class="p">,</span> <span class="n">script</span><span class="p">:</span> <span class="s1">&#39;git rev-parse --short HEAD&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">trim</span><span class="p">()</span>
-    <span class="p">}</span>
+<span class="w">  </span><span class="n">ansiColor</span><span class="p">(</span><span class="s1">&#39;xterm&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Clone repository&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">checkout</span><span class="w"> </span><span class="n">scm</span><span class="w"></span>
+<span class="w">      </span><span class="n">shortCommit</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">sh</span><span class="p">(</span><span class="n">returnStdout</span><span class="p">:</span><span class="w"> </span><span class="bp">true</span><span class="p">,</span><span class="w"> </span><span class="n">script</span><span class="p">:</span><span class="w"> </span><span class="s1">&#39;git rev-parse --short HEAD&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">trim</span><span class="p">()</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Build image&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">container</span> <span class="o">=</span> <span class="n">docker</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#39;visibilityspots/jenkins-docker&#39;</span><span class="p">)</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Build image&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">container</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">docker</span><span class="o">.</span><span class="n">build</span><span class="p">(</span><span class="s1">&#39;visibilityspots/jenkins-docker&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Test image&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">sh</span> <span class="s1">&#39;export GOSS_FILES_STRATEGY=cp &amp;&amp; /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&#39;</span>
-    <span class="p">}</span>
+<span class="w">    </span><span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Test image&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">sh</span><span class="w"> </span><span class="s1">&#39;export GOSS_FILES_STRATEGY=cp &amp;&amp; /usr/local/bin/dgoss  run --name jenkins-docker-dgoss-test --rm -ti visibilityspots/jenkins-docker&#39;</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
 
-    <span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Push image&#39;</span><span class="p">)</span> <span class="p">{</span>
-      <span class="n">docker</span><span class="o">.</span><span class="n">withRegistry</span><span class="p">(</span><span class="s1">&#39;https://nexus.repository&#39;</span><span class="p">,</span> <span class="s1">&#39;nexus-credentials-id&#39;</span><span class="p">)</span> <span class="p">{</span>
-        <span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s2">&quot;${shortCommit}&quot;</span><span class="p">)</span>
-        <span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;latest&#39;</span><span class="p">)</span>
-      <span class="p">}</span>
-    <span class="p">}</span>
-  <span class="p">}</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="n">stage</span><span class="p">(</span><span class="s1">&#39;Push image&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">      </span><span class="n">docker</span><span class="o">.</span><span class="n">withRegistry</span><span class="p">(</span><span class="s1">&#39;https://nexus.repository&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;nexus-credentials-id&#39;</span><span class="p">)</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">        </span><span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s2">&quot;${shortCommit}&quot;</span><span class="p">)</span><span class="w"></span>
+<span class="w">        </span><span class="n">container</span><span class="o">.</span><span class="n">push</span><span class="p">(</span><span class="s1">&#39;latest&#39;</span><span class="p">)</span><span class="w"></span>
+<span class="w">      </span><span class="p">}</span><span class="w"></span>
+<span class="w">    </span><span class="p">}</span><span class="w"></span>
+<span class="w">  </span><span class="p">}</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 </code></pre></div>
 
 <h2>testing the docker image</h2>

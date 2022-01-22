@@ -184,35 +184,35 @@ $ sudo chown -R consul: /opt/consul
 <p>All of them based in /etc/nomad.d/</p>
 <p>I began with a 3 server/client node setup but added extra client only nodes afterwards.</p>
 <p><strong>/etc/nomad.d/base.hcl</strong></p>
-<div class="highlight"><pre><span></span><code><span class="n">name</span> <span class="o">=</span> <span class="s">&quot;NODENAME&quot;</span>
-<span class="n">region</span> <span class="o">=</span> <span class="s">&quot;global&quot;</span>
-<span class="n">datacenter</span> <span class="o">=</span> <span class="s">&quot;DATACENTERNAME&quot;</span>
+<div class="highlight"><pre><span></span><code><span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;NODENAME&quot;</span><span class="w"></span>
+<span class="n">region</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;global&quot;</span><span class="w"></span>
+<span class="n">datacenter</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;DATACENTERNAME&quot;</span><span class="w"></span>
 
-<span class="n">advertise</span> <span class="p">{</span>
-    <span class="n">http</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
-    <span class="n">rpc</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
-    <span class="n">serf</span> <span class="o">=</span> <span class="s">&quot;IP.ADDRESS&quot;</span>
-<span class="p">}</span>
+<span class="n">advertise</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="n">http</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IP.ADDRESS&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">rpc</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IP.ADDRESS&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">serf</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;IP.ADDRESS&quot;</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">consul</span> <span class="p">{</span>
-    <span class="p">#</span> <span class="n">The</span> <span class="n">address</span> <span class="n">to</span> <span class="n">the</span> <span class="n">Consul</span> <span class="n">agent</span><span class="p">.</span>
-    <span class="n">address</span> <span class="o">=</span> <span class="s">&quot;localhost:8500&quot;</span>
-    <span class="p">#</span> <span class="n">The</span> <span class="n">service</span> <span class="n">name</span> <span class="n">to</span> <span class="n">register</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="n">with</span> <span class="n">Consul</span><span class="p">.</span>
-    <span class="n">server_service_name</span> <span class="o">=</span> <span class="s">&quot;nomad-servers&quot;</span>
-    <span class="n">client_service_name</span> <span class="o">=</span> <span class="s">&quot;nomad-clients&quot;</span>
+<span class="n">consul</span><span class="w"> </span><span class="p">{</span><span class="w"></span>
+<span class="w">    </span><span class="p">#</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">address</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">Consul</span><span class="w"> </span><span class="n">agent</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="n">address</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;localhost:8500&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="p">#</span><span class="w"> </span><span class="n">The</span><span class="w"> </span><span class="n">service</span><span class="w"> </span><span class="n">name</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">register</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="n">with</span><span class="w"> </span><span class="n">Consul</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="n">server_service_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;nomad-servers&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="n">client_service_name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;nomad-clients&quot;</span><span class="w"></span>
 
-    <span class="p">#</span> <span class="n">Enables</span> <span class="n">automatically</span> <span class="n">registering</span> <span class="n">the</span> <span class="n">services</span><span class="p">.</span>
-    <span class="n">auto_advertise</span> <span class="o">=</span> <span class="n">true</span>
+<span class="w">    </span><span class="p">#</span><span class="w"> </span><span class="n">Enables</span><span class="w"> </span><span class="n">automatically</span><span class="w"> </span><span class="n">registering</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">services</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="n">auto_advertise</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"></span>
 
-    <span class="p">#</span> <span class="n">Enabling</span> <span class="n">the</span> <span class="n">server</span> <span class="k">and</span> <span class="n">client</span> <span class="n">to</span> <span class="n">bootstrap</span> <span class="n">using</span> <span class="n">Consul</span><span class="p">.</span>
-    <span class="n">server_auto_join</span> <span class="o">=</span> <span class="n">true</span>
-    <span class="n">client_auto_join</span> <span class="o">=</span> <span class="n">true</span>
-<span class="p">}</span>
+<span class="w">    </span><span class="p">#</span><span class="w"> </span><span class="n">Enabling</span><span class="w"> </span><span class="n">the</span><span class="w"> </span><span class="n">server</span><span class="w"> </span><span class="k">and</span><span class="w"> </span><span class="n">client</span><span class="w"> </span><span class="n">to</span><span class="w"> </span><span class="n">bootstrap</span><span class="w"> </span><span class="n">using</span><span class="w"> </span><span class="n">Consul</span><span class="p">.</span><span class="w"></span>
+<span class="w">    </span><span class="n">server_auto_join</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"></span>
+<span class="w">    </span><span class="n">client_auto_join</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"></span>
+<span class="p">}</span><span class="w"></span>
 
-<span class="n">data_dir</span> <span class="o">=</span> <span class="s">&quot;/opt/nomad&quot;</span>
+<span class="n">data_dir</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;/opt/nomad&quot;</span><span class="w"></span>
 
-<span class="n">log_level</span> <span class="o">=</span> <span class="s">&quot;INFO&quot;</span>
-<span class="n">enable_syslog</span> <span class="o">=</span> <span class="n">true</span>
+<span class="n">log_level</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">&quot;INFO&quot;</span><span class="w"></span>
+<span class="n">enable_syslog</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">true</span><span class="w"></span>
 </code></pre></div>
 
 <p><strong>/etc/nomad.d/server.hcl</strong></p>
@@ -241,23 +241,23 @@ plugin &quot;docker&quot; {
 <h2>service</h2>
 <p>a systemd unit file is written which will combine all the previous configuration files to start the nomad services;</p>
 <p><strong>/usr/lib/systemd/system/nomad.service</strong></p>
-<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span>
-<span class="na">Description</span><span class="o">=</span><span class="s">nomad agent</span>
-<span class="na">Wants</span><span class="o">=</span><span class="s">basic.target</span>
-<span class="na">After</span><span class="o">=</span><span class="s">basic.target network.target consul.service</span>
+<div class="highlight"><pre><span></span><code><span class="k">[Unit]</span><span class="w"></span>
+<span class="na">Description</span><span class="o">=</span><span class="s">nomad agent</span><span class="w"></span>
+<span class="na">Wants</span><span class="o">=</span><span class="s">basic.target</span><span class="w"></span>
+<span class="na">After</span><span class="o">=</span><span class="s">basic.target network.target consul.service</span><span class="w"></span>
 
-<span class="k">[Service]</span>
-<span class="na">User</span><span class="o">=</span><span class="s">root</span>
-<span class="na">Group</span><span class="o">=</span><span class="s">bin</span>
-<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/nomad agent -config=/etc/nomad.d</span>
+<span class="k">[Service]</span><span class="w"></span>
+<span class="na">User</span><span class="o">=</span><span class="s">root</span><span class="w"></span>
+<span class="na">Group</span><span class="o">=</span><span class="s">bin</span><span class="w"></span>
+<span class="na">ExecStart</span><span class="o">=</span><span class="s">/usr/local/bin/nomad agent -config=/etc/nomad.d</span><span class="w"></span>
 
-<span class="na">ExecReload</span><span class="o">=</span><span class="s">/bin/kill -HUP $MAINPID</span>
-<span class="na">KillMode</span><span class="o">=</span><span class="s">process</span>
-<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span>
-<span class="na">RestartSec</span><span class="o">=</span><span class="s">42s</span>
+<span class="na">ExecReload</span><span class="o">=</span><span class="s">/bin/kill -HUP $MAINPID</span><span class="w"></span>
+<span class="na">KillMode</span><span class="o">=</span><span class="s">process</span><span class="w"></span>
+<span class="na">Restart</span><span class="o">=</span><span class="s">on-failure</span><span class="w"></span>
+<span class="na">RestartSec</span><span class="o">=</span><span class="s">42s</span><span class="w"></span>
 
-<span class="k">[Install]</span>
-<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span>
+<span class="k">[Install]</span><span class="w"></span>
+<span class="na">WantedBy</span><span class="o">=</span><span class="s">multi-user.target</span><span class="w"></span>
 </code></pre></div>
 
 <p>now start and enable the nomad service so we can access the gui to see if everything works as expected.</p>

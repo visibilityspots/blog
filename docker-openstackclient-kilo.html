@@ -72,7 +72,7 @@
                 <article class="post-entry">
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/docker-openstackclient-kilo.html" rel="bookmark"><h1>Docker openstackclient-kilo container</h1></a>
-<div><p>takes 2 minutes to read</p></div>                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
+<div><p>takes 3 minutes to read</p></div>                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
                             last modified at Wed 23 August 2017
                         </time>
                     </header>
@@ -145,43 +145,43 @@ bash-4.2$
 <h2>dgoss (testing)</h2>
 <p>Some weeks ago I discovered the docker image testing tool <a href="https://github.com/aelsabbahy/goss/tree/master/extras/dgoss">dgoss</a> which is comparable with <a href="http://serverspec.org/">serverspec</a> to write tests in an easy yaml format to be performed against your docker image.</p>
 <p>So I decided to give it a try and wrote a <a href="https://github.com/visibilityspots/dockerfile-openstackclient-kilo/blob/master/goss.yaml">goss.yaml</a> file;</p>
-<div class="highlight"><pre><span></span><code><span class="kd">package</span><span class="o">:</span>
-  <span class="n">rdo</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">kilo</span><span class="o">-</span><span class="mi">2</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">novaclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">ceilometerclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">cinderclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">glanceclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">heatclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">ironicclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">keystoneclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">manilaclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">novaclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">saharaclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">troveclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
-  <span class="n">python</span><span class="o">-</span><span class="n">zaqarclient</span><span class="o">:</span>
-    <span class="n">installed</span><span class="o">:</span> <span class="kc">true</span>
+<div class="highlight"><pre><span></span><code><span class="kd">package</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">rdo</span><span class="o">-</span><span class="n">release</span><span class="o">-</span><span class="n">kilo</span><span class="o">-</span><span class="mi">2</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">novaclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">ceilometerclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">cinderclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">glanceclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">heatclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">ironicclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">keystoneclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">manilaclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">novaclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">openstackclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">saharaclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">troveclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
+<span class="w">  </span><span class="n">python</span><span class="o">-</span><span class="n">zaqarclient</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">installed</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
 
-<span class="n">file</span><span class="o">:</span>
-  <span class="sr">/home/client/</span><span class="o">:</span>
-    <span class="n">exists</span><span class="o">:</span> <span class="kc">true</span>
+<span class="n">file</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="sr">/home/client/</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">exists</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"></span>
 
-<span class="n">command</span><span class="o">:</span>
-  <span class="n">openstack</span> <span class="o">--</span><span class="n">version</span><span class="o">:</span>
-    <span class="n">exit</span><span class="o">-</span><span class="n">status</span><span class="o">:</span> <span class="mi">0</span>
+<span class="n">command</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">openstack</span><span class="w"> </span><span class="o">--</span><span class="n">version</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">exit</span><span class="o">-</span><span class="n">status</span><span class="o">:</span><span class="w"> </span><span class="mi">0</span><span class="w"></span>
 </code></pre></div>
 
 <p>which will check if all packages are installed correctly and if the commands are working as they should;</p>
@@ -217,20 +217,20 @@ bash-4.2$
 <p>So for every git push a new docker image will be released on the docker hub. But they don't test the image before releasing it. </p>
 <h2>travis</h2>
 <p>So I looked around and found out this can be achieved by <a href="https://travis-ci.org/">travis</a>. I started writing a <a href="https://github.com/visibilityspots/dockerfile-openstackclient-kilo/blob/master/.travis.yml">travis.yml</a> file which will perform following steps;</p>
-<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="o">:</span> <span class="n">required</span>
-<span class="n">services</span><span class="o">:</span>
-<span class="o">-</span> <span class="n">docker</span>
-<span class="n">before_install</span><span class="o">:</span>
-<span class="o">-</span> <span class="n">curl</span> <span class="o">-</span><span class="n">L</span> <span class="n">https</span><span class="o">://</span><span class="n">goss</span><span class="o">.</span><span class="na">rocks</span><span class="o">/</span><span class="n">install</span> <span class="o">|</span> <span class="n">sudo</span> <span class="n">sh</span>
-<span class="o">-</span> <span class="n">docker</span> <span class="n">build</span> <span class="o">-</span><span class="n">t</span> <span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span> <span class="o">.</span>
-<span class="n">script</span><span class="o">:</span>
-<span class="o">-</span> <span class="n">dgoss</span> <span class="n">run</span> <span class="o">--</span><span class="n">name</span> <span class="n">openstack</span><span class="o">-</span><span class="n">client</span> <span class="o">-</span><span class="n">ti</span> <span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span>
-<span class="n">after_success</span><span class="o">:</span>
-<span class="o">-</span> <span class="k">if</span> <span class="o">[</span> <span class="s2">&quot;$TRAVIS_BRANCH&quot;</span> <span class="o">==</span> <span class="s2">&quot;master&quot;</span> <span class="o">];</span> <span class="n">then</span> <span class="n">docker</span> <span class="n">login</span> <span class="o">-</span><span class="n">u</span><span class="o">=</span><span class="n">visibilityspots</span> <span class="o">-</span><span class="n">p</span><span class="o">=</span><span class="s2">&quot;$DOCKER_PASSWORD&quot;</span><span class="o">;</span>
-  <span class="n">docker</span> <span class="n">push</span> <span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span><span class="o">;</span> <span class="n">fi</span>
-<span class="n">env</span><span class="o">:</span>
-  <span class="n">global</span><span class="o">:</span>
-    <span class="n">secure</span><span class="o">:</span> <span class="n">QA24IWGelQ6nd3Xuwzif8L</span><span class="o">+</span><span class="mi">2</span><span class="n">AeWC6M8V1jkZNJzJxaBLcxpucWcjkmowzaWGPmVfKeFAgfPsgVPfy8gK03JfY3J4H2AcCa8TWhVOoLvvY6ytFLobCWtRI8nIZoYeV8</span><span class="sr">/BNlKzguoE4OEfrloJUU52tQ/NDWVleH5KCBCj3H93eE52USwZ4JUyoZtngd+Zqma0GUomMvOZ0mg2e87UOYQNnCZehh5okAIU34sKGTGwEwWeqxA9xUvBd3l7pRj+5bfeQ07Fn0n3/tmrzFkOKRfCL2HC63Aq0T0LFjKsYza2QykiI5z4enNVjH8d+/05dCCHaj+/ZqKVQWbMi/RIheXk1XvsxPttBlHC03EXdQBfZmiNUUaxtVQ7f9Df0sRPvIrZsYzbHkeqVSHTNIGZLzY2cizLzIedYLOFGKNRM3WsOokIlsn+f/XciZse0D3YPBPzkRlI6sXMLtduxkZLzC1tRgyZhTl1A1kMbXzj94SJzftQ2NW7g0lbSO38DxsZcy4g/VlTDLmDzHvnlcdiU2KPSXgQcPZXQk/AZuZdl/AaYb9FIhP06GYRVRJfxls5qlxIAxxJsBTyBR4UE7SGq86UtZdTqzr/</span><span class="n">LjQXQr8SU</span><span class="o">+</span><span class="n">KfxvKbOvfBiIrqzMcBaRqQgPfTeKhI</span><span class="o">+</span><span class="n">jEhNyAlgnvSQNf8Eg9UgHv6aW51TqyI</span><span class="o">+</span><span class="n">RzVqIs</span><span class="o">=</span>
+<div class="highlight"><pre><span></span><code><span class="n">sudo</span><span class="o">:</span><span class="w"> </span><span class="n">required</span><span class="w"></span>
+<span class="n">services</span><span class="o">:</span><span class="w"></span>
+<span class="o">-</span><span class="w"> </span><span class="n">docker</span><span class="w"></span>
+<span class="n">before_install</span><span class="o">:</span><span class="w"></span>
+<span class="o">-</span><span class="w"> </span><span class="n">curl</span><span class="w"> </span><span class="o">-</span><span class="n">L</span><span class="w"> </span><span class="n">https</span><span class="o">://</span><span class="n">goss</span><span class="o">.</span><span class="na">rocks</span><span class="o">/</span><span class="n">install</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="n">sudo</span><span class="w"> </span><span class="n">sh</span><span class="w"></span>
+<span class="o">-</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">build</span><span class="w"> </span><span class="o">-</span><span class="n">t</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span><span class="w"> </span><span class="o">.</span><span class="w"></span>
+<span class="n">script</span><span class="o">:</span><span class="w"></span>
+<span class="o">-</span><span class="w"> </span><span class="n">dgoss</span><span class="w"> </span><span class="n">run</span><span class="w"> </span><span class="o">--</span><span class="n">name</span><span class="w"> </span><span class="n">openstack</span><span class="o">-</span><span class="n">client</span><span class="w"> </span><span class="o">-</span><span class="n">ti</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span><span class="w"></span>
+<span class="n">after_success</span><span class="o">:</span><span class="w"></span>
+<span class="o">-</span><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span><span class="s2">&quot;$TRAVIS_BRANCH&quot;</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="s2">&quot;master&quot;</span><span class="w"> </span><span class="o">];</span><span class="w"> </span><span class="n">then</span><span class="w"> </span><span class="n">docker</span><span class="w"> </span><span class="n">login</span><span class="w"> </span><span class="o">-</span><span class="n">u</span><span class="o">=</span><span class="n">visibilityspots</span><span class="w"> </span><span class="o">-</span><span class="n">p</span><span class="o">=</span><span class="s2">&quot;$DOCKER_PASSWORD&quot;</span><span class="o">;</span><span class="w"></span>
+<span class="w">  </span><span class="n">docker</span><span class="w"> </span><span class="n">push</span><span class="w"> </span><span class="n">visibilityspots</span><span class="o">/</span><span class="n">openstackclient</span><span class="o">-</span><span class="n">kilo</span><span class="o">;</span><span class="w"> </span><span class="n">fi</span><span class="w"></span>
+<span class="n">env</span><span class="o">:</span><span class="w"></span>
+<span class="w">  </span><span class="n">global</span><span class="o">:</span><span class="w"></span>
+<span class="w">    </span><span class="n">secure</span><span class="o">:</span><span class="w"> </span><span class="n">QA24IWGelQ6nd3Xuwzif8L</span><span class="o">+</span><span class="mi">2</span><span class="n">AeWC6M8V1jkZNJzJxaBLcxpucWcjkmowzaWGPmVfKeFAgfPsgVPfy8gK03JfY3J4H2AcCa8TWhVOoLvvY6ytFLobCWtRI8nIZoYeV8</span><span class="sr">/BNlKzguoE4OEfrloJUU52tQ/NDWVleH5KCBCj3H93eE52USwZ4JUyoZtngd+Zqma0GUomMvOZ0mg2e87UOYQNnCZehh5okAIU34sKGTGwEwWeqxA9xUvBd3l7pRj+5bfeQ07Fn0n3/tmrzFkOKRfCL2HC63Aq0T0LFjKsYza2QykiI5z4enNVjH8d+/05dCCHaj+/ZqKVQWbMi/RIheXk1XvsxPttBlHC03EXdQBfZmiNUUaxtVQ7f9Df0sRPvIrZsYzbHkeqVSHTNIGZLzY2cizLzIedYLOFGKNRM3WsOokIlsn+f/XciZse0D3YPBPzkRlI6sXMLtduxkZLzC1tRgyZhTl1A1kMbXzj94SJzftQ2NW7g0lbSO38DxsZcy4g/VlTDLmDzHvnlcdiU2KPSXgQcPZXQk/AZuZdl/AaYb9FIhP06GYRVRJfxls5qlxIAxxJsBTyBR4UE7SGq86UtZdTqzr/</span><span class="n">LjQXQr8SU</span><span class="o">+</span><span class="n">KfxvKbOvfBiIrqzMcBaRqQgPfTeKhI</span><span class="o">+</span><span class="n">jEhNyAlgnvSQNf8Eg9UgHv6aW51TqyI</span><span class="o">+</span><span class="n">RzVqIs</span><span class="o">=</span><span class="w"></span>
 </code></pre></div>
 
 <p>It will install dgoss and build the container locally on the travis infrastructure. Next it will run the dgoss tests based on the goss.yaml file. When those tests are finished it will upload the created and tested docker container to the docker hub.</p>
