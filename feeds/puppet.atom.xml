@@ -169,7 +169,7 @@ allow $1
 &lt;p&gt;on the puppetmaster. I did this to clean out the stored configs for those nodes.&lt;/p&gt;
 &lt;p&gt;But I didn't realized this also cleaned out the ssl certificates for those clients. So I started the new week with this uncomfortable issue:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-[root&amp;#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command&lt;/p&gt;
+[root&amp;#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on failed …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;I started the day with ssl issues using puppet. Last week I cleaned 2 hosts in our tree using the puppet command&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
 # puppet node clean [hostname]
 &lt;/pre&gt;

@@ -11,7 +11,7 @@ $ sudo cp /old/file /new/file.bak
 &lt;/pre&gt;
 &lt;p&gt;/etc/lirc/hardware.conf&lt;/p&gt;
 &lt;pre class="literal-block"&gt;
-# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
+# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&amp;quot;Apple Mac mini USB IR Receiver&amp;quot; REMOTE_MODULES=&amp;quot;uinput&amp;quot; REMOTE_DRIVER=&amp;quot;macmini&amp;quot; REMOTE_DEVICE=&amp;quot;/dev/usb/hiddev0&amp;quot; REMOTE_SOCKET=&amp;quot;&amp;quot; REMOTE_LIRCD_CONF …&lt;/pre&gt;</summary><content type="html">&lt;p&gt;It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.&lt;/p&gt;
 &lt;p&gt;It's quite easy once you know how.&lt;/p&gt;
 &lt;p&gt;Installation of the lirc library:&lt;/p&gt;
 &lt;pre class="literal-block"&gt;

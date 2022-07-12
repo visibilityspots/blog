@@ -83,7 +83,7 @@
 <p>on the puppetmaster. I did this to clean out the stored configs for those nodes.</p>
 <p>But I didn't realized this also cleaned out the ssl certificates for those clients. So I started the new week with this uncomfortable issue:</p>
 <pre class="literal-block">
-[root&#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on …</pre>
+[root&#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on failed …</pre>
                     </section>
                 </article>
             </li>
@@ -142,7 +142,7 @@ $ sudo cp /old/file /new/file.bak
 </pre>
 <p>/etc/lirc/hardware.conf</p>
 <pre class="literal-block">
-# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&quot;Apple Mac mini USB IR Receiver&quot; REMOTE_MODULES=&quot;uinput&quot; REMOTE_DRIVER=&quot;macmini&quot; REMOTE_DEVICE=&quot;/dev/usb …</pre>
+# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&quot;Apple Mac mini USB IR Receiver&quot; REMOTE_MODULES=&quot;uinput&quot; REMOTE_DRIVER=&quot;macmini&quot; REMOTE_DEVICE=&quot;/dev/usb/hiddev0&quot; REMOTE_SOCKET=&quot;&quot; REMOTE_LIRCD_CONF …</pre>
                     </section>
                 </article>
             </li>

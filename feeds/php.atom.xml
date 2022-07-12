@@ -7,7 +7,7 @@
 &lt;span class="x"&gt;&amp;lt; ?php
 $dsn = array(
  'phptype' =&amp;gt; 'mysql',
- 'username' …&lt;/span&gt;&lt;/pre&gt;</summary><content type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
+ 'username' =&amp;gt; 'DBUSERNAME' …&lt;/span&gt;&lt;/pre&gt;</summary><content type="html">&lt;p&gt;For our local scouting group it seemed nice to write a birthday script which displays for every member on the day of his/her birthday the name and age on our homepage.&lt;/p&gt;
 &lt;p&gt;Something like &amp;quot;We wish XXX a happy # anniversary!'&lt;/p&gt;
 &lt;p&gt;To accomplish this I wrote a php script which gets the data of our members from a mysql db and shows the messages on the right day on our website. In the meantime also an automatic mail will be send to the person with some sort of 'personal' message.&lt;/p&gt;
 &lt;p&gt;database connection (db_connectPear.php)&lt;/p&gt;

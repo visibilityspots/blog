@@ -83,7 +83,7 @@
 <p>on the puppetmaster. I did this to clean out the stored configs for those nodes.</p>
 <p>But I didn't realized this also cleaned out the ssl certificates for those clients. So I started the new week with this uncomfortable issue:</p>
 <pre class="literal-block">
-[root&#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on …</pre>
+[root&#64;agent ~]# puppet agent --test err: Could not retrieve catalog from remote server: SSL_connect returned=1 errno=0 state=SSLv3 read server session ticket A: sslv3 alert certificate revoked warning: Not using cache on failed …</pre>
                     </section>
                 </article>
             </li>
