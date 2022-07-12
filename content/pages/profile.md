@@ -13,6 +13,18 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
+#### July 2021 - Present | Operations Sheperd - [Inuits](https://inuits.eu)
+
+Support the internal operation engineers in their day to day job by facilitating various methods to achieve a happy and functional team over multiple countries.
+
+Responsible for various projects with an ops mindset throughout the organization both internally as well as customer facing.
+
+Supporting colleagues in their consultancy projects.
+
+Bridging the gap between different units within the organization.
+
+Trying to inspire with a positive enthusiastic bit naive transparent attitude.
+
 #### November 2017 - June 2021 | Operations Engineer - [Trendminer](https://trendminer.com) - HASSELT
 
 Setup and automation of the product’s deployment options: cloud-based or on premise.
