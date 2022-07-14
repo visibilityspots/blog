@@ -27,7 +27,6 @@ RELATIVE_URLS = True
 USE_CUSTOM_MENU = True
 CUSTOM_MENUITEMS = (('Blog', ''),
                     ('Profile', 'pages/profile.html'),
-                    ('Links', 'pages/links.html'),
                     ('Projects', 'pages/projects.html'),
                     ('Tools', 'pages/tools.html'),
                     ('Contact', 'pages/contact.html'))
