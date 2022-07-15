@@ -4,6 +4,3 @@
 [submodule "pelican-themes/pelican-cait"]
 	path = pelican-themes/pelican-cait
 	url = https://github.com/visibilityspots/pelican-cait.git
-[submodule "pelican-themes/Tipue-Search"]
-	path = pelican-themes/Tipue-Search
-	url = https://github.com/visibilityspots/Tipue-Search.git
