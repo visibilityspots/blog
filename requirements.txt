@@ -1,7 +1,9 @@
 pelican
+pelican-search
 ghp-import
 Markdown
 s3cmd
 bs4
 feedparser
 awscli
+stork

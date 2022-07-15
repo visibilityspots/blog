@@ -59,7 +59,7 @@ PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = [
   'github_activity',
   'sitemap',
-  'tipue_search',
+  'search',
   'readtime'
 ]
 
@@ -74,7 +74,7 @@ FEED_USE_SUMMARY = True
 SUMMARY_MAX_LENGTH = 100
 
 # Sitemap
-DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives', 'sitemap', 'search')
+DIRECT_TEMPLATES = ('index', 'tags', 'categories', 'archives', 'sitemap')
 SITEMAP_SAVE_AS = 'sitemap.xml'
 
 # Social widget
@@ -88,3 +88,6 @@ CACHE_CONTENT = True
 GZIP_CACHE = True
 CHECK_MODIFIED_METHOD = 'mtime'
 LOAD_CONTENT_CACHE = True
+
+# Search
+SEARCH_MODE = "source"
