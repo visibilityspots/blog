@@ -60,7 +60,6 @@ PLUGINS = [
   'github_activity',
   'sitemap',
   'tipue_search',
-  'feed_summary',
   'readtime'
 ]
 
