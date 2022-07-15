@@ -6,4 +6,3 @@ s3cmd
 bs4
 feedparser
 awscli
-stork
