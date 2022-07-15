@@ -14,7 +14,7 @@
         <link href='https://fonts.googleapis.com/css?family=Oswald' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/css/font-awesome.min.css">
         <link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/css/main.css">
-	<link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/tipuesearch/tipuesearch.css">
+        <link rel="stylesheet" media="screen and (prefers-color-scheme: dark)" href="https://files.stork-search.net/dark.css">
 
     <link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/css/landing.css">
         <link href="https://visibilityspots.github.io/blog/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="visibilityspots Atom Feed" />
@@ -42,5 +42,9 @@ The requested item could not be located.
 </footer>        </div>
 
         <script src="https://visibilityspots.github.io/blog/theme/js/main.js"></script>
+        <script src="https://files.stork-search.net/releases/v1.2.1/stork.js"></script>
+        <script>
+            stork.register("sitesearch", "https://visibilityspots.github.io/blog/search-index.st")
+        </script>
     </body>
 </html>
