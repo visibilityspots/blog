@@ -69,6 +69,28 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
+                        <time class="post-time" datetime="2022-08-20T12:00:00+02:00" pubdate>
+                            Sat 20 August 2022
+                        </time>
+                        <a href="https://visibilityspots.github.io/blog/traefik-ssl-grading.html" rel="bookmark"><h1>Traefik SSL grading</h1></a>
+                    </header>
+                    <section class="post-content">
+                        <p>Recently I discovered that many of the services I deployed upon my <a href="https://visibilityspots.github.io/blog/nomad-arm-cluster.html">nomad cluster</a>  didn't had the SSL A grading I expected them to have. Somehow I asumed the <a href="https://visibilityspots.github.io/blog/traefik-nomad-route53.html">traefik letsencrypt</a> implementation got the A rating by default.</p>
+<p>After running the <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a> container it turns out they don't;</p>
+<div class="highlight"><pre><span></span><code>$ docker run --rm -ti drwetter/testssl.sh domain.org
+ Rating specs <span class="o">(</span>not <span class="nb">complete</span><span class="o">)</span>  SSL Labs<span class="s1">&#39;s &#39;</span>SSL Server Rating Guide<span class="err">&#39;</span> <span class="o">(</span>version 2009q from <span class="m">2020</span>-01-30<span class="o">)</span>
+ Specification documentation  https://github.com/ssllabs/research/wiki/SSL-Server-Rating-Guide
+ Protocol Support <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">95</span> <span class="o">(</span><span class="m">28</span><span class="o">)</span>
+ Key Exchange     <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">100</span> <span class="o">(</span><span class="m">30</span><span class="o">)</span>
+ Cipher Strength  <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">90</span> <span class="o">(</span><span class="m">36</span><span class="o">)</span>
+ Final Score …</code></pre></div>
+                    </section>
+                </article>
+            </li>
+            <hr/>
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
                         <time class="post-time" datetime="2020-12-27T21:00:00+01:00" pubdate>
                             Sun 27 December 2020
                         </time>

@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>visibilityspots - containers</title>
+        <title>visibilityspots - testssl</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
             <link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/css/normalize.css">
@@ -69,40 +69,28 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
-                        <time class="post-time" datetime="2017-09-06T22:00:00+02:00" pubdate>
-                            Wed 06 September 2017
+                        <time class="post-time" datetime="2022-08-20T12:00:00+02:00" pubdate>
+                            Sat 20 August 2022
                         </time>
-                        <a href="https://visibilityspots.github.io/blog/dockerized-jenkins.html" rel="bookmark"><h1>Dockerized jenkins master/slave setup</h1></a>
+                        <a href="https://visibilityspots.github.io/blog/traefik-ssl-grading.html" rel="bookmark"><h1>Traefik SSL grading</h1></a>
                     </header>
                     <section class="post-content">
-                        <p>started at a new customer we were looking for a more flexible way of having jenkins spinning up slaves on the fly. This in a way a slave is only started and consuming resources when a specific job is running. That way those resources could be used more efficient.</p>
-<p>Also the fact that developers could take control over their build servers by managing the Dockerfiles themselves is a great advantage too. But that's for a later phase. Let's start at the beginning.</p>
-<p>For the docker host a CentOS 7 server has been provisioned and prepared to run the docker daemon …</p>
-                    </section>
-                </article>
-            </li>
-            <hr/>
-            <li>
-                <article class="post-entry">
-                    <header class="entry-header">
-                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
-                            Mon 29 May 2017
-                        </time>
-                        <a href="https://visibilityspots.github.io/blog/docker-openstackclient-kilo.html" rel="bookmark"><h1>Docker openstackclient-kilo container</h1></a>
-                    </header>
-                    <section class="post-content">
-                        <p>A couple of years ago I deployed an openstack cluster based on <a href="https://www.rdoproject.org/">RDO</a>. Back in the days we implemented the <a href="https://www.openstack.org/software/kilo/">kilo</a> release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.</p>
-<p>To manage that cloud I use the clients I installed on my local machine, from nova to cinder they all have different packages available for many different platforms. Only …</p>
+                        <p>Recently I discovered that many of the services I deployed upon my <a href="https://visibilityspots.github.io/blog/nomad-arm-cluster.html">nomad cluster</a>  didn't had the SSL A grading I expected them to have. Somehow I asumed the <a href="https://visibilityspots.github.io/blog/traefik-nomad-route53.html">traefik letsencrypt</a> implementation got the A rating by default.</p>
+<p>After running the <a href="https://github.com/drwetter/testssl.sh">testssl.sh</a> container it turns out they don't;</p>
+<div class="highlight"><pre><span></span><code>$ docker run --rm -ti drwetter/testssl.sh domain.org
+ Rating specs <span class="o">(</span>not <span class="nb">complete</span><span class="o">)</span>  SSL Labs<span class="s1">&#39;s &#39;</span>SSL Server Rating Guide<span class="err">&#39;</span> <span class="o">(</span>version 2009q from <span class="m">2020</span>-01-30<span class="o">)</span>
+ Specification documentation  https://github.com/ssllabs/research/wiki/SSL-Server-Rating-Guide
+ Protocol Support <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">95</span> <span class="o">(</span><span class="m">28</span><span class="o">)</span>
+ Key Exchange     <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">100</span> <span class="o">(</span><span class="m">30</span><span class="o">)</span>
+ Cipher Strength  <span class="o">(</span>weighted<span class="o">)</span>  <span class="m">90</span> <span class="o">(</span><span class="m">36</span><span class="o">)</span>
+ Final Score …</code></pre></div>
                     </section>
                 </article>
             </li>
             <hr/>
         </ol>
         <div class="paginator">
-                    <a href="https://visibilityspots.github.io/blog/category/containers.html">
-                        <i class="icon-circle-arrow-left"></i>
-                    </a>
-            Page 2 / 2
+            Page 1 / 1
         </div>
 
     </div>

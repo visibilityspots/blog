@@ -69,6 +69,31 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
+                        <time class="post-time" datetime="2012-12-05T21:24:00+01:00" pubdate>
+                            Wed 05 December 2012
+                        </time>
+                        <a href="https://visibilityspots.github.io/blog/selinux.html" rel="bookmark"><h1>Lighttpd change tcp port in CentOS</h1></a>
+                    </header>
+                    <section class="post-content">
+                        <p>It seems like a very simple job, and in fact it is. But I had an issue when I tried to change this in my&nbsp;Cent OS&nbsp;6.3 setup.</p>
+<p>After some digging on the internet I found out selinux was the blocking factor.</p>
+<p>The configuration of the new port has to be done in the lighttpd conf file.</p>
+<p>/etc/lighttpd/lighttpd.conf</p>
+<pre class="literal-block">
+server.port = 2080
+</pre>
+<p>When I changed the config file and restarted the /etc/init.d/lighttpd service I got following error:</p>
+<pre class="literal-block">
+(network.c.379) can't bind to port: &nbsp;2080 Permission denied
+</pre>
+<p>I checked that I added the …</p>
+                    </section>
+                </article>
+            </li>
+            <hr/>
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
                         <time class="post-time" datetime="2012-10-15T18:00:00+02:00" pubdate>
                             Mon 15 October 2012
                         </time>
@@ -245,32 +270,6 @@ clear ip bgp soft out
 <pre class="literal-block">
 sh ip bgp summary
 sh ip bgp neighbors IP …</pre></div>
-                    </section>
-                </article>
-            </li>
-            <hr/>
-            <li>
-                <article class="post-entry">
-                    <header class="entry-header">
-                        <time class="post-time" datetime="2011-01-27T22:47:00+01:00" pubdate>
-                            Thu 27 January 2011
-                        </time>
-                        <a href="https://visibilityspots.github.io/blog/apple-linux-remote.html" rel="bookmark"><h1>Apple remote (A1156) - MacBook Pro 3.1 &amp; Ubuntu 10.04</h1></a>
-                    </header>
-                    <section class="post-content">
-                        <p>It isn't supported by default using Ubuntu but it's as handy as hell, the apple infrared remote control. After some mayor headaches I finally succeeded to configure it manually on my MacBook Pro 3.1 running Ubuntu 10.04.</p>
-<p>It's quite easy once you know how.</p>
-<p>Installation of the lirc library:</p>
-<pre class="literal-block">
-$ sudo apt-get install lirc
-</pre>
-<p>Adapting the configuration files (make sure to backup them first!):</p>
-<pre class="literal-block">
-$ sudo cp /old/file /new/file.bak
-</pre>
-<p>/etc/lirc/hardware.conf</p>
-<pre class="literal-block">
-# /etc/lirc/hardware.conf # #Chosen Remote Control REMOTE=&quot;Apple Mac mini USB IR Receiver&quot; REMOTE_MODULES=&quot;uinput&quot; REMOTE_DRIVER=&quot;macmini&quot; REMOTE_DEVICE=&quot;/dev/usb/hiddev0&quot; REMOTE_SOCKET=&quot;&quot; REMOTE_LIRCD_CONF …</pre>
                     </section>
                 </article>
             </li>
