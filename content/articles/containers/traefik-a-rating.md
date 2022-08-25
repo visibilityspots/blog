@@ -3,7 +3,7 @@ Author:      Jan
 Date:        2022-08-20 12:00
 Slug:        traefik-ssl-grading
 Tags:        traefik, ssl, https, grading, testssl, qualys, ssllabs, labs, a, b
-Modified:    2022-08-20
+Modified:    2022-08-25
 Status:      published
 
 Recently I discovered that many of the services I deployed upon my [nomad cluster]({filename}./nomad-arm-cluster.md)  didn't had the SSL A grading I expected them to have. Somehow I asumed the [traefik letsencrypt]({filename}./traefik.md) implementation got the A rating by default.
@@ -49,7 +49,7 @@ traefik.toml:
 
 This already got me towards an A rating. Obviously it  was already a big step towards the aim of the A+ rating hence still not there yet so I digged deeper into the matter and tried to get the missing HSTS headers fixed to get that + rating!
 
-And thanks to the [internet](https://www.simplecto.com/improve-traefik-https-encryption-qualys-ssl-labs-testssl-sh/) I found out adding an extra middleware to fix those headers could bring me that extra + rating;
+And thanks to the internet, [simplecto](https://www.simplecto.com/improve-traefik-https-encryption-qualys-ssl-labs-testssl-sh/) & [traefik community](https://community.traefik.io/t/setting-hsts-headers/3794) I found out adding an extra middleware to fix those headers could bring me that extra + rating;
 
 ```
 traefik.toml:
