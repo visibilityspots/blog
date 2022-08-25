@@ -5,42 +5,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tags.html</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/categories.html</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/archives.html</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/sitemap.html</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/pages/contact.html</loc>
-<lastmod>2022-08-20T09:22:40-00:00</lastmod>
+<lastmod>2022-08-25T10:41:09-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -68,7 +68,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/traefik-ssl-grading.html</loc>
-<lastmod>2022-08-20T00:00:00+02:00</lastmod>
+<lastmod>2022-08-25T00:00:00+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -628,7 +628,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/category/containers.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -684,70 +684,70 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/traefik.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/ssl.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/https.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/grading.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/testssl.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/qualys.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/ssllabs.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/labs.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/a.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/b.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -3589,7 +3589,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/author/jan.html</loc>
-<lastmod>2022-08-20T12:00:00+00:18</lastmod>
+<lastmod>2022-08-25T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>

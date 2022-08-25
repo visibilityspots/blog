@@ -72,7 +72,7 @@
                     <header class="entry-header">
                         <a href="https://visibilityspots.github.io/blog/traefik-ssl-grading.html" rel="bookmark"><h1>Traefik SSL grading</h1></a>
 <div><p>takes 0 minutes to read</p></div>                        <time class="post-time" datetime="2022-08-20T12:00:00+02:00" pubdate>
-                            last modified at Sat 20 August 2022
+                            last modified at Thu 25 August 2022
                         </time>
                     </header>
                     <section class="post-content">
@@ -112,7 +112,7 @@
 </code></pre></div>
 
 <p>This already got me towards an A rating. Obviously it  was already a big step towards the aim of the A+ rating hence still not there yet so I digged deeper into the matter and tried to get the missing HSTS headers fixed to get that + rating!</p>
-<p>And thanks to the <a href="https://www.simplecto.com/improve-traefik-https-encryption-qualys-ssl-labs-testssl-sh/">internet</a> I found out adding an extra middleware to fix those headers could bring me that extra + rating;</p>
+<p>And thanks to the internet, <a href="https://www.simplecto.com/improve-traefik-https-encryption-qualys-ssl-labs-testssl-sh/">simplecto</a> &amp; <a href="https://community.traefik.io/t/setting-hsts-headers/3794">traefik community</a> I found out adding an extra middleware to fix those headers could bring me that extra + rating;</p>
 <div class="highlight"><pre><span></span><code>traefik.toml:
         [entryPoints.https.http]
             middlewares = [&quot;securedheaders&quot;]
