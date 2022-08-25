@@ -25,6 +25,10 @@ Bridging the gap between different units within the organization.
 
 Trying to inspire with a positive enthusiastic bit naive transparent attitude.
 
+#### Sept 2020 - August 2022 | Guest Lecturer: Server OS Expert Linux - [PXL](https://www.pxl.be/systemen-en-netwerkbeheer) - HASSELT
+
+Passing by the spark of Linux with in particular container orchestration towards the students of the 3th grade bachelor applied computer science
+
 #### November 2017 - June 2021 | Operations Engineer - [Trendminer](https://trendminer.com) - HASSELT
 
 Setup and automation of the product’s deployment options: cloud-based or on premise.
@@ -134,4 +138,4 @@ Contribute to and promote the educational and structural policies from `Scouts e
 
 Actively done for about 14 years, 5 years as a member, 7 years as a chief from which 4 as [group](http://www.scoutsnieuwenrode.be) leader.
 
-### Snow- and longboarding
+### Running, cycling swimming, snow- and longboarding
