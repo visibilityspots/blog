@@ -131,8 +131,9 @@ CCNA Certificate ([409464168482JNAN](http://www.ciscocertificates.com/verify.cfm
 
 ### Scouts & Gidsen Vlaanderen - Commissaris Groepsleiding
 
-From December 2011 - December 2012 Support group leaders within the national operation of Scouts en Gidsen Vlaanderen through various projects.
-Contribute to and promote the educational and structural policies from `Scouts en Gidsen Vlaanderen`_.
+From December 2011 - December 2012
+Support group leaders within the national operation of Scouts en Gidsen Vlaanderen through various projects.
+Contribute to and promote the educational and structural policies from [Scouts en Gidsen Vlaanderen](https://www.scoutsengidsenvlaanderen.be).
 
 ### Scouts, De Vlasbloem - NIEUWENRODE (B1705G)
 
