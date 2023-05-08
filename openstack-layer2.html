@@ -99,8 +99,8 @@ systemctl restart openstack-keystone.service
 
 <p>Another rather tiny issue was the access to the console through the web interface. It couldn't connect through the instance when running on another compute node.</p>
 <p>After some research it seemed to by DNS. In the development setup no DNS has been configured for the different compute nodes. We tackled it by the proxy client setting in nova.conf on every compute node</p>
-<div class="highlight"><pre><span></span><code>vim /etc/nova/nova/conf
-vncserver_proxyclient_address=actual.ip.of.the.server
+<div class="highlight"><pre><span></span><code><span class="nx">vim</span><span class="w"> </span><span class="o">/</span><span class="nx">etc</span><span class="o">/</span><span class="nx">nova</span><span class="o">/</span><span class="nx">nova</span><span class="o">/</span><span class="nx">conf</span>
+<span class="nx">vncserver_proxyclient_address</span><span class="p">=</span><span class="nx">actual</span><span class="p">.</span><span class="nx">ip</span><span class="p">.</span><span class="nx">of</span><span class="p">.</span><span class="nx">the</span><span class="p">.</span><span class="nx">server</span>
 </code></pre></div>
 
 <p>During maintenance we had to reboot a compute-node, after this reboot the instances living on the compute node where not started and came up in shutdown state.</p>

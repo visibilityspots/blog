@@ -1,6 +1,6 @@
 [input]
-base_directory = "/home/runner/work/blog/blog/content"
 html_selector = "main"
+base_directory = "/home/runner/work/blog/blog/content"
 
 [[input.files]]
 path = "pages/contact.rst"
