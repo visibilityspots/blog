@@ -23,6 +23,11 @@ url = "/pages/tools.html"
 title = "Tools"
 
 [[input.files]]
+path = "articles/containers/nomad-spread-scheduler.md"
+url = "/nomad-spread-scheduler.html"
+title = "Nomad spread scheduler"
+
+[[input.files]]
 path = "articles/containers/traefik-a-rating.md"
 url = "/traefik-ssl-grading.html"
 title = "Traefik SSL grading"

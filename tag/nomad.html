@@ -69,6 +69,22 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
+                        <time class="post-time" datetime="2023-07-05T22:00:00+02:00" pubdate>
+                            Wed 05 July 2023
+                        </time>
+                        <a href="https://visibilityspots.github.io/blog/nomad-spread-scheduler.html" rel="bookmark"><h1>Nomad spread scheduler</h1></a>
+                    </header>
+                    <section class="post-content">
+                        <p>I'm maintaining a <a href="../nomad-arm-cluster.html">nomad cluster</a> already a few years now at home, based on some thin clients and a few raspberry pi's.</p>
+<p>The workload is growing from uses cases of the <a href="../planespotting.html">plane-spotting</a> services towards a <a href="../dockerized-cloudflared-pi-hole.html">pi-hole</a> setup, <a href="https://github.com/dani-garcia/vaultwarden">vaultwarden</a>, <a href="https://www.home-assistant.io/">homeassistant</a> and many more use cases.</p>
+<p>One of the issues I encountered was based on the default <a href="https://www.nomadproject.io/docs/concepts/scheduling/scheduling">scheduling algorithm</a>. Raspberry pi's are not known as the most efficient solution to run a huge workload. Default nomad will schedule new containers on one compute node until the resource limits of that node are consumed and only then will start consuming another node. This …</p>
+                    </section>
+                </article>
+            </li>
+            <hr/>
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
                         <time class="post-time" datetime="2020-12-27T21:00:00+01:00" pubdate>
                             Sun 27 December 2020
                         </time>

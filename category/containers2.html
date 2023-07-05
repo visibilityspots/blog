@@ -69,6 +69,23 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
+                        <time class="post-time" datetime="2017-09-11T19:00:00+02:00" pubdate>
+                            Mon 11 September 2017
+                        </time>
+                        <a href="https://visibilityspots.github.io/blog/nexus-oss-repository-manager.html" rel="bookmark"><h1>Nexus OSS repository manager</h1></a>
+                    </header>
+                    <section class="post-content">
+                        <p>looking for a global repository store which could store maven projects, yum repositories, docker repositories, we bumped into <a href="https://help.sonatype.com/display/NXRM3/Repository+Manager+3">Nexus repository manager</a>. We used the official docker image to see how it can be implemented in the dockerized CI environment.</p>
+<h2>docker repository</h2>
+<p>as a first the docker repository feature could be enabled so we can start building and storing docker images for the different jenkins build slaves and the jenkins master so our work is reproducible and stored in a safe central place.</p>
+<p>We configured 3 repositories in nexus for our docker images seen as a recommended approach in the <a href="https://help.sonatype.com/display/NXRM3/Private+Registry+for+Docker#PrivateRegistryforDocker-HostedRepositoryforDocker(PrivateRegistryforDocker)">nexus …</a></p>
+                    </section>
+                </article>
+            </li>
+            <hr/>
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
                         <time class="post-time" datetime="2017-09-06T22:00:00+02:00" pubdate>
                             Wed 06 September 2017
                         </time>

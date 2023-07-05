@@ -69,6 +69,22 @@
             <li>
                 <article class="post-entry">
                     <header class="entry-header">
+                        <time class="post-time" datetime="2023-07-05T22:00:00+02:00" pubdate>
+                            Wed 05 July 2023
+                        </time>
+                        <a href="https://visibilityspots.github.io/blog/nomad-spread-scheduler.html" rel="bookmark"><h1>Nomad spread scheduler</h1></a>
+                    </header>
+                    <section class="post-content">
+                        <p>I'm maintaining a <a href="../nomad-arm-cluster.html">nomad cluster</a> already a few years now at home, based on some thin clients and a few raspberry pi's.</p>
+<p>The workload is growing from uses cases of the <a href="../planespotting.html">plane-spotting</a> services towards a <a href="../dockerized-cloudflared-pi-hole.html">pi-hole</a> setup, <a href="https://github.com/dani-garcia/vaultwarden">vaultwarden</a>, <a href="https://www.home-assistant.io/">homeassistant</a> and many more use cases.</p>
+<p>One of the issues I encountered was based on the default <a href="https://www.nomadproject.io/docs/concepts/scheduling/scheduling">scheduling algorithm</a>. Raspberry pi's are not known as the most efficient solution to run a huge workload. Default nomad will schedule new containers on one compute node until the resource limits of that node are consumed and only then will start consuming another node. This …</p>
+                    </section>
+                </article>
+            </li>
+            <hr/>
+            <li>
+                <article class="post-entry">
+                    <header class="entry-header">
                         <time class="post-time" datetime="2022-08-20T12:00:00+02:00" pubdate>
                             Sat 20 August 2022
                         </time>
@@ -215,23 +231,6 @@
                         <p>in a previous blog post I talked about setting up a <a href="https://visibilityspots.github.io/blog/dockerized-jenkins.html">dockerized jenkins master/slave setup</a> and setting up a <a href="https://visibilityspots.github.io/blog/nexus-oss-repository-manager.html">private docker registry using nexus</a>.</p>
 <p>The next thing on the roadmap was to use this jenkins setup to actually build new docker images for specific software. Before going to the different teams and talking how they now build their software and how this could be done using this new containerized setup I setted up a new jenkins job.</p>
 <p>This jenkins job will build a generic jenkins slave docker container which will be used by the jenkins master to build some …</p>
-                    </section>
-                </article>
-            </li>
-            <hr/>
-            <li>
-                <article class="post-entry">
-                    <header class="entry-header">
-                        <time class="post-time" datetime="2017-09-11T19:00:00+02:00" pubdate>
-                            Mon 11 September 2017
-                        </time>
-                        <a href="https://visibilityspots.github.io/blog/nexus-oss-repository-manager.html" rel="bookmark"><h1>Nexus OSS repository manager</h1></a>
-                    </header>
-                    <section class="post-content">
-                        <p>looking for a global repository store which could store maven projects, yum repositories, docker repositories, we bumped into <a href="https://help.sonatype.com/display/NXRM3/Repository+Manager+3">Nexus repository manager</a>. We used the official docker image to see how it can be implemented in the dockerized CI environment.</p>
-<h2>docker repository</h2>
-<p>as a first the docker repository feature could be enabled so we can start building and storing docker images for the different jenkins build slaves and the jenkins master so our work is reproducible and stored in a safe central place.</p>
-<p>We configured 3 repositories in nexus for our docker images seen as a recommended approach in the <a href="https://help.sonatype.com/display/NXRM3/Private+Registry+for+Docker#PrivateRegistryforDocker-HostedRepositoryforDocker(PrivateRegistryforDocker)">nexus …</a></p>
                     </section>
                 </article>
             </li>

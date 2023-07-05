@@ -6,7 +6,7 @@
     <head>
         <meta charset="UTF-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-        <title>visibilityspots - container</title>
+        <title>visibilityspots - scheduling</title>
         <meta name="description" content="">
         <meta name="viewport" content="width=device-width">
             <link rel="stylesheet" href="https://visibilityspots.github.io/blog/theme/css/normalize.css">
@@ -78,21 +78,6 @@
                         <p>I'm maintaining a <a href="../nomad-arm-cluster.html">nomad cluster</a> already a few years now at home, based on some thin clients and a few raspberry pi's.</p>
 <p>The workload is growing from uses cases of the <a href="../planespotting.html">plane-spotting</a> services towards a <a href="../dockerized-cloudflared-pi-hole.html">pi-hole</a> setup, <a href="https://github.com/dani-garcia/vaultwarden">vaultwarden</a>, <a href="https://www.home-assistant.io/">homeassistant</a> and many more use cases.</p>
 <p>One of the issues I encountered was based on the default <a href="https://www.nomadproject.io/docs/concepts/scheduling/scheduling">scheduling algorithm</a>. Raspberry pi's are not known as the most efficient solution to run a huge workload. Default nomad will schedule new containers on one compute node until the resource limits of that node are consumed and only then will start consuming another node. This …</p>
-                    </section>
-                </article>
-            </li>
-            <hr/>
-            <li>
-                <article class="post-entry">
-                    <header class="entry-header">
-                        <time class="post-time" datetime="2017-05-29T21:00:00+02:00" pubdate>
-                            Mon 29 May 2017
-                        </time>
-                        <a href="https://visibilityspots.github.io/blog/docker-openstackclient-kilo.html" rel="bookmark"><h1>Docker openstackclient-kilo container</h1></a>
-                    </header>
-                    <section class="post-content">
-                        <p>A couple of years ago I deployed an openstack cluster based on <a href="https://www.rdoproject.org/">RDO</a>. Back in the days we implemented the <a href="https://www.openstack.org/software/kilo/">kilo</a> release. Until today we didn't updated yet due to various reasons being no need for the new features, no resources, no time no.. Upgrading would be a better option but we'll have to live with it and since it's running rather well so far we are quite happy with it.</p>
-<p>To manage that cloud I use the clients I installed on my local machine, from nova to cinder they all have different packages available for many different platforms. Only …</p>
                     </section>
                 </article>
             </li>
