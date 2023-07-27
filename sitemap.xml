@@ -5,42 +5,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tags.html</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/categories.html</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/archives.html</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/sitemap.html</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/pages/contact.html</loc>
-<lastmod>2023-07-18T07:58:59-00:00</lastmod>
+<lastmod>2023-07-27T07:09:58-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -68,7 +68,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/nomad-spread-scheduler.html</loc>
-<lastmod>2023-07-05T00:00:00+02:00</lastmod>
+<lastmod>2023-07-27T00:00:00+02:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -635,7 +635,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/category/containers.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -691,49 +691,49 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/nomad.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/hashicorp.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/container.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/orchestration.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/spread.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/algorithm.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/scheduling.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -3624,7 +3624,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/author/jan.html</loc>
-<lastmod>2023-07-05T22:00:00+00:18</lastmod>
+<lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
