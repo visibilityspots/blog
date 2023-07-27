@@ -4,7 +4,7 @@ Date:        2023-07-05 22:00
 Slug:        nomad-spread-scheduler
 Tags:        nomad, hashicorp, container, orchestration, spread, algorithm, scheduling
 Status:      published
-Modified:    2023-07-05
+Modified:    2023-07-27
 
 I'm maintaining a [nomad cluster](../nomad-arm-cluster.html) already a few years now at home, based on some thin clients and a few raspberry pi's.
 
@@ -35,10 +35,6 @@ server{
 And of course restarting the nomad daemon.
 
 Never since I encountered issues again by overloading one of the pi's and therefor resulting in failing applications on top of it.
-
-An other approach would be to use the spread stanza in your nomad jobs, but this seemed to be a too much of a hassle for my home lab setup;
-https://www.hashicorp.com/blog/spreads-and-affinites-in-nomad
-https://developer.hashicorp.com/nomad/tutorials/advanced-scheduling/spread
 
 An other approach would be to use the spread stanza in your nomad jobs, but this seemed to be a too much of a hassle for my home lab setup;
 
