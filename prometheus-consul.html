@@ -81,9 +81,9 @@
 <p>The prometheus has been configured manually with hard coded endpoints to scrape in both situations. It works fine but somehow I would have liked prometheus to automatically recognizing the endpoints himself.</p>
 <p>Luckily I bumped into <a href="https://www.nomadproject.io">nomad</a> at my current project. Nomad is a tool for managing a cluster of machines and running applications on them  which uses <a href="https://www.consul.io/">consul</a> as a key value store. And guess what, prometheus has an integration with consul!</p>
 <p>Isn't that just great! By configuring prometheus to find it's endpoints in consul the only line of code is the one to point prometheus where he can find consul.</p>
-<div class="highlight"><pre><span></span><code>  - job_name: &#39;self&#39;
+<div class="highlight"><pre><span></span><code>  <span class="k">-</span> job_name: &#39;self&#39;
     consul_sd_configs:
-      - server: &#39;localhost:8500&#39;
+      <span class="k">-</span> server: &#39;localhost:8500&#39;
         services: []
 </code></pre></div>
 

@@ -111,9 +111,9 @@
 <h1>Rsnapshot</h1>
 <p>I read the wiki page of <a href="https://wiki.archlinux.org/index.php/Rsnapshot">rsnapshot</a> from archlinux and followed their configuration instructions and adapted those to my own preferences. After this configuration has been saved and tested I added some cron magic to automate those backups during my lunch break.</p>
 <div class="highlight"><pre><span></span><code>    # Backup schedule (rsnapshot)
-    0 */3 * * * /usr/bin/rsnapshot hourly
-    30 12 * * * /usr/bin/rsnapshot daily
-    45 12 * * 1 /usr/bin/rsnapshot weekly
+    0 <span class="gs">*/3 *</span> * <span class="gs">* /usr/bin/rsnapshot hourly</span>
+<span class="gs">    30 12 *</span> * <span class="gs">* /usr/bin/rsnapshot daily</span>
+<span class="gs">    45 12 *</span> * 1 /usr/bin/rsnapshot weekly
     0 13 1 * 1 /usr/bin/rsnapshot monthly
 </code></pre></div>
 
