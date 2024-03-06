@@ -30,17 +30,17 @@ jobs:
         aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         aws-region: ${{ secrets.AWS_REGION }}
 
-    - name: install stork through cargo
-      uses: actions-rs/install@v0.1
+    - name: Install stork through cargo
+      uses: baptiste0928/cargo-install@v3
       with:
         crate: stork-search
         version: latest
-        use-tool-cache: true
 
     - name: install python requirements
       uses: BSFishy/pip-action@v1
       with:
         requirements: requirements.txt
+
 
     - name: build AWS based content
       run: make aws-deploy
@@ -54,12 +54,11 @@ jobs:
       with:
         submodules: 'recursive'
 
-    - name: install stork through cargo
-      uses: actions-rs/install@v0.1
+    - name: Install stork through cargo
+      uses: baptiste0928/cargo-install@v3
       with:
         crate: stork-search
         version: latest
-        use-tool-cache: true
 
     - name: install python requirements
       uses: BSFishy/pip-action@v1
