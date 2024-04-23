@@ -153,8 +153,12 @@ ln -s /path/to/your/script /usr/bin/nameOfTheOverallCommmandYouWantToUseForYourS
 $ apt-get install conky conky-colors
 &lt;/pre&gt;
 &lt;p&gt;After I adapted the configuration my desktop became like this:&lt;/p&gt;
-&lt;a class="reference external image-reference" href="images/conky/desktop.png"&gt;&lt;img alt="Desktop image" src="images/conky/desktop.png" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="images/conky/desktop.png"&gt;
+&lt;img alt="Desktop image" src="images/conky/desktop.png" /&gt;
+&lt;/a&gt;
 &lt;p&gt;At the left side there is a pane which only monitors my system resources. The config file for it, &lt;a class="reference external" href="http://www.visibilityspots.com/documents/conky/conkyrc"&gt;conkyrc&lt;/a&gt; should be placed in your home directory as a hidden file (naming it .conkyrc).&lt;/p&gt;
 &lt;p&gt;When you now type in conky in your terminal, you should see appearing the pane on your desktop:&lt;/p&gt;
-&lt;a class="reference external image-reference" href="images/conky/conky.png"&gt;&lt;img alt="Left panel" src="images/conky/conky.png" /&gt;&lt;/a&gt;
+&lt;a class="reference external image-reference" href="images/conky/conky.png"&gt;
+&lt;img alt="Left panel" src="images/conky/conky.png" /&gt;
+&lt;/a&gt;
 &lt;p&gt;On the right bottom I created an rss …&lt;/p&gt;</description><dc:creator xmlns:dc="http://purl.org/dc/elements/1.1/">Jan</dc:creator><pubDate>Wed, 30 Dec 2009 14:18:00 +0100</pubDate><guid isPermaLink="false">tag:visibilityspots.github.io,2009-12-30:/blog/conky.html</guid><category>linux</category><category>conky</category><category>conky-colors</category><category>monitor</category><category>ubuntu</category><category>karmic</category><category>linux</category></item></channel></rss>

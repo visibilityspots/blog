@@ -81,10 +81,14 @@
 $ apt-get install conky conky-colors
 </pre>
 <p>After I adapted the configuration my desktop became like this:</p>
-<a class="reference external image-reference" href="images/conky/desktop.png"><img alt="Desktop image" src="images/conky/desktop.png" /></a>
+<a class="reference external image-reference" href="images/conky/desktop.png">
+<img alt="Desktop image" src="images/conky/desktop.png" />
+</a>
 <p>At the left side there is a pane which only monitors my system resources. The config file for it, <a class="reference external" href="http://www.visibilityspots.com/documents/conky/conkyrc">conkyrc</a> should be placed in your home directory as a hidden file (naming it .conkyrc).</p>
 <p>When you now type in conky in your terminal, you should see appearing the pane on your desktop:</p>
-<a class="reference external image-reference" href="images/conky/conky.png"><img alt="Left panel" src="images/conky/conky.png" /></a>
+<a class="reference external image-reference" href="images/conky/conky.png">
+<img alt="Left panel" src="images/conky/conky.png" />
+</a>
 <p>On the right bottom I created an rss feeds pane. In the file <a class="reference external" href="http://www.visibilityspots.com/documents/conky/conkyrc2">conkyrc2</a> some parameters needs your attention. After you found your rss feeds, you can displays them by this instruction (10 stands for the refresh interval in minutes, 5 for the last 5 items of your feed):</p>
 <pre class="literal-block">
 ${rss http://jouwfeed 10 item_titles 5}
@@ -97,7 +101,9 @@ conky -c ~/.conkyrc2
 <pre class="literal-block">
 conky -c ~/.conkyrc2 -d
 </pre>
-<a class="reference external image-reference" href="images/conky/conkyrc2.png"><img alt="Right bottom panel" src="images/conky/conkyrc2.png" /></a>
+<a class="reference external image-reference" href="images/conky/conkyrc2.png">
+<img alt="Right bottom panel" src="images/conky/conkyrc2.png" />
+</a>
 <p>The last pane, on the right top, I configured with for monitoring my social networks and communication. In the <a class="reference external" href="http://www.visibilityspots.com/documents/conky/conkyrc3">conkyrc3</a> file you need to adopt the twitter and linkedin feed.</p>
 <p>For the twitter rss feed you need 3 params: username, password, and a token. To find your token, surf to and click on the right bottom to get your rss feed. In your browser url address bar you can find the token at the end of the url XXXXXXXX.rss.</p>
 <pre class="literal-block">
@@ -108,7 +114,9 @@ ${rss http://twitternaam:twitterwachtwoord&#64;twitter.com/statuses/friends_time
 <pre class="literal-block">
 conky -c ~/.conkyrc2
 </pre>
-<a class="reference external image-reference" href="images/conky/conkyrc3.png"><img alt="Right top panel" src="images/conky/conkyrc3.png" /></a>
+<a class="reference external image-reference" href="images/conky/conkyrc3.png">
+<img alt="Right top panel" src="images/conky/conkyrc3.png" />
+</a>
 <p>To automatically start up the conky daemons, you could call a .startConky.sh script with this code:</p>
 <pre class="literal-block">
 #!/bin/bash
