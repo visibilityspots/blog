@@ -1,5 +1,4 @@
 pelican
-pelican-search
 ghp-import
 Markdown
 s3cmd
