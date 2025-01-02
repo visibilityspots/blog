@@ -1,6 +1,7 @@
 __pycache__/
 cache/
 output/
+content/pages/CV.*
 *.pid
 content/drafts
 .secrets
