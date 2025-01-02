@@ -3,7 +3,7 @@ Author: Jan
 Date: 2009-12-27 18:06
 Slug: profile
 Status: published
-Modified: 2018-01-31
+Modified: 2024-10-16
 
 ## Experience
 
@@ -13,9 +13,9 @@ Advisement of the clients on the use of or the realization of Open Source softwa
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-#### July 2021 - Present | Operations Sheperd - [Inuits](https://inuits.eu)
+### July 2021 - Present | Operations Manager - [Inuits](https://inuits.eu)
 
-Support the internal operation engineers in their day to day job by facilitating various methods to achieve a happy and functional team over multiple countries.
+Support the internal operation engineers (20+/-) in their day to day job by facilitating various methods to achieve a happy and functional team over multiple countries [BE|PL|CZ].
 
 Responsible for various projects with an ops mindset throughout the organization both internally as well as customer facing.
 
@@ -24,6 +24,10 @@ Supporting colleagues in their consultancy projects.
 Bridging the gap between different units within the organization.
 
 Trying to inspire with a positive enthusiastic bit naive transparent attitude.
+
+Restructuring the operations team by following some [sociocracy 3.0](https://sociocracy30.org/) principles. This so the growing organization could handle more tasks and responsibilities as a group working towards the same organizational goals.
+
+Needless to say this has some challenges to overcome which are inevitable. By transparent communication about the whole process reflecting on both the downsides as well as the upsides. While making decisions to find the middle ground we recreated a structure to be able to scale in function of the different business targets.
 
 #### Sept 2020 - August 2022 | Guest Lecturer: Server OS Expert Linux - [PXL](https://www.pxl.be/systemen-en-netwerkbeheer) - HASSELT
 
