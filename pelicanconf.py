@@ -59,6 +59,7 @@ PLUGIN_PATHS = ['pelican-plugins']
 PLUGINS = [
   'github_activity',
   'sitemap',
+  'search',
   'readtime'
 ]
 
@@ -87,3 +88,6 @@ CACHE_CONTENT = True
 GZIP_CACHE = True
 CHECK_MODIFIED_METHOD = 'mtime'
 LOAD_CONTENT_CACHE = True
+
+# Search
+SEARCH_MODE = "source"
