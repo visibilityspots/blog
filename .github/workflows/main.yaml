@@ -3,7 +3,7 @@ name: visibilityspots.org CI
 on:
   push:
     branches:
-      - master
+      - main
 
 jobs:
   AWS:
