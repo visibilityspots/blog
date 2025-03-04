@@ -3,17 +3,25 @@ Author: Jan
 Date: 2009-12-27 18:06
 Slug: profile
 Status: published
-Modified: 2024-10-16
+Modified: 2025-03-04
 
 ## Experience
 
-### May 2012 - present | Linux & Open-Source consultant at [Inuits](https://inuits.eu) - ANTWERP
+### March 2025 - present | IT Director [The Safe Group](https://thesafegroup.com) - HASSELT
+--------------------------------------------------------------------------
+The Safe Group is a Belgian company active in the Security and Communications sector. Over the years, the team of tech wizards has acquired great expertise in providing multidisciplinary solutions, far beyond the limits of ordinary security companies.
+
+Starting off with the event industry, their clientele rapidly expanded to the private sector, local authorities, construction, and petrol. Their unique combination of solution design and field experience allows groundbreaking concepts to be developed and proven almost simultaneously.
+
+Their specialties include: video surveillance, access and crowd control, intrusion detection, control rooms, WiFi, IT services, Sensors & IOT networks, VoIP, hosting, software & hardware development, digital signage, and custom solutions.
+
+### May 2012 - February 2025 | Linux & Open-Source consultant at [Inuits](https://inuits.eu) - ANTWERP
 --------------------------------------------------------------------------
 Advisement of the clients on the use of or the realization of Open Source software and Open Standards.
 
 Combining own knowledge with the shared knowledge of a group of highly experienced colleagues to realize technical high standard projects.
 
-### July 2021 - Present | Operations Manager - [Inuits](https://inuits.eu)
+### July 2021 - February 2025 | Operations Manager - [Inuits](https://inuits.eu)
 
 Support the internal operation engineers (20+/-) in their day to day job by facilitating various methods to achieve a happy and functional team over multiple countries [BE|PL|CZ].
 
