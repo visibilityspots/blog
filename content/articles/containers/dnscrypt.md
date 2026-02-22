@@ -22,9 +22,9 @@ On November 11, 2025, Cloudflare [announced](https://developers.cloudflare.com/c
 
 The reason given was a security vulnerability in an underlying DNS library specific to the `proxy-dns` command. Cloudflare also acknowledged that `proxy-dns` had been an officially undocumented feature for several years, which explains why it quietly disappeared without much fanfare.
 
-iExisting releases of `cloudflared` made before February 2, 2026 will still run the command, but Cloudflare only supports any given release for one year from its release date, so those will age out too. There's no point maintaining a docker image that wraps a command that no longer exists in current upstream releases.
+Existing releases of `cloudflared` made before February 2, 2026 will still run the command, but Cloudflare only supports any given release for one year from its release date, so those will age out too. There's no point maintaining a docker image that wraps a command that no longer exists in current upstream releases.
 
-Hence the dicision to archive my [dockerfile-cloudflared](https://github.com/visibilityspots/dockerfile-cloudflared/) github repository.
+Hence the decision to archive my [dockerfile-cloudflared](https://github.com/visibilityspots/dockerfile-cloudflared/) github repository.
 
 ## dnscrypt
 
