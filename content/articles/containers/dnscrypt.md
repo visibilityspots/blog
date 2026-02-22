@@ -12,7 +12,7 @@ It was a modest little project. Nothing fancy — just packaging an existing bin
 
 ## blocky
 
-The setup didn't stay static. Over time I replaced pi-hole with [blocky](https://0xerr0r.github.io/blocky/) as my DNS resolver and ad blocker. Blocky felt more lightweight and config-file-driven which suits my workflow better — no web UI I'd rarely use, no database, just a clean YAML config checked into git.
+The setup didn't stay static. Over time I replaced pi-hole with [blocky](https://0xerr0r.github.io/blocky/) as my DNS resolver and ad blocker. Blocky felt more lightweight and config-file-driven which suits my workflow better — no web UI I'd rarely use, no database, just a clean YAML config. Blocky runs as a Nomad job, with its configuration rendered dynamically from values stored in Consul and Vault.
 
 The cloudflared container kept doing its job throughout all of that: sitting quietly upstream, forwarding DNS queries over HTTPS to Cloudflare's 1.1.1.1 resolver. It worked, and I didn't have to think about it much.
 
