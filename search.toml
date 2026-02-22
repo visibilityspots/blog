@@ -23,6 +23,11 @@ url = "/pages/tools.html"
 title = "Tools"
 
 [[input.files]]
+path = "articles/containers/dnscrypt.md"
+url = "/dns-crypt.html"
+title = "DNS Crypt"
+
+[[input.files]]
 path = "articles/containers/nomad-spread-scheduler.md"
 url = "/nomad-spread-scheduler.html"
 title = "Nomad spread scheduler"

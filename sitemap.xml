@@ -5,42 +5,42 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tags.html</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/categories.html</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/archives.html</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/sitemap.html</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
 
 <url>
 <loc>https://visibilityspots.github.io/blog/pages/contact.html</loc>
-<lastmod>2026-02-22T12:47:43-00:00</lastmod>
+<lastmod>2026-02-22T12:50:04-00:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -62,6 +62,13 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
 <loc>https://visibilityspots.github.io/blog/pages/tools.html</loc>
 <lastmod>2017-03-29T21:00:00+02:00</lastmod>
+<changefreq>monthly</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/dns-crypt.html</loc>
+<lastmod>2026-02-22T00:00:00+01:00</lastmod>
 <changefreq>monthly</changefreq>
 <priority>0.5</priority>
 </url>
@@ -635,7 +642,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/category/containers.html</loc>
-<lastmod>2023-07-27T00:00:00+00:18</lastmod>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
@@ -690,6 +697,55 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 </url>
 
 <url>
+<loc>https://visibilityspots.github.io/blog/tag/docker.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/doh.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/container.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/dns.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/dnscrypt.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/crypt.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
+<loc>https://visibilityspots.github.io/blog/tag/blocky.html</loc>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
+<changefreq>daily</changefreq>
+<priority>0.5</priority>
+</url>
+
+<url>
 <loc>https://visibilityspots.github.io/blog/tag/nomad.html</loc>
 <lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
@@ -698,13 +754,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/hashicorp.html</loc>
-<lastmod>2023-07-27T00:00:00+00:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://visibilityspots.github.io/blog/tag/container.html</loc>
 <lastmod>2023-07-27T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
@@ -852,13 +901,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/adb-b.html</loc>
-<lastmod>2020-03-31T21:00:00+00:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://visibilityspots.github.io/blog/tag/docker.html</loc>
 <lastmod>2020-03-31T21:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
@@ -1412,20 +1454,6 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/tag/proxy-dns.html</loc>
-<lastmod>2019-02-18T00:00:00+00:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://visibilityspots.github.io/blog/tag/doh.html</loc>
-<lastmod>2019-02-18T00:00:00+00:18</lastmod>
-<changefreq>daily</changefreq>
-<priority>0.5</priority>
-</url>
-
-<url>
-<loc>https://visibilityspots.github.io/blog/tag/dns.html</loc>
 <lastmod>2019-02-18T00:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
@@ -3624,7 +3652,7 @@ xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 
 <url>
 <loc>https://visibilityspots.github.io/blog/author/jan.html</loc>
-<lastmod>2023-07-27T00:00:00+00:18</lastmod>
+<lastmod>2026-02-22T16:00:00+00:18</lastmod>
 <changefreq>daily</changefreq>
 <priority>0.5</priority>
 </url>
