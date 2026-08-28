@@ -1,5 +1,5 @@
 :Title: Contact
 :Heading: Jan Collijs
-:Subheading: Linux & Open-source consultant - Inuits.eu
+:Subheading: IT Director - The Safe Group
 :Template: contact
 :Status: published
