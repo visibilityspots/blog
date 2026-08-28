@@ -3,6 +3,7 @@ cache/
 output/
 blog/
 content/pages/CV.*
+content/pages/normalize.css
 *.pid
 content/drafts
 .secrets
