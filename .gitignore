@@ -1,9 +1,14 @@
 __pycache__/
 cache/
 output/
+blog/
 content/pages/CV.*
 *.pid
 content/drafts
 .secrets
 *act*
 md5-list
+README-local.md
+.claude/
+CLAUDE.md
+.wolf/
