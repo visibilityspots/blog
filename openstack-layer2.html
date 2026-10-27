@@ -78,7 +78,7 @@
                     <section class="post-content">
                         <p>A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.</p>
 <p>We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)</p>
-<p>When upgrading the all-in-one controller before we started using the cloud in 'production' a mean <a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978">bug</a> bit us in the ankle due to a new hiera package. After some digging around a <a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py">patch</a> came to the rescue together with the exclusion of the packages puppet<em> and hiera</em> from the epel repository</p>
+<p>When upgrading the all-in-one controller before we started using the cloud in 'production' a mean <a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978">bug</a> bit us in the ankle due to a new hiera package. After some digging around a <a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py">patch</a> came to the rescue together with the exclusion of the packages puppet* and hiera* from the epel repository</p>
 <div class="highlight"><pre><span></span><code>vim /etc/yum.repos.d/epel.repo +9
 exclude=hiera*,puppet
 </code></pre></div>

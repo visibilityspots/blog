@@ -2364,7 +2364,7 @@ umount&lt;span class="w"&gt; &lt;/span&gt;/mnt
 &lt;p&gt;We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)&lt;/p&gt;
 &lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the …&lt;/p&gt;</summary><content type="html">&lt;p&gt;A few months ago I implemented an RDO based openstack kilo release private cloud at one of our customers for their development platform. Through time we tackled a couple of issues so the cloud could be fitted into their work flows.&lt;/p&gt;
 &lt;p&gt;We stumbled onto some minor issues and some major ones. Let's begin with the minor ones ;)&lt;/p&gt;
-&lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the packages puppet&lt;em&gt; and hiera&lt;/em&gt; from the epel repository&lt;/p&gt;
+&lt;p&gt;When upgrading the all-in-one controller before we started using the cloud in 'production' a mean &lt;a href="https://bugzilla.redhat.com/show_bug.cgi?id=1284978"&gt;bug&lt;/a&gt; bit us in the ankle due to a new hiera package. After some digging around a &lt;a href="https://review.openstack.org/#/c/249301/3/packstack/modules/ospluginutils.py"&gt;patch&lt;/a&gt; came to the rescue together with the exclusion of the packages puppet* and hiera* from the epel repository&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;vim /etc/yum.repos.d/epel.repo +9
 exclude=hiera*,puppet
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
@@ -3568,7 +3568,7 @@ Hold&lt;span class="w"&gt; &lt;/span&gt;ctrl+c&lt;span class="w"&gt; &lt;/span&g
 &lt;/ul&gt;
 &lt;h3&gt;Package-doc&lt;/h3&gt;
 &lt;p&gt;This job will use the git repository as a source to generate the html site/ directory by the mkdocs build command.&lt;/p&gt;
-&lt;p&gt;(tip: create a .gitignore file in the root of your git repo with &lt;em&gt;.~ &lt;/em&gt;.swp and site/ so you don't upload swap files or you local generated site/ directory)&lt;/p&gt;
+&lt;p&gt;(tip: create a .gitignore file in the root of your git repo with *.~ *.swp and site/ so you don't upload swap files or you local generated site/ directory)&lt;/p&gt;
 &lt;p&gt;The nifty tool &lt;a href="https://github.com/jordansissel/fpm"&gt;fpm&lt;/a&gt; is used to generate an rpm package of that freshly created site/ directory to be deployed on hosting.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;if&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;[&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;-f&lt;span class="w"&gt; &lt;/span&gt;*.rpm&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="o"&gt;]&lt;/span&gt;
 &lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;then&lt;/span&gt;

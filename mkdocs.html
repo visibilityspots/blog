@@ -149,7 +149,7 @@ Hold<span class="w"> </span>ctrl+c<span class="w"> </span>to<span class="w"> </s
 </ul>
 <h3>Package-doc</h3>
 <p>This job will use the git repository as a source to generate the html site/ directory by the mkdocs build command.</p>
-<p>(tip: create a .gitignore file in the root of your git repo with <em>.~ </em>.swp and site/ so you don't upload swap files or you local generated site/ directory)</p>
+<p>(tip: create a .gitignore file in the root of your git repo with *.~ *.swp and site/ so you don't upload swap files or you local generated site/ directory)</p>
 <p>The nifty tool <a href="https://github.com/jordansissel/fpm">fpm</a> is used to generate an rpm package of that freshly created site/ directory to be deployed on hosting.</p>
 <div class="highlight"><pre><span></span><code><span class="w"> </span><span class="k">if</span><span class="w"> </span><span class="o">[</span><span class="w"> </span>-f<span class="w"> </span>*.rpm<span class="w"> </span><span class="o">]</span>
 <span class="w"> </span><span class="k">then</span>
